@@ -1,3 +1,5 @@
+// Keep first: global styles must load before any component CSS module.
+import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Forum } from "next/font/google";
 import { BackToTop } from "@/components/layout/BackToTop";
@@ -6,7 +8,6 @@ import { Header } from "@/components/layout/Header";
 import { Preloader } from "@/components/layout/Preloader";
 import { Topbar } from "@/components/layout/Topbar";
 import { siteConfig } from "@/data/site";
-import "./globals.css";
 
 const forum = Forum({
   subsets: ["latin"],

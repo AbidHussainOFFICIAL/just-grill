@@ -1,0 +1,48 @@
+/* element + class keeps this above the shared .section rule */
+section.testi {
+  background-image: url("/images/testimonial-bg.jpg");
+  padding-block-end: 340px;
+  position: static;
+}
+
+.testi .quote {
+  font-size: 7rem;
+  font-family: var(--fontFamily-forum);
+  line-height: 0.7em;
+}
+
+.testi .dots {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin-block: 40px 50px;
+}
+
+.testi .dot { animation: rotate360 15s linear infinite; }
+
+@keyframes rotate360 {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(1turn); }
+}
+
+.profile .avatar {
+  margin-inline: auto;
+  border-radius: var(--radius-circle);
+  margin-block-end: 15px;
+}
+
+.testi .name {
+  color: var(--gold-crayola);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letterSpacing-3);
+}
+
+@media (min-width: 992px) {
+
+  .testi .text {
+    max-width: 910px;
+    margin-inline: auto;
+  }
+
+}
