@@ -1,0 +1,51 @@
+.about .text { margin-block: 15px 30px; }
+
+.about .readMore {
+  margin-inline: auto;
+  margin-block-start: 26px;
+}
+
+.about .inner {
+  display: grid;
+  gap: 120px;
+}
+
+@media (min-width: 575px) {
+
+  .about .text {
+    max-width: 420px;
+    margin-inline: auto;
+  }
+
+  .about .inner { gap: 80px; }
+
+  .about .phone { --fontSize-body-1: 2.4rem; }
+
+}
+
+@media (min-width: 992px) {
+
+  .about .inner {
+    grid-template-columns: 0.7fr 1fr;
+    gap: 30px;
+  }
+
+}
+
+@media (min-width: 1200px) {
+
+  .about { padding-block: 170px 100px; }
+
+}
+
+@media (min-width: 1400px) {
+
+  .about .content { padding-inline-end: 90px; }
+
+  .about .shape {
+    display: block;
+    top: 46%;
+    left: 0;
+  }
+
+}
