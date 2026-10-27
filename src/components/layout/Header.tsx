@@ -26,6 +26,7 @@ export function Header() {
   useEffect(() => {
     if (!isNavOpen) return;
 
+    const openButton = openButtonRef.current;
     closeButtonRef.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -35,7 +36,7 @@ export function Header() {
     document.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      openButtonRef.current?.focus();
+      openButton?.focus();
     };
   }, [isNavOpen]);
 
