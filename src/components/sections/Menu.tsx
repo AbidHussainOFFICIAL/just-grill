@@ -23,7 +23,7 @@ export function Menu() {
                     width={100}
                     height={100}
                     sizes="100px"
-                    alt={item.title}
+                    alt=""
                     className={clsx("img-cover", styles.image)}
                   />
                 </figure>

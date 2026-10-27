@@ -23,7 +23,7 @@ export function Events() {
                     width={350}
                     height={450}
                     sizes="(min-width: 992px) 350px, 100vw"
-                    alt={event.title}
+                    alt=""
                     className={clsx("img-cover", styles.image)}
                   />
 

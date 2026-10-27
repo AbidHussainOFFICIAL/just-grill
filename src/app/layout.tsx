@@ -23,20 +23,38 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+const shareImage = {
+  url: "/images/hero-slider-1.jpg",
+  width: 1880,
+  height: 950,
+  alt: siteConfig.title,
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: siteConfig.title,
   description: siteConfig.description,
+  alternates: { canonical: "/" },
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,
     siteName: siteConfig.name,
     type: "website",
+    url: "/",
+    images: [shareImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [shareImage.url],
   },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: "#161719",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -44,6 +62,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${forum.variable} ${dmSans.variable}`}>
       {/* id="top" is the target of the back-to-top button */}
       <body id="top">
+        <a href="#main" className="skip-link">
+          Skip to main content
+        </a>
         <Preloader />
         {/* Topbar must stay a sibling before Header: it slides away via a :has() rule */}
         <Topbar />

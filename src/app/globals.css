@@ -494,3 +494,43 @@ svg [stroke-width="32"] {
   }
 
 }
+
+
+
+
+
+/*-----------------------------------*\
+  #ACCESSIBILITY
+\*-----------------------------------*/
+
+/* Hidden until a keyboard user tabs to it */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 20;
+  background-color: var(--gold-crayola);
+  color: var(--black);
+  font-weight: var(--weight-bold);
+  padding: 10px 20px;
+  transform: translateY(-200%);
+  transition: transform var(--transition-1);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+/* People who ask their system for less motion get no animations */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+
+}

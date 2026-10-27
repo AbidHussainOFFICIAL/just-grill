@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import Image from "next/image";
+import type { Ref } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { navLinks } from "@/data/nav";
 import { siteConfig } from "@/data/site";
@@ -8,15 +9,22 @@ import styles from "./Navbar.module.css";
 interface NavbarProps {
   isOpen: boolean;
   onClose: () => void;
+  closeButtonRef?: Ref<HTMLButtonElement>;
 }
 
 /** Slide-out menu on mobile, inline link row from 1200px up. */
-export function Navbar({ isOpen, onClose }: NavbarProps) {
+export function Navbar({ isOpen, onClose, closeButtonRef }: NavbarProps) {
   const { address, hours, emails, phones } = siteConfig;
 
   return (
     <nav className={clsx(styles.navbar, isOpen && styles.active)}>
-      <button type="button" className={styles.closeBtn} aria-label="close menu" onClick={onClose}>
+      <button
+        ref={closeButtonRef}
+        type="button"
+        className={styles.closeBtn}
+        aria-label="close menu"
+        onClick={onClose}
+      >
         <Icon name="close-outline" />
       </button>
 

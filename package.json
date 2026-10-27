@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint:fix": "eslint . --fix",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -30,5 +32,8 @@
     "eslint-config-next": "^15.1.0",
     "prettier": "^3.4.0",
     "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18.18.0"
   }
 }

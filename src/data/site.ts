@@ -4,6 +4,8 @@
  */
 export const siteConfig = {
   name: "Grilli",
+  /** Public address of the site (set NEXT_PUBLIC_SITE_URL in production). */
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   title: "Grilli - Amazing & Delicious Food",
   description: "This is a Restaurant Website made by Abid Hussain",
 

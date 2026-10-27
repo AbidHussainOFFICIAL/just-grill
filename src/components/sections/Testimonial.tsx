@@ -27,7 +27,7 @@ export function Testimonial() {
             src={testimonial.avatar}
             width={100}
             height={100}
-            alt={testimonial.name}
+            alt=""
             className={styles.avatar}
           />
 
