@@ -36,7 +36,7 @@ public/images/  all image assets
 - [x] Phase 1 – project setup and config
 - [x] Phase 2 – global styles, fonts, layout
 - [x] Phase 3 – shared UI (Button, Icon) and typed content data
-- [ ] Phase 4 – layout components
+- [x] Phase 4 – layout components (preloader, topbar, header + nav, footer, back-to-top)
 - [ ] Phase 5 – page sections
 - [ ] Phase 6 – behaviour hooks
 - [ ] Phase 7 – forms

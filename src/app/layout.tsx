@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Forum } from "next/font/google";
+import { BackToTop } from "@/components/layout/BackToTop";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { Preloader } from "@/components/layout/Preloader";
+import { Topbar } from "@/components/layout/Topbar";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
 
@@ -37,7 +42,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${forum.variable} ${dmSans.variable}`}>
       {/* id="top" is the target of the back-to-top button */}
-      <body id="top">{children}</body>
+      <body id="top">
+        <Preloader />
+        {/* Topbar must stay a sibling before Header: it slides away via a :has() rule */}
+        <Topbar />
+        <Header />
+        {children}
+        <Footer />
+        <BackToTop />
+      </body>
     </html>
   );
 }

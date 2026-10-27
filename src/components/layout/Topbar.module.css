@@ -1,0 +1,60 @@
+.topbar { display: none; }
+
+@media (min-width: 575px) {
+
+  .topbar {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-block: 10px;
+    border-block-end: 1px solid var(--white-alpha-20);
+    z-index: 4;
+    transition: var(--transition-1);
+  }
+
+  /* slides away when the header turns solid (Header sets data-scrolled) */
+  .topbar:has(~ [data-scrolled="true"]) { transform: translateY(-100%); }
+
+  .item:not(.link),
+  .topbar :global(.separator) { display: none; }
+
+  .topbar :global(.container),
+  .item {
+    display: flex;
+    align-items: center;
+  }
+
+  .topbar :global(.container) {
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .item { gap: 6px; }
+
+  .item svg { --ionicon-stroke-width: 60px; }
+
+  .item :global(.span) { font-size: var(--fontSize-label-1); }
+
+  .topbar .link { transition: var(--transition-1); }
+
+  .topbar .link:is(:hover, :focus-visible) { color: var(--gold-crayola); }
+
+}
+
+@media (min-width: 992px) {
+
+  .item:not(.link) { display: flex; }
+
+  .topbar .item2 { margin-inline-end: auto; }
+
+}
+
+@media (min-width: 1200px) {
+
+  .topbar :global(.container) { max-width: unset; }
+
+  .topbar :global(.separator) { display: block; }
+
+}
