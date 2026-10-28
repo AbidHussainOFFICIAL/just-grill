@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 import Image from "next/image";
 import type { Ref } from "react";
@@ -5,18 +7,27 @@ import { Icon } from "@/components/ui/Icon";
 import { Separator } from "@/components/ui/Separator";
 import { navLinks } from "@/data/nav";
 import { siteConfig } from "@/data/site";
+import { useActiveSection } from "@/hooks/useActiveSection";
 
 interface NavbarProps {
   isOpen: boolean;
   onClose: () => void;
+  /** Called when an in-page link is tapped, so the mobile menu can close. */
+  onNavigate: () => void;
   closeButtonRef?: Ref<HTMLButtonElement>;
 }
 
 const quietText = "text-body-4 text-quick-silver";
 
+// Links that point at a section of this page ("#" alone is a placeholder).
+const sectionIds = navLinks
+  .filter((link) => link.href.startsWith("#") && link.href.length > 1)
+  .map((link) => link.href.slice(1));
+
 /** Slide-out menu on mobile, inline link row from 1200px up. */
-export function Navbar({ isOpen, onClose, closeButtonRef }: NavbarProps) {
+export function Navbar({ isOpen, onClose, onNavigate, closeButtonRef }: NavbarProps) {
   const { address, hours, emails, phones } = siteConfig;
+  const activeId = useActiveSection(sectionIds);
 
   return (
     <nav
@@ -43,13 +54,15 @@ export function Navbar({ isOpen, onClose, closeButtonRef }: NavbarProps) {
       </a>
 
       <ul className="mb-100 border-b border-white-a20 md:mx-30 xl:mx-0 xl:mb-0 xl:flex xl:gap-30 xl:border-b-0">
-        {navLinks.map((link, index) => {
-          const isActive = index === 0; // the original page highlights "Home" only
+        {navLinks.map((link) => {
+          const isActive = link.href === `#${activeId}`;
 
           return (
             <li key={link.label} className="border-t border-white-a20 xl:border-t-0">
               <a
                 href={link.href}
+                onClick={onNavigate}
+                aria-current={isActive ? "location" : undefined}
                 className={clsx(
                   "group/link hover-underline max-w-none py-10 text-label-2 uppercase after:hidden xl:font-bold xl:tracking-s xl:after:block",
                   isActive && "xl:after:[transform:scaleX(1)] xl:after:opacity-100",

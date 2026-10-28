@@ -6,6 +6,9 @@ import { useEffect, useRef, useState } from "react";
  * Same behaviour as the original script:
  * - past 50px of scroll the header gets its solid "active" background
  * - while active, scrolling down hides it and scrolling up shows it again
+ *
+ * It also reads the real scroll position on load, so a refresh halfway down
+ * the page shows the correct header straight away.
  */
 export function useHeaderScroll(threshold = 50) {
   const [isActive, setIsActive] = useState(false);
@@ -13,6 +16,9 @@ export function useHeaderScroll(threshold = 50) {
   const lastScrollPos = useRef(0);
 
   useEffect(() => {
+    lastScrollPos.current = window.scrollY;
+    setIsActive(window.scrollY >= threshold);
+
     const onScroll = () => {
       if (window.scrollY >= threshold) {
         setIsActive(true);

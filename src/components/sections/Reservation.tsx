@@ -9,7 +9,7 @@ export function Reservation() {
   const { address, phones, hours } = siteConfig;
 
   return (
-    <section id="reservation">
+    <section id="reservation" className="scroll-mt-100">
       <div className="container-x">
         <div className="-mt-270 bg-smoky-black-2 lg:grid lg:grid-cols-[1fr_0.5fr]">
           <ReservationForm />

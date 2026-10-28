@@ -15,6 +15,7 @@ export function Header() {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const toggleNav = () => setIsNavOpen((open) => !open);
+  const closeNav = () => setIsNavOpen(false);
 
   // Lock page scroll while the mobile menu is open (see body.nav-active in globals.css).
   useEffect(() => {
@@ -58,7 +59,12 @@ export function Header() {
             <Image src="/images/logo.svg" width={160} height={50} alt="Grilli - Home" priority />
           </a>
 
-          <Navbar isOpen={isNavOpen} onClose={toggleNav} closeButtonRef={closeButtonRef} />
+          <Navbar
+            isOpen={isNavOpen}
+            onClose={toggleNav}
+            onNavigate={closeNav}
+            closeButtonRef={closeButtonRef}
+          />
 
           <Button
             href="#reservation"

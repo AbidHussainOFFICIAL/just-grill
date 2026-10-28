@@ -34,7 +34,7 @@ src/
     sections/       Hero, Service, About(+Banner), SpecialDish, Menu, Testimonial,
                     Reservation(+Form), Features, Events
   data/             all site content (contact details, menu, events, nav, ...)
-  hooks/            header scroll, hero slider, parallax, scroll position
+  hooks/            header scroll, hero slider, parallax, scroll position, active nav section
   lib/              form validation, date helper, demo request helper
 public/images/      all image assets
 ```

@@ -5,8 +5,8 @@ import { Icon } from "@/components/ui/Icon";
 import { useScrolledPast } from "@/hooks/useScrolledPast";
 
 export function BackToTop() {
-  // Starts visible like the original page, then follows the 50px scroll threshold.
-  const isVisible = useScrolledPast(50, true);
+  // Appears once the page is scrolled 50px.
+  const isVisible = useScrolledPast(50);
 
   return (
     <a
