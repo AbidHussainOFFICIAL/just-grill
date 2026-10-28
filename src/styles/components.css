@@ -1,0 +1,264 @@
+/*-----------------------------------*\
+  #COMPONENT CLASSES
+  Reusable pieces that need pseudo-elements, hover choreography or
+  child selectors. They live in the "components" layer, so any Tailwind
+  utility added in the markup always overrides them.
+\*-----------------------------------*/
+
+@layer components {
+  /* PAGE FRAME */
+
+  .container-x {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .section {
+    position: relative;
+    padding-top: var(--section-space);
+    padding-bottom: var(--section-space);
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  @media (min-width: 1200px) {
+    .container-x {
+      max-width: 1200px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  /* SECTION SUBTITLE (gold caps label with the ornament underneath) */
+
+  .section-subtitle {
+    position: relative;
+    color: var(--color-gold);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-xl);
+    margin-bottom: 12px;
+  }
+
+  .section-subtitle::after {
+    content: url("/images/separator.svg");
+    display: block;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+  }
+
+  /* BUTTON (the label slides up and a gold circle fills in) */
+
+  .btn {
+    position: relative;
+    color: var(--color-gold);
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-btn);
+    max-width: max-content;
+    border: 2px solid var(--color-gold);
+    padding: 12px 45px;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .btn::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    background-color: var(--color-gold);
+    transition: all 500ms ease;
+    z-index: -1;
+  }
+
+  .btn-label,
+  .btn-label-hover {
+    transition: all 250ms ease;
+  }
+
+  .btn-label-hover {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: max-content;
+    color: var(--color-smoky-black-1);
+  }
+
+  .btn:is(:hover, :focus-visible)::before {
+    bottom: -50%;
+  }
+
+  .btn:is(:hover, :focus-visible) .btn-label {
+    transform: translateY(-40px);
+  }
+
+  .btn:is(:hover, :focus-visible) .btn-label-hover {
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .btn-secondary {
+    background-color: var(--color-gold);
+    color: var(--color-black);
+  }
+
+  .btn-secondary::before {
+    background-color: var(--color-smoky-black-1);
+  }
+
+  .btn-secondary .btn-label-hover {
+    color: var(--color-white);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  /* HOVER EFFECTS */
+
+  .hover-underline {
+    position: relative;
+    max-width: max-content;
+  }
+
+  .hover-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5px;
+    border-top: 1px solid var(--color-gold);
+    border-bottom: 1px solid var(--color-gold);
+    transform: scaleX(0.2);
+    opacity: 0;
+    transition: all 500ms ease;
+  }
+
+  .hover-underline:is(:hover, :focus-visible)::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  .hover-shine {
+    position: relative;
+  }
+
+  .hover-shine::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-image: linear-gradient(to right, transparent 0%, #fff6 100%);
+    transform: skewX(-0.08turn) translateX(-180%);
+  }
+
+  .hover-shine:is(:hover, :focus-within)::after {
+    transform: skewX(-0.08turn) translateX(275%);
+    transition: all 1000ms ease;
+  }
+
+  /* FORM FIELDS */
+
+  .input-field {
+    background-color: var(--color-eerie-black-2);
+    color: var(--color-white);
+    height: 56px;
+    padding: 10px 20px;
+    border: 1px solid var(--color-white-a10);
+    margin-bottom: 20px;
+    outline: none;
+    transition: border-color 500ms ease;
+  }
+
+  .input-field::placeholder {
+    color: inherit;
+  }
+
+  .input-field:focus {
+    border-color: var(--color-gold);
+  }
+
+  .input-field[aria-invalid="true"] {
+    border-color: var(--color-error);
+  }
+
+  .icon-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .icon-wrapper .input-field {
+    margin-bottom: 0;
+    padding-left: 40px;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .icon-wrapper svg {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4rem;
+    --ionicon-stroke-width: 50px;
+    pointer-events: none;
+  }
+
+  .icon-wrapper svg:first-child {
+    left: 15px;
+  }
+
+  .icon-wrapper svg:last-child {
+    right: 10px;
+  }
+
+  /* PRELOADER TEXT (gradient shimmer clipped to the letters) */
+
+  .loading-text {
+    background-image: var(--loading-text-gradient);
+    background-size: 500%;
+    font-size: calc(2rem + 3vw);
+    font-weight: 700;
+    line-height: 1em;
+    text-transform: uppercase;
+    letter-spacing: 16px;
+    padding-left: 16px;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 0.5px var(--color-eerie-black-3);
+    animation: var(--animate-loading-text);
+  }
+
+  /* SKIP LINK (visible only when a keyboard user tabs to it) */
+
+  .skip-link {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 20;
+    background-color: var(--color-gold);
+    color: var(--color-black);
+    font-weight: 700;
+    padding: 10px 20px;
+    transform: translateY(-200%);
+    transition: transform 250ms ease;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+}

@@ -1,27 +1,25 @@
-import clsx from "clsx";
 import Image from "next/image";
 import { features } from "@/data/features";
-import styles from "./Features.module.css";
 
 export function Features() {
   return (
-    <section className={clsx("section text-center", styles.features)} aria-label="features">
-      <div className="container">
-        <p className="section-subtitle label-2">Why Choose Us</p>
+    <section className="section text-center 2xl:overflow-visible" aria-label="features">
+      <div className="container-x">
+        <p className="section-subtitle text-label-2">Why Choose Us</p>
 
-        <h2 className={clsx("headline-1", styles.title)}>Our Strength</h2>
+        <h2 className="mb-40 font-forum text-headline-1">Our Strength</h2>
 
-        <ul className={clsx("grid-list", styles.grid)}>
+        <ul className="grid gap-40 md:grid-cols-[1fr_1fr] xl:grid-cols-[repeat(4,1fr)]">
           {features.map((feature) => (
-            <li key={feature.id} className={styles.item}>
-              <div className={styles.card}>
-                <div className={styles.icon}>
+            <li key={feature.id} className="group bg-eerie-black-3 even:bg-smoky-black-3">
+              <div className="px-20 pt-30 pb-40">
+                <div className="mx-auto max-w-max trans-base group-hover:[transform:scale(-1)_rotate(180deg)]">
                   <Image src={feature.icon} width={100} height={80} alt="" />
                 </div>
 
-                <h3 className={clsx("title-2", styles.cardTitle)}>{feature.title}</h3>
+                <h3 className="my-20 font-forum text-title-2 xl:text-[2.5rem]">{feature.title}</h3>
 
-                <p className={clsx("label-1", styles.cardText)}>{feature.text}</p>
+                <p className="text-label-1 leading-[1.4em] text-quick-silver">{feature.text}</p>
               </div>
             </li>
           ))}
@@ -32,14 +30,14 @@ export function Features() {
           width={208}
           height={178}
           alt=""
-          className={clsx("shape", styles.shape1)}
+          className="absolute -z-1 hidden max-w-max 2xl:top-[-100px] 2xl:right-0 2xl:block"
         />
         <Image
           src="/images/shape-8.png"
           width={120}
           height={115}
           alt=""
-          className={clsx("shape", styles.shape2)}
+          className="absolute -z-1 hidden max-w-max 2xl:bottom-80 2xl:left-0 2xl:block"
         />
       </div>
     </section>

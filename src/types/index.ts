@@ -49,6 +49,3 @@ export interface SelectOption {
   value: string;
   label: string;
 }
-
-/** Result returned by the form server actions. */
-export type ActionResult = { ok: true } | { ok: false; message: string };

@@ -1,45 +1,50 @@
-import clsx from "clsx";
+import { Separator } from "@/components/ui/Separator";
 import { siteConfig } from "@/data/site";
 import { ReservationForm } from "./ReservationForm";
-import styles from "./Reservation.module.css";
+
+const label = "mb-5 font-bold";
+const info = "text-body-4 leading-[1.5em] text-quick-silver";
 
 export function Reservation() {
   const { address, phones, hours } = siteConfig;
 
   return (
     <section id="reservation">
-      <div className="container">
-        <div className={clsx("bg-black-10", styles.layout)}>
+      <div className="container-x">
+        <div className="-mt-270 bg-smoky-black-2 lg:grid lg:grid-cols-[1fr_0.5fr]">
           <ReservationForm />
 
-          <div className={clsx("text-center", styles.right)}>
-            <h2 className={clsx("headline-1 text-center", styles.title)}>Contact Us</h2>
+          <div className="bg-[url('/images/form-pattern.png')] bg-left-top bg-repeat px-20 pt-40 pb-30 text-center xl:px-60 xl:pt-75 xl:pb-75">
+            <h2 className="mb-40 text-center font-forum text-headline-1">Contact Us</h2>
 
-            <p className={clsx("contact-label", styles.label)}>Booking Request</p>
+            <p className={label}>Booking Request</p>
 
-            <a href={phones.booking.href} className="body-1 contact-number hover-underline">
+            <a
+              href={phones.booking.href}
+              className="hover-underline mx-auto text-body-1 text-gold after:-bottom-5 sm:text-[3rem]"
+            >
               {phones.booking.label}
             </a>
 
-            <div className={clsx("separator", styles.divider)} />
+            <Separator className="mx-auto my-20" />
 
-            <p className={clsx("contact-label", styles.label)}>Location</p>
+            <p className={label}>Location</p>
 
-            <address className={clsx("body-4", styles.info)}>
+            <address className={`mb-25 ${info}`}>
               {address.lines[0]} <br />
               {address.lines[1]}
             </address>
 
-            <p className={clsx("contact-label", styles.label)}>Lunch Time</p>
+            <p className={label}>Lunch Time</p>
 
-            <p className={clsx("body-4", styles.info)}>
+            <p className={`mb-25 ${info}`}>
               {hours.lunch.days} <br />
               {hours.lunch.time}
             </p>
 
-            <p className={clsx("contact-label", styles.label)}>Dinner Time</p>
+            <p className={label}>Dinner Time</p>
 
-            <p className={clsx("body-4", styles.info)}>
+            <p className={info}>
               {hours.dinner.days} <br />
               {hours.dinner.time}
             </p>

@@ -1,10 +1,7 @@
 import clsx from "clsx";
-import styles from "./FormStatus.module.css";
 
 export type FormState =
-  | { type: "idle" }
-  | { type: "success"; message: string }
-  | { type: "error"; message: string };
+  { type: "idle" } | { type: "success"; message: string } | { type: "error"; message: string };
 
 interface FormStatusProps {
   state: FormState;
@@ -18,7 +15,11 @@ export function FormStatus({ state, className }: FormStatusProps) {
   return (
     <p
       role={state.type === "error" ? "alert" : "status"}
-      className={clsx("label-1", styles.status, state.type === "error" ? styles.error : styles.success, className)}
+      className={clsx(
+        "text-label-1 leading-[1.5em]",
+        state.type === "error" ? "text-error" : "text-gold",
+        className,
+      )}
     >
       {state.message}
     </p>

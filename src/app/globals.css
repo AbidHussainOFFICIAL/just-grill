@@ -1,527 +1,313 @@
 /*-----------------------------------*\
-  #GLOBAL STYLES
-  Design tokens, reset, typography and the small set of
-  shared utility classes used across sections.
-  Component-specific styles live in *.module.css files.
+  #MAIN STYLESHEET
+  Tailwind CSS v4: design tokens, base styles and keyframes.
+  Reusable component classes live in ../styles/components.css.
+  Everything else is Tailwind utility classes in the TSX files.
 \*-----------------------------------*/
 
+@import "tailwindcss";
+@import "../styles/components.css";
 
-
-
+/* Keep :hover working on touch screens, like the original site. */
+@custom-variant hover (&:hover);
 
 /*-----------------------------------*\
-  #CUSTOM PROPERTY
+  #DESIGN TOKENS
 \*-----------------------------------*/
 
-:root {
+@theme static {
+  /* BREAKPOINTS (same as the original site) */
+  --breakpoint-sm: 575px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1400px;
+
+  /*
+   * SPACING: 1 unit = 1px (the root font-size is 10px).
+   * So p-20 = 20px, gap-8 = 8px, w-285 = 285px.
+   */
+  --spacing: 0.1rem;
 
   /* COLORS */
-  --gold-crayola: hsl(38, 61%, 73%);
-  --quick-silver: hsla(0, 0%, 65%, 1);
-  --davys-grey: hsla(30, 3%, 34%, 1);
-  --smoky-black-1: hsla(40, 12%, 5%, 1);
-  --smoky-black-2: hsla(30, 8%, 5%, 1);
-  --smoky-black-3: hsla(0, 3%, 7%, 1);
-  --eerie-black-1: hsla(210, 4%, 9%, 1);
-  --eerie-black-2: hsla(210, 4%, 11%, 1);
-  --eerie-black-3: hsla(180, 2%, 8%, 1);
-  --eerie-black-4: hsla(0, 0%, 13%, 1);
-  --white: hsla(0, 0%, 100%, 1);
-  --white-alpha-20: hsla(0, 0%, 100%, 0.2);
-  --white-alpha-10: hsla(0, 0%, 100%, 0.1);
-  --black: hsla(0, 0%, 0%, 1);
-  --black-alpha-80: hsla(0, 0%, 0%, 0.8);
-  --black-alpha-15: hsla(0, 0%, 0%, 0.15);
-  --error: hsl(4, 82%, 68%);
+  --color-gold: hsl(38, 61%, 73%);
+  --color-quick-silver: hsl(0, 0%, 65%);
+  --color-davys-grey: hsl(30, 3%, 34%);
+  --color-smoky-black-1: hsl(40, 12%, 5%);
+  --color-smoky-black-2: hsl(30, 8%, 5%);
+  --color-smoky-black-3: hsl(0, 3%, 7%);
+  --color-eerie-black-1: hsl(210, 4%, 9%);
+  --color-eerie-black-2: hsl(210, 4%, 11%);
+  --color-eerie-black-3: hsl(180, 2%, 8%);
+  --color-eerie-black-4: hsl(0, 0%, 13%);
+  --color-white: hsl(0, 0%, 100%);
+  --color-black: hsl(0, 0%, 0%);
+  --color-white-a20: hsla(0, 0%, 100%, 0.2);
+  --color-white-a10: hsla(0, 0%, 100%, 0.1);
+  --color-black-a80: hsla(0, 0%, 0%, 0.8);
+  --color-black-a15: hsla(0, 0%, 0%, 0.15);
+  --color-error: hsl(4, 82%, 68%);
 
-  /* GRADIENT COLOR */
-  --loading-text-gradient: linear-gradient(90deg, transparent 0% 16.66%, var(--smoky-black-3) 33.33% 50%,  transparent 66.66% 75%);
-  --gradient-1: linear-gradient(to top,hsla(0, 0%, 0%, 0.9),hsla(0, 0%, 0%, 0.7),transparent);
+  /* FONTS (--next-* are set by next/font in layout.tsx) */
+  --font-sans: var(--next-dm-sans), sans-serif;
+  --font-forum: var(--next-forum), cursive;
 
-  /* TYPOGRAPHY: --font-forum / --font-dm-sans are set by next/font in layout.tsx */
-  --fontFamily-forum: var(--font-forum), cursive;
-  --fontFamily-dm_sans: var(--font-dm-sans), sans-serif;
+  /*
+   * FONT SIZES (+ line height where the original defined one).
+   * Sizes without a line height inherit the page line height, like before.
+   */
+  --text-display-1: calc(1.3rem + 6.7vw);
+  --text-display-1--line-height: 1em;
+  --text-headline-1: calc(2rem + 2.5vw);
+  --text-headline-1--line-height: 1.2em;
+  --text-headline-2: calc(1.3rem + 2.4vw);
+  --text-headline-2--line-height: 1.4em;
+  --text-title-1: calc(1.6rem + 1.2vw);
+  --text-title-1--line-height: 1.2em;
+  --text-title-2: 2.2rem;
+  --text-title-2--line-height: 1.2em;
+  --text-title-3: 2.1rem;
+  --text-title-3--line-height: 1.2em;
+  --text-title-4: calc(1.6rem + 1.2vw);
+  --text-title-4--line-height: 1.2em;
+  --text-body-1: 2.4rem;
+  --text-body-1--line-height: 1.4em;
+  --text-body-2: 1.6rem;
+  --text-body-2--line-height: 1.6em;
+  --text-body-3: 1.8rem;
+  --text-body-4: 1.6rem;
+  --text-label-1: 1.4rem;
+  --text-label-2: 1.2rem;
 
-  --fontSize-display-1: calc(1.3rem + 6.7vw);
-  --fontSize-headline-1: calc(2rem + 2.5vw);
-  --fontSize-headline-2: calc(1.3rem + 2.4vw);
-  --fontSize-title-1: calc(1.6rem + 1.2vw);
-  --fontSize-title-2: 2.2rem;
-  --fontSize-title-3: 2.1rem;
-  --fontSize-title-4: calc(1.6rem + 1.2vw);
-  --fontSize-body-1: 2.4rem;
-  --fontSize-body-2: 1.6rem;
-  --fontSize-body-3: 1.8rem;
-  --fontSize-body-4: 1.6rem;
-  --fontSize-label-1: 1.4rem;
-  --fontSize-label-2: 1.2rem;
+  /* LETTER SPACING */
+  --tracking-s: 0.15em;
+  --tracking-m: 0.2em;
+  --tracking-l: 0.3em;
+  --tracking-xl: 0.4em;
+  --tracking-btn: 3px;
 
-  --weight-regular: 400;
-  --weight-bold: 700;
-
-  --lineHeight-1: 1em;
-  --lineHeight-2: 1.2em;
-  --lineHeight-3: 1.5em;
-  --lineHeight-4: 1.6em;
-  --lineHeight-5: 1.85em;
-  --lineHeight-6: 1.4em;
-
-  --letterSpacing-1: 0.15em;
-  --letterSpacing-2: 0.4em;
-  --letterSpacing-3: 0.2em;
-  --letterSpacing-4: 0.3em;
-  --letterSpacing-5: 3px;
-
-  /* SPACING */
-  --section-space: 70px;
+  /* RADIUS */
+  --radius-circle: 50%;
+  --radius-card: 24px;
 
   /* SHADOW */
-  --shadow-1: 0px 0px 25px 0px hsla(0, 0%, 0%, 0.25);
+  --shadow-soft: 0px 0px 25px 0px hsla(0, 0%, 0%, 0.25);
 
-  /* BORDER RADIUS */
-  --radius-24: 24px;
-  --radius-circle: 50%;
-
-  /* TRANSITION */
-  --transition-1: 250ms ease;
-  --transition-2: 500ms ease;
-  --transition-3: 1000ms ease;
-
+  /* ANIMATIONS (keyframes are defined below) */
+  --animate-move: move 5s linear infinite;
+  --animate-spin-1: rotate360 1s linear infinite;
+  --animate-spin-15: rotate360 15s linear infinite;
+  --animate-menu-btn-1: menuBtn 400ms ease-in-out alternate infinite;
+  --animate-menu-btn-2: menuBtn 400ms ease-in-out 150ms alternate infinite;
+  --animate-menu-btn-3: menuBtn 400ms ease-in-out 300ms alternate infinite;
+  --animate-loading-text: loadingText linear 2s infinite;
+  --animate-smooth-scale: smoothScale 7s linear forwards;
+  --animate-reveal-1: sliderReveal 1s ease 500ms forwards;
+  --animate-reveal-2: sliderReveal 1s ease 1000ms forwards;
+  --animate-reveal-3: sliderReveal 1s ease 1500ms forwards;
+  --animate-reveal-4: sliderReveal 1s ease 2000ms forwards;
 }
-
-
-
-
-
-/*-----------------------------------*\
-  #RESET
-\*-----------------------------------*/
-
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-li { list-style: none; }
-
-a,
-img,
-data,
-span,
-input,
-button,
-select,
-svg,
-textarea { display: block; }
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-img { height: auto; }
-
-input,
-button,
-select,
-textarea {
-  background: none;
-  border: none;
-  font: inherit;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  outline: none;
-}
-
-button { cursor: pointer; }
-
-address { font-style: normal; }
-
-html {
-  font-size: 10px;
-  scroll-behavior: smooth;
-}
-
-/*
- * The original page also had `height: 300vh` here. It had no visual effect
- * (body overflow is propagated to the viewport) so it was dropped.
- * `overflow: overlay` was an alias of `auto` in modern browsers.
- */
-body {
-  background-color: var(--eerie-black-1);
-  color: var(--white);
-  font-family: var(--fontFamily-dm_sans);
-  font-size: var(--fontSize-body-4);
-  font-weight: var(--weight-regular);
-  line-height: var(--lineHeight-5);
-  overflow: hidden;
-}
-
-
-body.loaded { overflow: auto; }
-
-body.nav-active { overflow: hidden; }
-
-::-webkit-scrollbar { width: 5px; }
-
-::-webkit-scrollbar-track { background-color: transparent; }
-
-::-webkit-scrollbar-thumb { background-color: var(--gold-crayola); }
-
-/* Ionicons-style stroke width hook (see components/ui/Icon.tsx) */
-svg [stroke-width="32"] {
-  stroke-width: var(--ionicon-stroke-width, 32px);
-}
-
-
-
-
-
-/*-----------------------------------*\
-  #TYPOGRAPHY
-\*-----------------------------------*/
-
-.display-1,
-.headline-1,
-.headline-2,
-.title-1,
-.title-2,
-.title-3,
-.title-4 {
-  color: var(--white);
-  font-family: var(--fontFamily-forum);
-  font-weight: var(--weight-regular);
-  line-height: var(--lineHeight-2);
-}
-
-.display-1 {
-  font-size: var(--fontSize-display-1);
-  line-height: var(--lineHeight-1);
-}
-
-.headline-1 { font-size: var(--fontSize-headline-1); }
-
-.headline-2 {
-  font-size: var(--fontSize-headline-2);
-  line-height: var(--lineHeight-6);
-}
-
-.title-1 { font-size: var(--fontSize-title-1); }
-
-.title-2 { font-size: var(--fontSize-title-2); }
-
-.title-3 { font-size: var(--fontSize-title-3); }
-
-.title-4 { font-size: var(--fontSize-title-4); }
-
-.body-1 {
-  font-size: var(--fontSize-body-1);
-  line-height: var(--lineHeight-6);
-}
-
-.body-2 {
-  font-size: var(--fontSize-body-2);
-  line-height: var(--lineHeight-4);
-}
-
-.body-3 { font-size: var(--fontSize-body-3); }
-
-.body-4 { font-size: var(--fontSize-body-4); }
-
-.label-1 { font-size: var(--fontSize-label-1); }
-
-.label-2 { font-size: var(--fontSize-label-2); }
-
-
-
-
-
-/*-----------------------------------*\
-  #SHARED UTILITIES
-\*-----------------------------------*/
-
-.container { padding-inline: 16px; }
-
-.separator {
-  width: 8px;
-  height: 8px;
-  border: 1px solid var(--gold-crayola);
-  transform: rotate(45deg);
-}
-
-.contact-label { font-weight: var(--weight-bold); }
-
-.contact-number {
-  color: var(--gold-crayola);
-  max-width: max-content;
-  margin-inline: auto;
-}
-
-.hover-underline {
-  position: relative;
-  max-width: max-content;
-}
-
-.hover-underline::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 5px;
-  border-block: 1px solid var(--gold-crayola);
-  transform: scaleX(0.2);
-  opacity: 0;
-  transition: var(--transition-2);
-}
-
-.hover-underline:is(:hover, :focus-visible)::after {
-  transform: scaleX(1);
-  opacity: 1;
-}
-
-.contact-number::after { bottom: -5px; }
-
-.text-center { text-align: center; }
-
-.img-cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.section-subtitle {
-  position: relative;
-  color: var(--gold-crayola);
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: var(--letterSpacing-2);
-  margin-block-end: 12px;
-}
-
-.section-subtitle::after {
-  content: url('/images/separator.svg');
-  display: block;
-  width: 100px;
-  margin-inline: auto;
-  margin-block-start: 5px;
-}
-
-.has-before,
-.has-after {
-  position: relative;
-  z-index: 1;
-}
-
-.has-before::before,
-.has-after::after {
-  content: "";
-  position: absolute;
-}
-
-.section {
-  position: relative;
-  padding-block: var(--section-space);
-  overflow: hidden;
-  z-index: 1;
-}
-
-.bg-black-10 { background-color: var(--smoky-black-2); }
-
-.grid-list {
-  display: grid;
-  gap: 40px;
-}
-
-.hover-shine { position: relative; }
-
-.hover-shine::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background-image: linear-gradient(to right, transparent 0%, #fff6 100%);
-  transform: skewX(-0.08turn) translateX(-180%);
-}
-
-.hover-shine:is(:hover, :focus-within)::after {
-  transform: skewX(-0.08turn) translateX(275%);
-  transition: var(--transition-3);
-}
-
-.img-holder {
-  aspect-ratio: var(--width) / var(--height);
-  overflow: hidden;
-  background-color: var(--eerie-black-4);
-}
-
-.btn-text {
-  color: var(--gold-crayola);
-  padding-block-end: 4px;
-  margin-inline: auto;
-  text-transform: uppercase;
-  letter-spacing: var(--letterSpacing-3);
-  font-weight: var(--weight-bold);
-  transition: var(--transition-1);
-}
-
-.btn-text:is(:hover, :focus-visible) { color: var(--white); }
-
-.shape {
-  display: none;
-  position: absolute;
-  max-width: max-content;
-  z-index: -1;
-}
-
-.w-100 { width: 100%; }
-
-.move-anim { animation: move 5s linear infinite; }
 
 @keyframes move {
   0%,
-  100% { transform: translateY(0); }
-
-  50% { transform: translateY(30px); }
-}
-
-.has-bg-image {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
-.input-field {
-  background-color: var(--eerie-black-2);
-  color: var(--white);
-  height: 56px;
-  padding: 10px 20px;
-  border: 1px solid var(--white-alpha-10);
-  margin-block-end: 20px;
-  outline: none;
-  transition: border-color var(--transition-2);
-}
-
-.input-field::placeholder { color: inherit; }
-
-.input-field:focus { border-color: var(--gold-crayola); }
-
-.input-field[aria-invalid="true"] { border-color: var(--error); }
-
-.icon-wrapper {
-  position: relative;
-  margin-block-end: 20px;
-}
-
-.icon-wrapper .input-field {
-  margin-block-end: 0;
-  padding-inline-start: 40px;
-  appearance: none;
-  cursor: pointer;
-}
-
-.icon-wrapper svg {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.4rem;
-  --ionicon-stroke-width: 50px;
-  pointer-events: none;
-}
-
-.icon-wrapper svg:first-child { left: 15px; }
-
-.icon-wrapper svg:last-child { right: 10px; }
-
-
-
-
-
-/* Honeypot field for the forms: invisible to people, tempting to bots */
-.hp-field {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
-
-
-
-
-/*-----------------------------------*\
-  #MEDIA QUERIES (shared tokens and utilities only)
-\*-----------------------------------*/
-
-@media (min-width: 575px) {
-
-  :root { --fontSize-body-2: 2rem; }
-
-  .contact-number { --fontSize-body-1: 3rem; }
-
-}
-
-@media (min-width: 768px) {
-
-  .grid-list { grid-template-columns: 1fr 1fr; }
-
-}
-
-@media (min-width: 992px) {
-
-  :root { --section-space: 100px; }
-
-}
-
-@media (min-width: 1200px) {
-
-  :root { --fontSize-title-2: 2.5rem; }
-
-  .container {
-    max-width: 1200px;
-    width: 100%;
-    margin-inline: auto;
+  100% {
+    transform: translateY(0);
   }
 
+  50% {
+    transform: translateY(30px);
+  }
 }
 
+@keyframes rotate360 {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}
 
+@keyframes menuBtn {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0.5);
+  }
+}
 
+@keyframes loadingText {
+  0% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: 0%;
+  }
+}
 
+@keyframes smoothScale {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes sliderReveal {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Shared transitions: "all", same timings as the original site */
+@utility trans-fast {
+  transition-property: all;
+  transition-duration: 250ms;
+  transition-timing-function: ease;
+}
+
+@utility trans-base {
+  transition-property: all;
+  transition-duration: 500ms;
+  transition-timing-function: ease;
+}
+
+@utility trans-slow {
+  transition-property: all;
+  transition-duration: 1000ms;
+  transition-timing-function: ease;
+}
+
+/*-----------------------------------*\
+  #BASE (reset on top of Tailwind's preflight)
+\*-----------------------------------*/
+
+@layer base {
+  :root {
+    --section-space: 70px;
+    --loading-text-gradient: linear-gradient(
+      90deg,
+      transparent 0% 16.66%,
+      var(--color-smoky-black-3) 33.33% 50%,
+      transparent 66.66% 75%
+    );
+  }
+
+  @media (min-width: 992px) {
+    :root {
+      --section-space: 100px;
+    }
+  }
+
+  html {
+    font-size: 10px;
+    scroll-behavior: smooth;
+  }
+
+  /*
+   * The original page also had `height: 300vh` here. It had no visual effect
+   * (body overflow is propagated to the viewport) so it was dropped.
+   * `overflow: overlay` was an alias of `auto` in modern browsers.
+   */
+  body {
+    background-color: var(--color-eerie-black-1);
+    color: var(--color-white);
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.85em;
+    overflow: hidden;
+  }
+
+  body.loaded {
+    overflow: auto;
+  }
+
+  body.nav-active {
+    overflow: hidden;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  a,
+  img,
+  data,
+  span,
+  input,
+  button,
+  select,
+  svg,
+  textarea {
+    display: block;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    height: auto;
+  }
+
+  input,
+  button,
+  select,
+  textarea {
+    background: none;
+    border: none;
+    font: inherit;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    outline: none;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  address {
+    font-style: normal;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-gold);
+  }
+
+  /* Ionicons-style stroke width hook (see components/ui/Icon.tsx) */
+  svg [stroke-width="32"] {
+    stroke-width: var(--ionicon-stroke-width, 32px);
+  }
+}
 
 /*-----------------------------------*\
   #ACCESSIBILITY
 \*-----------------------------------*/
 
-/* Hidden until a keyboard user tabs to it */
-.skip-link {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 20;
-  background-color: var(--gold-crayola);
-  color: var(--black);
-  font-weight: var(--weight-bold);
-  padding: 10px 20px;
-  transform: translateY(-200%);
-  transition: transform var(--transition-1);
-}
-
-.skip-link:focus { transform: translateY(0); }
-
 /* People who ask their system for less motion get no animations */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
@@ -532,5 +318,4 @@ svg [stroke-width="32"] {
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
-
 }

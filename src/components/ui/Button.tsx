@@ -1,10 +1,9 @@
 import clsx from "clsx";
-import styles from "./Button.module.css";
 
 interface BaseProps {
   /** "primary" is the outlined gold button, "secondary" is the filled one. */
   variant?: "primary" | "secondary";
-  /** Layout overrides from the parent section (margins, display, position). */
+  /** Extra Tailwind utilities from the parent (margins, position, width...). */
   className?: string;
   children: string;
 }
@@ -25,17 +24,18 @@ interface ButtonProps extends BaseProps {
 export type Props = LinkProps | ButtonProps;
 
 /**
+ * Styles come from the `.btn` component class (src/styles/components.css).
  * The hover effect swaps two copies of the label, so the label is rendered
  * twice (the second one hidden from assistive tech).
  */
 export function Button(props: Props) {
   const { variant = "primary", className, children } = props;
-  const classes = clsx(styles.btn, variant === "secondary" && styles.secondary, className);
+  const classes = clsx("btn", variant === "secondary" && "btn-secondary", className);
 
   const content = (
     <>
-      <span className={clsx(styles.text, styles.text1)}>{children}</span>
-      <span className={clsx(styles.text, styles.text2)} aria-hidden="true">
+      <span className="btn-label">{children}</span>
+      <span className="btn-label-hover" aria-hidden="true">
         {children}
       </span>
     </>

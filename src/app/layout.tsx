@@ -1,4 +1,4 @@
-// Keep first: global styles must load before any component CSS module.
+// Keep first: global styles must load before any other stylesheet.
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Forum } from "next/font/google";
@@ -6,20 +6,19 @@ import { BackToTop } from "@/components/layout/BackToTop";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Preloader } from "@/components/layout/Preloader";
-import { Topbar } from "@/components/layout/Topbar";
 import { siteConfig } from "@/data/site";
 
 const forum = Forum({
   subsets: ["latin"],
   weight: "400",
-  variable: "--font-forum",
+  variable: "--next-forum",
   display: "swap",
 });
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "700"],
-  variable: "--font-dm-sans",
+  variable: "--next-dm-sans",
   display: "swap",
 });
 
@@ -66,8 +65,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to main content
         </a>
         <Preloader />
-        {/* Topbar must stay a sibling before Header: it slides away via a :has() rule */}
-        <Topbar />
         <Header />
         {children}
         <Footer />

@@ -1,16 +1,15 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
 import { useState } from "react";
 import { useForm, type FieldErrors } from "react-hook-form";
-import { subscribeNewsletter } from "@/app/actions";
 import { Button } from "@/components/ui/Button";
 import { FormStatus, type FormState } from "@/components/ui/FormStatus";
 import { Icon } from "@/components/ui/Icon";
+import { simulateRequest } from "@/lib/demo";
 import { newsletterSchema, type NewsletterInput } from "@/lib/validation";
-import styles from "./NewsletterForm.module.css";
 
+/** Demo form: it validates the email, but nothing is sent anywhere. */
 export function NewsletterForm() {
   const [status, setStatus] = useState<FormState>({ type: "idle" });
 
@@ -21,24 +20,17 @@ export function NewsletterForm() {
     formState: { errors, isSubmitting },
   } = useForm<NewsletterInput>({
     resolver: zodResolver(newsletterSchema),
-    defaultValues: { email: "", website: "" },
+    defaultValues: { email: "" },
   });
 
-  const onValid = async (values: NewsletterInput) => {
+  const onValid = async () => {
     setStatus({ type: "idle" });
-
-    try {
-      const result = await subscribeNewsletter(values);
-
-      if (result.ok) {
-        reset();
-        setStatus({ type: "success", message: "Thanks for subscribing!" });
-      } else {
-        setStatus({ type: "error", message: result.message });
-      }
-    } catch {
-      setStatus({ type: "error", message: "Something went wrong. Please try again." });
-    }
+    await simulateRequest();
+    reset();
+    setStatus({
+      type: "success",
+      message: "Thanks! This is a demo site, so nothing was actually subscribed.",
+    });
   };
 
   const onInvalid = (fieldErrors: FieldErrors<NewsletterInput>) => {
@@ -51,8 +43,8 @@ export function NewsletterForm() {
 
   return (
     <>
-      <form className={styles.form} onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
-        <div className={clsx("icon-wrapper", styles.iconWrapper)}>
+      <form className="sm:relative" onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
+        <div className="icon-wrapper">
           <Icon name="mail-outline" />
 
           <input
@@ -61,21 +53,22 @@ export function NewsletterForm() {
             aria-label="Your email"
             aria-invalid={errors.email ? true : undefined}
             autoComplete="off"
-            className={clsx("input-field", styles.field)}
+            className="input-field cursor-text sm:pr-205"
             {...register("email")}
           />
         </div>
 
-        <div className="hp-field" aria-hidden="true">
-          <input type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
-        </div>
-
-        <Button type="submit" variant="secondary" disabled={isSubmitting} className={styles.submit}>
+        <Button
+          type="submit"
+          variant="secondary"
+          disabled={isSubmitting}
+          className="min-w-full sm:absolute sm:inset-y-0 sm:right-0 sm:min-w-max"
+        >
           Subscribe
         </Button>
       </form>
 
-      <FormStatus state={status} className={styles.status} />
+      <FormStatus state={status} className="mt-12" />
     </>
   );
 }

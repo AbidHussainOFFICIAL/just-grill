@@ -6,8 +6,7 @@ export const menuItems: MenuItem[] = [
     title: "Greek Salad",
     price: "$25.50",
     badge: "Seasonal",
-    description:
-      "Tomatoes, green bell pepper, sliced cucumber onion, olives, and feta cheese.",
+    description: "Tomatoes, green bell pepper, sliced cucumber onion, olives, and feta cheese.",
     image: "/images/menu-1.png",
   },
   {

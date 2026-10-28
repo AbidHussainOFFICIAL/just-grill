@@ -2,7 +2,6 @@
 
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import styles from "./Preloader.module.css";
 
 /**
  * Full-screen gold loader. Once the page has loaded it slides away and the
@@ -28,9 +27,15 @@ export function Preloader() {
   }, []);
 
   return (
-    <div className={clsx(styles.preload, isLoaded && styles.loaded)} aria-hidden="true">
-      <div className={styles.circle} />
-      <p className={styles.text}>Grilli</p>
+    <div
+      aria-hidden="true"
+      className={clsx(
+        "fixed inset-0 z-10 grid place-content-center justify-items-center bg-gold trans-base *:trans-fast",
+        isLoaded && "translate-y-full delay-250 *:opacity-0",
+      )}
+    >
+      <div className="mb-45 size-112 animate-spin-1 rounded-circle border-[3px] border-white border-t-smoky-black-3" />
+      <p className="loading-text">Grilli</p>
     </div>
   );
 }
