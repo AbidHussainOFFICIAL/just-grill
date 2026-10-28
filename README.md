@@ -71,6 +71,24 @@ says this is a demo. **Nothing is sent or stored.** `src/lib/demo.ts` only waits
 
 When the site goes live, replace `simulateRequest()` with a real request (a server action or API route).
 
+## Checking the styling
+
+Two scripts help prove the site still matches the original design:
+
+```bash
+npm run build
+npm run check:classes   # lists Tailwind classes that produced no CSS (typos, missing tokens)
+
+npx playwright install chromium   # once
+npm run start                     # terminal 1: the new site on http://localhost:3000
+npm run compare                   # terminal 2: pixel comparison with the original index.html
+```
+
+`npm run compare` serves the original site (set `ORIGINAL_DIR` if `index.html` is not in the parent
+folder), screenshots both sites at 375, 768, 1024 and 1440px, and prints the difference per section.
+Under 0.5% is normal font noise; over 2% deserves a look. Red areas in `visual-report/*-diff.png` show where.
+Animations are frozen at their end state, so hover effects and motion still need a manual check.
+
 ## Before going live
 
 1. Replace the dummy content in `src/data/` (phone numbers, emails, hours, address, menu, events) and the
