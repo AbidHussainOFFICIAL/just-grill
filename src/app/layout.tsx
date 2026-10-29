@@ -34,6 +34,9 @@ export const metadata: Metadata = {
   title: siteConfig.title,
   description: siteConfig.description,
   alternates: { canonical: "/" },
+  robots: siteConfig.allowIndexing
+    ? { index: true, follow: true }
+    : { index: false, follow: false },
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,

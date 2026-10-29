@@ -93,7 +93,9 @@ Animations are frozen at their end state, so hover effects and motion still need
 
 1. Replace the dummy content in `src/data/` (phone numbers, emails, hours, address, menu, events) and the
    section copy.
-2. Set `NEXT_PUBLIC_SITE_URL` in your hosting settings (see `.env.example`).
+2. Set `NEXT_PUBLIC_SITE_URL` (only needed for a custom domain; Vercel's own domain is detected) and
+   `NEXT_PUBLIC_ALLOW_INDEXING=true` in your hosting settings (see `.env.example`). Until then the site
+   is hidden from search engines.
 3. Replace the placeholder links (`#`) such as "Our Chefs", "Read More" and the social links.
 4. Update the credit link in `src/data/site.ts` and the copyright holder in `LICENSE`.
 5. Add structured data (schema.org `Restaurant`) once the real address and hours are final.

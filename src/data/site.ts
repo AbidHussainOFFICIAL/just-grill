@@ -4,8 +4,20 @@
  */
 export const siteConfig = {
   name: "Grilli",
-  /** Public address of the site (set NEXT_PUBLIC_SITE_URL in production). */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  /**
+   * Public address of the site. Uses NEXT_PUBLIC_SITE_URL when set (for example a custom domain),
+   * otherwise the Vercel production domain, otherwise localhost.
+   */
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
+  /**
+   * The demo has placeholder content, so search engines are told to stay away.
+   * Set NEXT_PUBLIC_ALLOW_INDEXING=true when the real content goes live.
+   */
+  allowIndexing: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
   title: "Grilli - Amazing & Delicious Food",
   description: "This is a Restaurant Website made by Abid Hussain",
 
