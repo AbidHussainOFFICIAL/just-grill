@@ -1,8 +1,8 @@
 import clsx from "clsx";
 
 interface BaseProps {
-  /** "primary" is the outlined gold button, "secondary" is the filled one. */
-  variant?: "primary" | "secondary";
+  /** "primary": outlined gold. "secondary": filled gold. "claret": quiet secondary fill. "danger": error fill. */
+  variant?: "primary" | "secondary" | "claret" | "danger";
   /** Extra Tailwind utilities from the parent (margins, position, width...). */
   className?: string;
   children: string;
@@ -30,7 +30,13 @@ export type Props = LinkProps | ButtonProps;
  */
 export function Button(props: Props) {
   const { variant = "primary", className, children } = props;
-  const classes = clsx("btn", variant === "secondary" && "btn-secondary", className);
+  const classes = clsx(
+    "btn",
+    variant === "secondary" && "btn-secondary",
+    variant === "claret" && "btn-claret",
+    variant === "danger" && "btn-danger",
+    className,
+  );
 
   const content = (
     <>

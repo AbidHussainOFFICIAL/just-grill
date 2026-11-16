@@ -19,27 +19,28 @@ export function SpecialDish() {
         />
       </div>
 
-      <div className="bg-smoky-black-2 py-70 lg:pr-25 lg:pl-50 xl:py-225 xl:pr-0 xl:pl-120">
-        <div className="container-x lg:relative xl:mx-0 xl:max-w-[460px]">
+      {/* From 992px the text block is centred vertically next to the photo (no fixed padding). */}
+      <div className="bg-surface-0 py-section lg:flex lg:flex-col lg:justify-center lg:pr-6 lg:pl-12 xl:pr-0 xl:pl-30">
+        <div className="container-x lg:relative xl:mx-0 xl:max-w-narrow">
           <Image
             src="/images/badge-1.png"
             width={28}
             height={41}
             alt="badge"
-            className="mx-auto mb-12 lg:absolute lg:top-10 lg:-left-40 lg:animate-move"
+            className="mx-auto mb-3 lg:absolute lg:top-3 lg:-left-10 lg:animate-move"
           />
 
-          <p className="section-subtitle text-label-2 lg:after:mx-0" id="dish-label">
+          <p className="section-subtitle lg:after:mx-0" id="dish-label">
             Special Dish
           </p>
 
-          <h2 className="font-forum text-headline-1">{specialDish.title}</h2>
+          <h2 className="t-heading">{specialDish.title}</h2>
 
-          <p className="mt-16 mb-40">{specialDish.text}</p>
+          <p className="mt-4 mb-10">{specialDish.text}</p>
 
-          <div className="mb-40 flex items-center justify-center gap-20 lg:justify-start">
-            <del className="text-body-3 text-davys-grey no-underline">{specialDish.oldPrice}</del>
-            <span className="text-body-1 text-gold">{specialDish.price}</span>
+          <div className="mb-10 flex items-center justify-center gap-5 lg:justify-start">
+            <del className="text-fg-faint line-through">{specialDish.oldPrice}</del>
+            <span className="t-figure text-gold-400 tabular-nums">{specialDish.price}</span>
           </div>
 
           <Button href="#menu" className="mx-auto lg:mx-0">
@@ -53,14 +54,14 @@ export function SpecialDish() {
         width={179}
         height={359}
         alt=""
-        className="absolute -z-1 hidden max-w-max 2xl:top-[45%] 2xl:right-0 2xl:z-1 2xl:block"
+        className="absolute z-behind hidden max-w-max 2xl:top-[45%] 2xl:right-0 2xl:z-raised 2xl:block"
       />
       <Image
         src="/images/shape-9.png"
         width={351}
         height={462}
         alt=""
-        className="absolute -z-1 hidden max-w-max 2xl:right-0 2xl:bottom-0 2xl:z-1 2xl:block 2xl:w-max 2xl:translate-y-1/2"
+        className="absolute z-behind hidden max-w-max 2xl:right-0 2xl:bottom-0 2xl:z-raised 2xl:block 2xl:w-max 2xl:translate-y-1/2"
       />
     </section>
   );

@@ -3,14 +3,15 @@
   Reusable pieces that need pseudo-elements, hover choreography or
   child selectors. They live in the "components" layer, so any Tailwind
   utility added in the markup always overrides them.
+  Colours, type and spacing come from the tokens in ../app/globals.css.
 \*-----------------------------------*/
 
 @layer components {
   /* PAGE FRAME */
 
   .container-x {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: var(--spacing-gutter);
+    padding-right: var(--spacing-gutter);
   }
 
   .section {
@@ -18,26 +19,28 @@
     padding-top: var(--section-space);
     padding-bottom: var(--section-space);
     overflow: hidden;
-    z-index: 1;
+    z-index: var(--z-raised);
   }
 
   @media (min-width: 1200px) {
     .container-x {
-      max-width: 1200px;
+      max-width: var(--container-page);
       width: 100%;
       margin-left: auto;
       margin-right: auto;
     }
   }
 
-  /* SECTION SUBTITLE (gold caps label with the ornament underneath) */
+  /* SECTION SUBTITLE (gold overline with the ornament underneath) */
 
   .section-subtitle {
     position: relative;
-    color: var(--color-gold);
-    font-weight: 700;
+    color: var(--color-gold-400);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    line-height: 1.3;
     text-transform: uppercase;
-    letter-spacing: var(--tracking-xl);
+    letter-spacing: var(--tracking-overline);
     margin-bottom: 12px;
   }
 
@@ -47,23 +50,27 @@
     width: 100px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 5px;
+    margin-top: 4px;
   }
 
-  /* BUTTON (the label slides up and a gold circle fills in) */
+  /* BUTTON
+   * Outlined (default): a gold circle fills in on hover. Solid (.btn-secondary):
+   * a lighter gold sweeps in on hover and a deeper gold shows when pressed.
+   * Disabled is a flat grey. The label slides up and is replaced by a copy. */
 
   .btn {
     position: relative;
-    color: var(--color-gold);
-    font-size: 1.2rem;
-    font-weight: 700;
+    color: var(--color-gold-400);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    line-height: 1.3;
     text-transform: uppercase;
-    letter-spacing: var(--tracking-btn);
+    letter-spacing: var(--tracking-label);
     max-width: max-content;
-    border: 2px solid var(--color-gold);
-    padding: 12px 45px;
+    border: var(--border-strong) solid var(--color-gold-400);
+    padding: 20px 48px;
     overflow: hidden;
-    z-index: 1;
+    z-index: var(--z-raised);
   }
 
   .btn::before {
@@ -75,14 +82,14 @@
     width: 200%;
     height: 200%;
     border-radius: 50%;
-    background-color: var(--color-gold);
-    transition: all 500ms ease;
-    z-index: -1;
+    background-color: var(--color-gold-400);
+    transition: all var(--motion-base) ease;
+    z-index: var(--z-behind);
   }
 
   .btn-label,
   .btn-label-hover {
-    transition: all 250ms ease;
+    transition: all var(--motion-fast) ease;
   }
 
   .btn-label-hover {
@@ -91,7 +98,7 @@
     left: 50%;
     transform: translateX(-50%);
     min-width: max-content;
-    color: var(--color-smoky-black-1);
+    color: var(--color-surface-0);
   }
 
   .btn:is(:hover, :focus-visible)::before {
@@ -107,22 +114,81 @@
     transform: translate(-50%, -50%);
   }
 
+  .btn:active::before {
+    background-color: var(--color-gold-500);
+  }
+
   .btn-secondary {
-    background-color: var(--color-gold);
-    color: var(--color-black);
+    background-color: var(--color-gold-400);
+    color: var(--color-surface-0);
   }
 
   .btn-secondary::before {
-    background-color: var(--color-smoky-black-1);
+    background-color: var(--color-gold-300);
   }
 
-  .btn-secondary .btn-label-hover {
-    color: var(--color-white);
+  .btn-secondary:active,
+  .btn-secondary:active::before {
+    background-color: var(--color-gold-500);
   }
 
+  /* Claret: the quiet secondary (default claret-600, hover claret-hover, pressed claret-700) */
+  .btn-claret {
+    background-color: var(--color-claret-600);
+    border-color: var(--color-claret-600);
+    color: var(--color-fg-body);
+  }
+
+  .btn-claret::before {
+    background-color: var(--color-claret-hover);
+  }
+
+  .btn-claret .btn-label-hover {
+    color: var(--color-fg-body);
+  }
+
+  .btn-claret:active,
+  .btn-claret:active::before {
+    background-color: var(--color-claret-700);
+  }
+
+  /* Danger: the error colour as a fill, ink label */
+  .btn-danger {
+    background-color: var(--color-error-solid);
+    border-color: var(--color-error-solid);
+    color: var(--color-surface-0);
+  }
+
+  .btn-danger::before {
+    background-color: var(--color-danger-hover);
+  }
+
+  .btn-danger:active,
+  .btn-danger:active::before {
+    background-color: var(--color-danger-active);
+  }
+
+  /* Disabled: outlined buttons keep a line-ui outline with faint text; solid buttons become a flat grey */
   .btn:disabled {
-    opacity: 0.6;
+    background-color: transparent;
+    border-color: var(--color-line-ui);
+    color: var(--color-fg-faint);
     pointer-events: none;
+  }
+
+  .btn-secondary:disabled,
+  .btn-claret:disabled,
+  .btn-danger:disabled {
+    background-color: var(--color-surface-3);
+    border-color: var(--color-surface-3);
+  }
+
+  .btn:disabled::before {
+    display: none;
+  }
+
+  .btn:disabled .btn-label-hover {
+    display: none;
   }
 
   /* HOVER EFFECTS */
@@ -139,11 +205,11 @@
     bottom: 0;
     width: 100%;
     height: 5px;
-    border-top: 1px solid var(--color-gold);
-    border-bottom: 1px solid var(--color-gold);
+    border-top: var(--border-hairline) solid var(--color-gold-400);
+    border-bottom: var(--border-hairline) solid var(--color-gold-400);
     transform: scaleX(0.2);
     opacity: 0;
-    transition: all 500ms ease;
+    transition: all var(--motion-base) ease;
   }
 
   .hover-underline:is(:hover, :focus-visible)::after {
@@ -162,48 +228,54 @@
     left: 0;
     width: 50%;
     height: 100%;
-    background-image: linear-gradient(to right, transparent 0%, #fff6 100%);
+    background-image: linear-gradient(to right, transparent 0%, rgb(255 255 255 / 0.4) 100%);
     transform: skewX(-0.08turn) translateX(-180%);
   }
 
   .hover-shine:is(:hover, :focus-within)::after {
     transform: skewX(-0.08turn) translateX(275%);
-    transition: all 1000ms ease;
+    transition: all var(--motion-slow) ease;
   }
 
-  /* FORM FIELDS */
+  /* FORM FIELDS
+   * Fill surface-2, border line-ui (3:1), hover gold-600, focus gold-400
+   * plus the global focus ring, error border from the status colours. */
 
   .input-field {
-    background-color: var(--color-eerie-black-2);
-    color: var(--color-white);
+    background-color: var(--color-surface-2);
+    color: var(--color-fg-body);
     height: 56px;
-    padding: 10px 20px;
-    border: 1px solid var(--color-white-a10);
-    margin-bottom: 20px;
-    outline: none;
-    transition: border-color 500ms ease;
+    padding: 12px 20px;
+    border: var(--border-hairline) solid var(--color-line-ui);
+    margin-bottom: var(--spacing-field);
+    transition: border-color var(--motion-base) ease;
   }
 
   .input-field::placeholder {
-    color: inherit;
+    color: var(--color-fg-faint);
+  }
+
+  .input-field:hover {
+    border-color: var(--color-gold-600);
   }
 
   .input-field:focus {
-    border-color: var(--color-gold);
+    border-color: var(--color-gold-400);
   }
 
   .input-field[aria-invalid="true"] {
-    border-color: var(--color-error);
+    border-color: var(--color-error-solid);
   }
 
   .icon-wrapper {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-field);
   }
 
   .icon-wrapper .input-field {
     margin-bottom: 0;
-    padding-left: 40px;
+    padding-left: 44px;
+    padding-right: 44px;
     appearance: none;
     cursor: pointer;
   }
@@ -212,50 +284,72 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.4rem;
-    --ionicon-stroke-width: 50px;
+    color: var(--color-fg-muted);
     pointer-events: none;
   }
 
+  /* the field icon turns gold with the field (kit: form icons, focus gold-400) */
+  .icon-wrapper:focus-within svg {
+    color: var(--color-gold-400);
+  }
+
   .icon-wrapper svg:first-child {
-    left: 15px;
+    left: 16px;
   }
 
   .icon-wrapper svg:last-child {
-    right: 10px;
+    right: 16px;
   }
 
-  /* PRELOADER TEXT (gradient shimmer clipped to the letters) */
+  /* PRELOADER TEXT (ink on gold, softly pulsing) */
 
   .loading-text {
-    background-image: var(--loading-text-gradient);
-    background-size: 500%;
+    color: var(--color-surface-0);
     font-size: calc(2rem + 3vw);
-    font-weight: 700;
-    line-height: 1em;
+    font-weight: 600;
+    line-height: 1;
     text-transform: uppercase;
-    letter-spacing: 16px;
-    padding-left: 16px;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-stroke: 0.5px var(--color-eerie-black-3);
+    letter-spacing: 1.6rem;
+    padding-left: 1.6rem;
     animation: var(--animate-loading-text);
+  }
+
+  /* EVENT CAPTION (flat ink scrim at the foot of a photo) */
+
+  .caption-scrim {
+    background-image: var(--gradient-caption);
+  }
+
+  /* INLINE LINK (inside a sentence: always underlined, colour alone is not enough) */
+
+  .link-inline {
+    display: inline;
+    color: var(--color-gold-400);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color var(--motion-fast) ease;
+  }
+
+  .link-inline:is(:hover, :focus-visible) {
+    color: var(--color-gold-300);
+    text-decoration-thickness: 2px;
   }
 
   /* SKIP LINK (visible only when a keyboard user tabs to it) */
 
   .skip-link {
     position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 20;
-    background-color: var(--color-gold);
-    color: var(--color-black);
-    font-weight: 700;
-    padding: 10px 20px;
+    top: 8px;
+    left: 8px;
+    z-index: var(--z-skip);
+    background-color: var(--color-gold-400);
+    color: var(--color-surface-0);
+    font-weight: 600;
+    padding: 12px 20px;
     transform: translateY(-200%);
-    transition: transform 250ms ease;
+    transition: transform var(--motion-fast) ease;
   }
 
   .skip-link:focus {

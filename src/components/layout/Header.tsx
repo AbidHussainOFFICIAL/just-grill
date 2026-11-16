@@ -47,14 +47,14 @@ export function Header() {
 
       <header
         className={clsx(
-          "fixed top-0 left-0 z-4 w-full border-b trans-fast",
+          "fixed top-0 left-0 z-sticky w-full border-b trans-fast print:hidden",
           isActive
-            ? "border-black-a15 bg-eerie-black-4 py-20"
-            : "border-transparent bg-transparent py-40 sm:top-51",
+            ? "border-line-subtle bg-surface-2 py-5"
+            : "border-transparent bg-transparent py-10 sm:top-12",
           isHidden && "-translate-y-full delay-250",
         )}
       >
-        <div className="container-x flex items-center justify-between gap-8 px-20 xl:max-w-none">
+        <div className="container-x flex items-center justify-between gap-2 px-5 xl:max-w-none">
           <a href="#">
             <Image src="/images/logo.svg" width={160} height={50} alt="Grilli - Home" priority />
           </a>
@@ -74,24 +74,25 @@ export function Header() {
             Find A Table
           </Button>
 
+          {/* 44 x 48 touch target */}
           <button
             ref={openButtonRef}
             type="button"
-            className="p-12 pr-0 xl:hidden"
+            className="flex h-12 w-11 flex-col items-start justify-center pl-3 xl:hidden"
             aria-label="open menu"
             aria-expanded={isNavOpen}
             onClick={toggleNav}
           >
-            <span className="my-4 h-2 w-30 origin-left animate-menu-btn-1 bg-white" />
-            <span className="my-4 h-2 w-30 origin-left animate-menu-btn-2 bg-white" />
-            <span className="my-4 h-2 w-30 origin-left animate-menu-btn-3 bg-white" />
+            <span className="my-1 h-0.5 w-8 origin-left animate-menu-btn-1 bg-fg-strong" />
+            <span className="my-1 h-0.5 w-8 origin-left animate-menu-btn-2 bg-fg-strong" />
+            <span className="my-1 h-0.5 w-8 origin-left animate-menu-btn-3 bg-fg-strong" />
           </button>
 
           <div
             aria-hidden="true"
             onClick={toggleNav}
             className={clsx(
-              "fixed inset-0 z-1 bg-black-a80 trans-base xl:hidden",
+              "fixed inset-0 z-overlay bg-scrim-heavy trans-base xl:hidden",
               isNavOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
             )}
           />

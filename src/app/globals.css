@@ -1,8 +1,12 @@
 /*-----------------------------------*\
   #MAIN STYLESHEET
-  Tailwind CSS v4: design tokens, base styles and keyframes.
+  Tailwind CSS v4: every design token (colour, type, space, radius, z-index,
+  containers, motion), the semantic type roles, base styles and keyframes.
   Reusable component classes live in ../styles/components.css.
   Everything else is Tailwind utility classes in the TSX files.
+
+  The four brand kits (colour, typography, spacing and radius, iconography)
+  are implemented here. See README.md for the token map.
 \*-----------------------------------*/
 
 @import "tailwindcss";
@@ -16,7 +20,7 @@
 \*-----------------------------------*/
 
 @theme static {
-  /* BREAKPOINTS (same as the original site) */
+  /* BREAKPOINTS */
   --breakpoint-sm: 575px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
@@ -24,74 +28,142 @@
   --breakpoint-2xl: 1400px;
 
   /*
-   * SPACING: 1 unit = 1px (the root font-size is 10px).
-   * So p-20 = 20px, gap-8 = 8px, w-285 = 285px.
+   * SPACING: 4px grid, 1 unit = 4px (the root is 62.5%, so 1rem = 10px by
+   * default and the grid follows the visitor's text-size setting).
+   * p-4 = 16px, gap-6 = 24px, py-18 = 72px. Core steps 1-16 (4-64px),
+   * layout steps 18, 20, 24, 30, 40, 50 (72-200px).
    */
-  --spacing: 0.1rem;
+  --spacing: 0.4rem;
+  --spacing-gutter: 1.6rem;
+  --spacing-inline-xs: 0.4rem;
+  --spacing-inline-sm: 0.8rem;
+  --spacing-field: 2rem;
+  --spacing-hero: 12rem;
+  --spacing-section: var(--section-space);
+  --spacing-overlap: 27.2rem;
 
-  /* COLORS */
-  --color-gold: hsl(38, 61%, 73%);
-  --color-quick-silver: hsl(0, 0%, 65%);
-  --color-davys-grey: hsl(30, 3%, 34%);
-  --color-smoky-black-1: hsl(40, 12%, 5%);
-  --color-smoky-black-2: hsl(30, 8%, 5%);
-  --color-smoky-black-3: hsl(0, 3%, 7%);
-  --color-eerie-black-1: hsl(210, 4%, 9%);
-  --color-eerie-black-2: hsl(210, 4%, 11%);
-  --color-eerie-black-3: hsl(180, 2%, 8%);
-  --color-eerie-black-4: hsl(0, 0%, 13%);
-  --color-white: hsl(0, 0%, 100%);
-  --color-black: hsl(0, 0%, 0%);
-  --color-white-a20: hsla(0, 0%, 100%, 0.2);
-  --color-white-a10: hsla(0, 0%, 100%, 0.1);
-  --color-black-a80: hsla(0, 0%, 0%, 0.8);
-  --color-black-a15: hsla(0, 0%, 0%, 0.15);
-  --color-error: hsl(4, 82%, 68%);
+  /* SURFACES (warm charcoal, hue 70) */
+  --color-surface-0: #0f0d0b;
+  --color-surface-1: #191614;
+  --color-surface-2: #24211d;
+  --color-surface-3: #2e2b27;
+  --color-surface-4: #393530;
+
+  /* LINES */
+  --color-line-subtle: #423e3b;
+  --color-line-ui: #706d68;
+
+  /* TEXT (fg = foreground) */
+  --color-fg-strong: #fcfaf7;
+  --color-fg-body: #f3efeb;
+  --color-fg-muted: #bbb7b2;
+  --color-fg-faint: #95918d;
+
+  /* BRAND RAMPS (gold-400 is the brand gold) */
+  --color-gold-50: #fcf6ec;
+  --color-gold-100: #f9edd8;
+  --color-gold-200: #f3debb;
+  --color-gold-300: #ebd1a4;
+  --color-gold-400: #e4c590;
+  --color-gold-500: #d4b275;
+  --color-gold-600: #bc9959;
+  --color-gold-700: #9b7b40;
+  --color-gold-800: #795f2e;
+  --color-gold-900: #58441f;
+  --color-gold-950: #392b11;
+  --color-claret-50: #fcf5f4;
+  --color-claret-100: #f8e6e4;
+  --color-claret-200: #f1ceca;
+  --color-claret-300: #e8ada7;
+  --color-claret-400: #d6857f;
+  --color-claret-500: #b75b55;
+  --color-claret-600: #963d3a;
+  --color-claret-700: #762c29;
+  --color-claret-800: #561d1c;
+  --color-claret-900: #3b1211;
+  --color-claret-950: #220807;
+  --color-warm-50: #fcfaf7;
+  --color-warm-100: #f3efec;
+  --color-warm-200: #e5e0dc;
+  --color-warm-300: #cecac4;
+  --color-warm-400: #afaaa4;
+  --color-warm-500: #8a8580;
+  --color-warm-600: #67625d;
+  --color-warm-700: #4b4742;
+  --color-warm-800: #33302b;
+  --color-warm-900: #211d1a;
+  --color-warm-950: #0f0d0b;
+
+  /* STATUS (tint = background, border, solid = icon or fill, text) */
+  --color-success-tint: #101c0c;
+  --color-success-border: #507c41;
+  --color-success-solid: #4f853b;
+  --color-success-text: #71b259;
+  --color-warning-tint: #231507;
+  --color-warning-border: #966127;
+  --color-warning-solid: #dc9242;
+  --color-warning-text: #f4a34b;
+  --color-error-tint: #261210;
+  --color-error-border: #a1564e;
+  --color-error-solid: #c8645a;
+  --color-error-text: #ed756a;
+  --color-info-tint: #071b26;
+  --color-info-border: #4b758d;
+  --color-info-solid: #53819c;
+  --color-info-text: #73a6c4;
+
+  /* BUTTON STATE COLOURS from the kit (claret-600 and error-solid are the default fills) */
+  --color-claret-hover: #a44a46;
+  --color-danger-hover: #d97369;
+  --color-danger-active: #c05c53;
+
+  /* LIGHT COLOURWAY (print, menus, profile) */
+  --color-paper: #f4efe7;
+  --color-ink: #1a1511;
+
+  /* SCRIMS over photography (ink at 40 / 60 / 80%) */
+  --color-scrim-light: rgb(15 13 11 / 0.4);
+  --color-scrim-default: rgb(15 13 11 / 0.6);
+  --color-scrim-heavy: rgb(15 13 11 / 0.8);
 
   /* FONTS (--next-* are set by next/font in layout.tsx) */
-  --font-sans: var(--next-dm-sans), sans-serif;
-  --font-forum: var(--next-forum), cursive;
+  --font-sans: var(--next-dm-sans), system-ui, sans-serif;
+  --font-forum: var(--next-forum), Georgia, "Times New Roman", serif;
 
-  /*
-   * FONT SIZES (+ line height where the original defined one).
-   * Sizes without a line height inherit the page line height, like before.
-   */
-  --text-display-1: calc(1.3rem + 6.7vw);
-  --text-display-1--line-height: 1em;
-  --text-headline-1: calc(2rem + 2.5vw);
-  --text-headline-1--line-height: 1.2em;
-  --text-headline-2: calc(1.3rem + 2.4vw);
-  --text-headline-2--line-height: 1.4em;
-  --text-title-1: calc(1.6rem + 1.2vw);
-  --text-title-1--line-height: 1.2em;
-  --text-title-2: 2.2rem;
-  --text-title-2--line-height: 1.2em;
-  --text-title-3: 2.1rem;
-  --text-title-3--line-height: 1.2em;
-  --text-title-4: calc(1.6rem + 1.2vw);
-  --text-title-4--line-height: 1.2em;
-  --text-body-1: 2.4rem;
-  --text-body-1--line-height: 1.4em;
-  --text-body-2: 1.6rem;
-  --text-body-2--line-height: 1.6em;
-  --text-body-3: 1.8rem;
-  --text-body-4: 1.6rem;
-  --text-label-1: 1.4rem;
-  --text-label-2: 1.2rem;
+  /* FLUID TYPE SIZES: 375px phone to 1440px desktop (rem + vw, so zoom works) */
+  --text-xs: 1.3rem;
+  --text-sm: 1.4rem;
+  --text-base: 1.6rem;
+  --text-lg: clamp(1.6rem, 1.459rem + 0.376vw, 2rem);
+  --text-xl: clamp(2.1rem, 1.959rem + 0.376vw, 2.5rem);
+  --text-2xl: clamp(2.4rem, 2.189rem + 0.563vw, 3rem);
+  --text-3xl: clamp(2.1rem, 1.677rem + 1.127vw, 3.3rem);
+  --text-4xl: clamp(2.2rem, 1.355rem + 2.254vw, 4.6rem);
+  --text-5xl: clamp(3rem, 2.085rem + 2.441vw, 5.6rem);
+  --text-6xl: clamp(3.8rem, 1.194rem + 6.948vw, 11.2rem);
 
-  /* LETTER SPACING */
-  --tracking-s: 0.15em;
-  --tracking-m: 0.2em;
-  --tracking-l: 0.3em;
-  --tracking-xl: 0.4em;
-  --tracking-btn: 3px;
+  /* TRACKING */
+  --tracking-tight: -0.01em;
+  --tracking-body: 0.01em;
+  --tracking-label: 0.14em;
+  --tracking-link: 0.16em;
+  --tracking-overline: 0.24em;
 
-  /* RADIUS */
-  --radius-circle: 50%;
+  /* RADIUS: square by default, one rounded exception, circles */
   --radius-card: 24px;
+  --radius-circle: 50%;
 
   /* SHADOW */
-  --shadow-soft: 0px 0px 25px 0px hsla(0, 0%, 0%, 0.25);
+  --shadow-soft: 0px 0px 25px 0px rgb(0 0 0 / 0.25);
+
+  /* CONTAINERS AND MEASURES */
+  --container-page: 120rem;
+  --container-tablet: 82rem;
+  --container-phone: 42rem;
+  --container-measure: 42rem;
+  --container-narrow: 46rem;
+  --container-quote: 91rem;
+  --container-drawer: 36rem;
 
   /* ANIMATIONS (keyframes are defined below) */
   --animate-move: move 5s linear infinite;
@@ -100,7 +172,7 @@
   --animate-menu-btn-1: menuBtn 400ms ease-in-out alternate infinite;
   --animate-menu-btn-2: menuBtn 400ms ease-in-out 150ms alternate infinite;
   --animate-menu-btn-3: menuBtn 400ms ease-in-out 300ms alternate infinite;
-  --animate-loading-text: loadingText linear 2s infinite;
+  --animate-loading-text: loadingText 2s ease-in-out infinite;
   --animate-smooth-scale: smoothScale 7s linear forwards;
   --animate-reveal-1: sliderReveal 1s ease 500ms forwards;
   --animate-reveal-2: sliderReveal 1s ease 1000ms forwards;
@@ -137,12 +209,15 @@
   }
 }
 
+/* Preloader word: a calm pulse (no gradient text, per the colour kit) */
 @keyframes loadingText {
-  0% {
-    background-position: 100%;
-  }
+  0%,
   100% {
-    background-position: 0%;
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
   }
 }
 
@@ -167,23 +242,137 @@
   }
 }
 
-/* Shared transitions: "all", same timings as the original site */
+/* Motion: fast 250ms (hover), base 500ms (reveals), slow 1000ms (slides). Easing: ease. */
 @utility trans-fast {
   transition-property: all;
-  transition-duration: 250ms;
+  transition-duration: var(--motion-fast);
   transition-timing-function: ease;
 }
 
 @utility trans-base {
   transition-property: all;
-  transition-duration: 500ms;
+  transition-duration: var(--motion-base);
   transition-timing-function: ease;
 }
 
 @utility trans-slow {
   transition-property: all;
-  transition-duration: 1000ms;
+  transition-duration: var(--motion-slow);
   transition-timing-function: ease;
+}
+
+/* Z-INDEX LAYERS (the header owns its own stacking context: overlay and drawer order inside it) */
+@utility z-behind {
+  z-index: var(--z-behind);
+}
+@utility z-raised {
+  z-index: var(--z-raised);
+}
+@utility z-sticky {
+  z-index: var(--z-sticky);
+}
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+@utility z-drawer {
+  z-index: var(--z-drawer);
+}
+@utility z-preloader {
+  z-index: var(--z-preloader);
+}
+@utility z-skip {
+  z-index: var(--z-skip);
+}
+
+/* BORDER WIDTH: --border-hairline 1px (Tailwind border), --border-strong 2px (border-2), --border-spinner 3px */
+@utility border-spinner {
+  border-style: solid;
+  border-width: var(--border-spinner);
+}
+
+/*-----------------------------------*\
+  #TYPE ROLES (semantic classes)
+  Components apply a role, never a raw size. Colour is set separately.
+  Forum (display) is used only by the first five roles, never below 18px.
+\*-----------------------------------*/
+
+@utility t-display {
+  font-family: var(--font-forum);
+  font-weight: 400;
+  font-size: var(--text-6xl);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+}
+
+@utility t-heading {
+  font-family: var(--font-forum);
+  font-weight: 400;
+  font-size: var(--text-5xl);
+  line-height: 1.15;
+}
+
+@utility t-subheading {
+  font-family: var(--font-forum);
+  font-weight: 400;
+  font-size: var(--text-4xl);
+  line-height: 1.35;
+}
+
+@utility t-card-title {
+  font-family: var(--font-forum);
+  font-weight: 400;
+  font-size: var(--text-3xl);
+  line-height: 1.2;
+}
+
+@utility t-item-title {
+  font-family: var(--font-forum);
+  font-weight: 400;
+  font-size: var(--text-xl);
+  line-height: 1.25;
+}
+
+@utility t-figure {
+  font-weight: 500;
+  font-size: var(--text-2xl);
+  line-height: 1.35;
+}
+
+@utility t-lead {
+  font-weight: 400;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+}
+
+@utility t-body {
+  font-weight: 400;
+  font-size: var(--text-base);
+  line-height: 1.65;
+  letter-spacing: var(--tracking-body);
+}
+
+@utility t-small {
+  font-weight: 400;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  letter-spacing: var(--tracking-body);
+}
+
+/* label: navigation, buttons, tags, dates. Override tracking with [--ls:var(--tracking-link)]. */
+@utility t-label {
+  font-weight: 600;
+  font-size: var(--text-xs);
+  line-height: 1.3;
+  letter-spacing: var(--ls, var(--tracking-label));
+  text-transform: uppercase;
+}
+
+@utility t-overline {
+  font-weight: 600;
+  font-size: var(--text-xs);
+  line-height: 1.3;
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
 }
 
 /*-----------------------------------*\
@@ -192,38 +381,52 @@
 
 @layer base {
   :root {
-    --section-space: 70px;
-    --loading-text-gradient: linear-gradient(
-      90deg,
-      transparent 0% 16.66%,
-      var(--color-smoky-black-3) 33.33% 50%,
-      transparent 66.66% 75%
+    --section-space: 72px;
+    --motion-fast: 250ms;
+    --motion-base: 500ms;
+    --motion-slow: 1000ms;
+    --border-hairline: 1px;
+    --border-strong: 2px;
+    --border-spinner: 3px;
+    --z-behind: -1;
+    --z-raised: 1;
+    --z-sticky: 100;
+    --z-overlay: 200;
+    --z-drawer: 210;
+    --z-preloader: 900;
+    --z-skip: 1000;
+    --gradient-caption: linear-gradient(
+      to top,
+      rgb(15 13 11 / 0.9),
+      rgb(15 13 11 / 0.7),
+      transparent
     );
   }
 
   @media (min-width: 992px) {
     :root {
-      --section-space: 100px;
+      --section-space: 96px;
     }
   }
 
+  /* 62.5% keeps 1rem = 10px at the default text size and follows the visitor's setting */
   html {
-    font-size: 10px;
+    font-size: 62.5%;
     scroll-behavior: smooth;
   }
 
-  /*
-   * The original page also had `height: 300vh` here. It had no visual effect
-   * (body overflow is propagated to the viewport) so it was dropped.
-   * `overflow: overlay` was an alias of `auto` in modern browsers.
-   */
+  /* overflow stays hidden until the preloader adds .loaded (see Preloader.tsx) */
   body {
-    background-color: var(--color-eerie-black-1);
-    color: var(--color-white);
+    background-color: var(--color-surface-1);
+    color: var(--color-fg-body);
     font-family: var(--font-sans);
-    font-size: 1.6rem;
+    font-size: var(--text-base);
     font-weight: 400;
-    line-height: 1.85em;
+    line-height: 1.65;
+    letter-spacing: var(--tracking-body);
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
   }
 
@@ -233,6 +436,17 @@
 
   body.nav-active {
     overflow: hidden;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--color-fg-strong);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   li {
@@ -267,21 +481,36 @@
     background: none;
     border: none;
     font: inherit;
+    letter-spacing: inherit;
   }
 
   input,
   select,
   textarea {
     width: 100%;
-    outline: none;
   }
 
   button {
     cursor: pointer;
   }
 
+  button:disabled {
+    cursor: not-allowed;
+  }
+
   address {
     font-style: normal;
+  }
+
+  /* Focus ring on every control: 2px gold-300, offset 2px */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--color-gold-300);
+    outline-offset: 2px;
   }
 
   ::-webkit-scrollbar {
@@ -293,12 +522,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--color-gold);
-  }
-
-  /* Ionicons-style stroke width hook (see components/ui/Icon.tsx) */
-  svg [stroke-width="32"] {
-    stroke-width: var(--ionicon-stroke-width, 32px);
+    background-color: var(--color-gold-400);
   }
 }
 
@@ -317,5 +541,47 @@
     transition-duration: 0.01ms !important;
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/*-----------------------------------*\
+  #PRINT (the light colourway: paper and ink)
+  Printed pages drop the dark theme and the page chrome and use paper, ink and gold-800.
+\*-----------------------------------*/
+
+@media print {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--color-paper) !important;
+    color: var(--color-ink) !important;
+    overflow: visible !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    background-color: transparent !important;
+    background-image: none !important;
+    color: var(--color-ink) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a {
+    color: var(--color-gold-800) !important;
+    text-decoration: underline;
+  }
+
+  .section-subtitle,
+  .btn {
+    color: var(--color-gold-800) !important;
+    border-color: var(--color-gold-800) !important;
+  }
+
+  .skip-link {
+    display: none !important;
   }
 }

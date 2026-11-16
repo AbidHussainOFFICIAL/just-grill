@@ -8,56 +8,45 @@ interface TopbarProps {
   hidden: boolean;
 }
 
-// Icons get a thicker stroke here (the original set --ionicon-stroke-width: 60px).
-const item = "items-center gap-6 [&_svg]:[--ionicon-stroke-width:60px]";
+// Address and hours show from 992px; the two links show from 575px.
+// The links fill the whole 48px bar, so the touch target is 48px tall; icon-to-label gap is space-inline-sm (8px).
+const linkClass =
+  "flex h-12 items-center gap-inline-sm trans-fast hover:text-gold-400 focus-visible:text-gold-400";
 
+/** Fixed 48px high: the header sits directly below it (sm:top-12 in Header.tsx). */
 export function Topbar({ hidden }: TopbarProps) {
   const { address, hours, phones, emails } = siteConfig;
 
   return (
     <div
       className={clsx(
-        "fixed top-0 left-0 z-4 hidden w-full border-b border-white-a20 py-10 trans-fast sm:block",
+        "fixed top-0 left-0 z-sticky hidden h-12 w-full items-center border-b border-line-subtle trans-fast sm:flex print:hidden",
         hidden && "-translate-y-full",
       )}
     >
-      <div className="container-x flex items-center justify-center gap-30 xl:max-w-none">
-        <address className={clsx(item, "hidden lg:flex")}>
-          <div>
-            <Icon name="location-outline" />
-          </div>
-          <span className="text-label-1">{address.inline}</span>
+      <div className="container-x flex w-full items-center justify-center gap-8 xl:max-w-none">
+        <address className="hidden items-center gap-inline-sm lg:flex">
+          <Icon name="map-pin" size={16} />
+          <span className="t-small">{address.inline}</span>
         </address>
 
         <Separator className="hidden xl:block" />
 
-        <div className={clsx(item, "hidden lg:mr-auto lg:flex")}>
-          <div>
-            <Icon name="time-outline" />
-          </div>
-          <span className="text-label-1">{hours.topbar}</span>
+        <div className="hidden items-center gap-inline-sm lg:mr-auto lg:flex">
+          <Icon name="clock" size={16} />
+          <span className="t-small">{hours.topbar}</span>
         </div>
 
-        <a
-          href={phones.topbar.href}
-          className={clsx(item, "flex trans-fast hover:text-gold focus-visible:text-gold")}
-        >
-          <div>
-            <Icon name="call-outline" />
-          </div>
-          <span className="text-label-1">{phones.topbar.label}</span>
+        <a href={phones.topbar.href} className={linkClass}>
+          <Icon name="phone" size={16} />
+          <span className="t-small">{phones.topbar.label}</span>
         </a>
 
         <Separator className="hidden xl:block" />
 
-        <a
-          href={emails.topbar.href}
-          className={clsx(item, "flex trans-fast hover:text-gold focus-visible:text-gold")}
-        >
-          <div>
-            <Icon name="mail-outline" />
-          </div>
-          <span className="text-label-1">{emails.topbar.label}</span>
+        <a href={emails.topbar.href} className={linkClass}>
+          <Icon name="mail" size={16} />
+          <span className="t-small">{emails.topbar.label}</span>
         </a>
       </div>
     </div>

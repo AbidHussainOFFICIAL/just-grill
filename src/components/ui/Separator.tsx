@@ -14,7 +14,7 @@ export function Separator({ className }: SeparatorProps) {
   return (
     <div
       aria-hidden="true"
-      className={clsx("size-8 [transform:rotate(45deg)] border border-gold", className)}
+      className={clsx("size-2 [transform:rotate(45deg)] border border-gold-400", className)}
     />
   );
 }

@@ -13,11 +13,11 @@ export function BackToTop() {
       href="#top"
       aria-label="back to top"
       className={clsx(
-        "fixed right-20 bottom-20 z-4 grid size-50 place-items-center rounded-circle bg-gold text-[22px] text-smoky-black-1 shadow-soft trans-fast hover:bg-white hover:text-gold focus-visible:bg-white focus-visible:text-gold",
+        "fixed right-5 bottom-5 z-sticky grid size-12 place-items-center rounded-circle bg-gold-400 text-surface-0 shadow-soft trans-fast hover:bg-gold-300 focus-visible:bg-gold-300 active:bg-gold-500 print:hidden",
         isVisible ? "visible opacity-100" : "invisible opacity-0",
       )}
     >
-      <Icon name="chevron-up" />
+      <Icon name="chevron-up" size={24} />
     </a>
   );
 }

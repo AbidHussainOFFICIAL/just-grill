@@ -8,6 +8,7 @@ import { Header } from "@/components/layout/Header";
 import { Preloader } from "@/components/layout/Preloader";
 import { siteConfig } from "@/data/site";
 
+// Display: Forum, one weight, headlines only. Swap, because it is the hero voice.
 const forum = Forum({
   subsets: ["latin"],
   weight: "400",
@@ -15,9 +16,10 @@ const forum = Forum({
   display: "swap",
 });
 
+// Text and interface: DM Sans, weights 400, 500 and 600 only.
 const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "600"],
   variable: "--next-dm-sans",
   display: "swap",
 });
@@ -56,7 +58,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#161719",
+  themeColor: "#191614",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

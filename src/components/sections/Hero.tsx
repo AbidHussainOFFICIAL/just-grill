@@ -7,9 +7,9 @@ import { Icon } from "@/components/ui/Icon";
 import { heroSlides } from "@/data/hero";
 import { useHeroSlider } from "@/hooks/useHeroSlider";
 
-// Diamond-shaped arrow buttons, shown from 768px up.
+// Diamond-shaped arrow buttons (44 x 44 touch target), shown from 768px up.
 const sliderButton =
-  "absolute top-1/2 z-1 hidden size-45 -translate-y-1/2 rotate-45 place-items-center border border-gold text-[2.4rem] text-gold trans-fast hover:bg-gold hover:text-black focus-visible:bg-gold focus-visible:text-black md:grid [&_svg]:-rotate-45";
+  "absolute top-1/2 z-raised hidden size-11 -translate-y-1/2 rotate-45 place-items-center border border-gold-400 text-gold-400 trans-fast hover:bg-gold-400 hover:text-surface-0 focus-visible:bg-gold-400 focus-visible:text-surface-0 md:grid [&_svg]:-rotate-45";
 
 // The reveal animations use the `transform` property on purpose (not `translate-*`)
 // so the animation's end state replaces the starting offset instead of adding to it.
@@ -27,7 +27,7 @@ export function Hero() {
 
   return (
     <section
-      className="relative z-1 min-h-screen overflow-hidden py-120 text-center xl:h-[880px]"
+      className="relative z-raised min-h-screen overflow-hidden py-hero text-center xl:h-220"
       aria-label="home"
       id="home"
     >
@@ -40,13 +40,13 @@ export function Hero() {
             <li
               key={slide.id}
               className={clsx(
-                "absolute top-1/2 left-1/2 z-1 grid size-full -translate-x-1/2 -translate-y-1/2 place-content-center pt-100 trans-slow",
+                "absolute top-1/2 left-1/2 z-raised grid size-full -translate-x-1/2 -translate-y-1/2 place-content-center pt-24 trans-slow",
                 isActive ? "visible opacity-100" : "invisible opacity-0",
               )}
             >
               <div
                 className={clsx(
-                  "pointer-events-none absolute inset-0 -z-1 size-full [transform:scale(1.15)] select-none",
+                  "pointer-events-none absolute inset-0 z-behind size-full [transform:scale(1.15)] select-none",
                   isActive && "animate-smooth-scale",
                 )}
               >
@@ -64,7 +64,7 @@ export function Hero() {
 
               <p
                 className={clsx(
-                  "section-subtitle text-label-2 after:mt-14 after:mb-20",
+                  "section-subtitle after:mt-3 after:mb-5",
                   reveal,
                   isActive && "animate-reveal-1",
                 )}
@@ -72,24 +72,12 @@ export function Hero() {
                 {slide.subtitle}
               </p>
 
-              <Heading
-                className={clsx(
-                  "font-forum text-display-1",
-                  reveal,
-                  isActive && "animate-reveal-2",
-                )}
-              >
+              <Heading className={clsx("t-display", reveal, isActive && "animate-reveal-2")}>
                 {slide.titleLines[0]} <br />
                 {slide.titleLines[1]}
               </Heading>
 
-              <p
-                className={clsx(
-                  "mt-10 mb-40 text-body-2 sm:text-[2rem]",
-                  reveal,
-                  isActive && "animate-reveal-3",
-                )}
-              >
+              <p className={clsx("mt-3 mb-10 t-lead", reveal, isActive && "animate-reveal-3")}>
                 {slide.text}
               </p>
 
@@ -106,38 +94,36 @@ export function Hero() {
 
       <button
         type="button"
-        className={clsx(sliderButton, "left-30")}
+        className={clsx(sliderButton, "left-8")}
         aria-label="slide to previous"
         onClick={prev}
         {...sliderButtonProps}
       >
-        <Icon name="chevron-back" />
+        <Icon name="chevron-left" size={24} />
       </button>
 
       <button
         type="button"
-        className={clsx(sliderButton, "right-30")}
+        className={clsx(sliderButton, "right-8")}
         aria-label="slide to next"
         onClick={next}
         {...sliderButtonProps}
       >
-        <Icon name="chevron-forward" />
+        <Icon name="chevron-right" size={24} />
       </button>
 
       <a
         href="#reservation"
-        className="absolute right-15 bottom-15 z-2 size-110 scale-[0.6] bg-gold p-12 after:absolute after:inset-0 after:animate-spin-15 after:border after:border-gold sm:scale-[0.7] xl:right-50 xl:bottom-50 xl:scale-100"
+        className="absolute right-4 bottom-4 z-raised size-28 scale-[0.6] bg-gold-400 p-3 after:absolute after:inset-0 after:animate-spin-15 after:border after:border-gold-400 sm:scale-[0.7] xl:right-12 xl:bottom-12 xl:scale-100"
       >
         <Image
           src="/images/hero-icon.png"
           width={48}
           height={48}
           alt="booking icon"
-          className="mx-auto mb-6"
+          className="mx-auto mb-2"
         />
-        <span className="block text-center text-label-2 leading-[1.5em] font-bold tracking-s text-black uppercase">
-          Book A Table
-        </span>
+        <span className="block text-center t-label text-surface-0">Book A Table</span>
       </a>
     </section>
   );

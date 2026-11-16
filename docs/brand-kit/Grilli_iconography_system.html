@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>Grilli iconography system</title>
+    <style>
+      :root {
+        --bg: #f4efe7;
+        --card: #fbf8f3;
+        --tx: #1a1511;
+        --mu: #5e564d;
+        --ln: #d9d0c3;
+        --ac: #795f2e;
+        --pk: #d9667e;
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #191614;
+          --card: #24211d;
+          --tx: #f3efeb;
+          --mu: #bbb7b2;
+          --ln: #423e3b;
+          --ac: #e4c590;
+          --pk: #e58aa0;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #191614;
+        --card: #24211d;
+        --tx: #f3efeb;
+        --mu: #bbb7b2;
+        --ln: #423e3b;
+        --ac: #e4c590;
+        --pk: #e58aa0;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--tx);
+        font:
+          15px/1.6 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      }
+      main {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 28px 18px 70px;
+      }
+      h1,
+      h2 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+      }
+      h1 {
+        font-size: clamp(28px, 5vw, 42px);
+        line-height: 1.15;
+      }
+      h2 {
+        font-size: 25px;
+        margin: 44px 0 4px;
+        padding-top: 18px;
+        border-top: 1px solid var(--ln);
+      }
+      h3 {
+        font-size: 14px;
+        margin: 18px 0 8px;
+      }
+      .lead {
+        color: var(--mu);
+        max-width: 74ch;
+        margin: 4px 0 12px;
+      }
+      .k {
+        color: var(--ac);
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .g {
+        display: grid;
+        gap: 10px;
+      }
+      .c2 {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .c3 {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      .c4 {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--ln);
+        border-radius: 10px;
+        padding: 14px;
+      }
+      .sc {
+        overflow-x: auto;
+      }
+      .tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .tbl th,
+      .tbl td {
+        padding: 7px 8px;
+        border-bottom: 1px solid var(--ln);
+        text-align: left;
+        vertical-align: top;
+      }
+      .tbl th {
+        color: var(--mu);
+        font-weight: 500;
+        font-size: 12px;
+      }
+      code {
+        font:
+          12px ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+      }
+      .pill {
+        display: inline-block;
+        font-size: 11px;
+        padding: 1px 7px;
+        border-radius: 99px;
+        border: 1px solid currentColor;
+        white-space: nowrap;
+      }
+      .ok {
+        color: #4e7d43;
+      }
+      .no {
+        color: #b2433b;
+      }
+      .wn {
+        color: #9a6a1c;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .ok {
+          color: #91c985;
+        }
+        :root:not([data-theme="light"]) .no {
+          color: #f69c90;
+        }
+        :root:not([data-theme="light"]) .wn {
+          color: #f4a34b;
+        }
+      }
+      .dk {
+        background: #191614;
+        color: #f3efeb;
+        border-radius: 10px;
+        padding: 18px;
+      }
+      .dk .m {
+        color: #bbb7b2;
+      }
+      .dk .gd {
+        color: #e4c590;
+      }
+      ul.l {
+        padding-left: 18px;
+      }
+      ul.l li {
+        margin: 3px 0;
+      }
+      .two {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 12px;
+      }
+      .bar {
+        display: inline-block;
+        height: 12px;
+        background: var(--ac);
+        border-radius: 2px;
+        vertical-align: middle;
+      }
+      .stat {
+        font-family: Georgia, serif;
+        font-size: 30px;
+        line-height: 1.1;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="app"></main>
+    <script>
+      const h2r = (h) => [1, 3, 5].map((i) => parseInt(h.substr(i, 2), 16)),
+        lin = (c) => {
+          c /= 255;
+          return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+        },
+        Lm = (h) => {
+          const [r, g, b] = h2r(h).map(lin);
+          return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        },
+        cr = (a, b) =>
+          ((Math.max(Lm(a), Lm(b)) + 0.05) / (Math.min(Lm(a), Lm(b)) + 0.05)).toFixed(1);
+      const f1 = (n) => (+n).toFixed(1),
+        tb = (h, rows) =>
+          `<div class="sc"><table class="tbl"><tr>${h.map((x) => `<th>${x}</th>`).join("")}</tr>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</table></div>`;
+      const A = [],
+        S0 = "#0F0D0B",
+        S1 = "#191614",
+        S2 = "#24211D",
+        GO = "#E4C590",
+        IV = "#F3EFEB",
+        MU = "#BBB7B2";
+
+      const K = {
+          sem: {
+            success: { tint: "#121E10", border: "#4E7D43", solid: "#518B44", text: "#91C985" },
+            warning: { tint: "#25170A", border: "#98602A", solid: "#DA924F", text: "#F1AD71" },
+            error: { tint: "#281512", border: "#A1564D", solid: "#BD6157", text: "#F69C90" },
+            info: { tint: "#0A1D27", border: "#4B758D", solid: "#5F8DA8", text: "#92BED9" },
+          },
+        },
+        IMG = [
+          "data:image/png;base64,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",
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABQCAMAAADY1yDdAAAAh1BMVEUAAADkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZCdCZcQAAAALHRSTlMA/MZDC+i7E3hPLpbvIClLHmGnoHAk0YvB337stWg7GMykW5E2r/PYCISbqy3nW+sAAANySURBVFjD7ddtm2pAHMfxv7tBsWxRSEjS3e/9v77T4Jy0ZccVnpyr74PdZtP1WcYE+vSpbwpb6TRdKRGZGYCEJusssfUR2GymRGLwAj1GQZO1QxwAkC34NFkLKJSsLe4oNFU7bIlIzQ8lZJqqHb6pKkdAU7X4iyRiZPieOGA0IC9mjMUevSzClar2mNPL8urjkQBBlUQvs1HvioOuhXJElQCR4JketK4lDyzzfH77Sa+TEZnfQgRQ6dSJ0BpVS+pEfKIeezKjr26EZjfmUlA3opA+GOFbEE2MuPZtC/c0JXJaSeBp6YSIi6rui1YIczCSQvpybTfsvJ7MQ3sMpF5yM+ps+MQDanVQdHqdeT4NRrYAP7EsrLvmZPDEc2NRr/suJYMzEJkBEVV9A+ZEpzDD9f5NGU6D6NWsN5WYTYI4WN0HV0STIB4W7SvLchIkR3wf7LGfZuIl6/56BX9cRPEigyfhYjStgepvkeGMgyzwa0wfjnDjup93tN8B2XDEhZTQL/kbFIMRBZno3nU7HBHd9i7xPQIiC/bkg/wfSEp6G5mJEfM+CDDrdcPtpAo2rmvXpbkYMVK7znUz5OlMiFh4KhA94z1lCZASgGRZEqS6fojUhJJ/EqXwcBXqQ474cG3Vh1zh4XraIBUjCT3W55nRMVs5kRjZO2a7XIhgjImH+DkeYDJK1pSJkSNrKrFigMzOJEwDqcjeWYwBCgJO1KMNyMbq+Xoi/lqR4RCQ9kT8NrK6/2uukjwM1FeI+w6CcuHwV6mRAbAO1dHRPT4oY5PmoyASgOM+ivnvErfCeXTgg1Dj74SjIIHPUCXn6hpnrwRvletEBnijIGSAGWdPqW6Bc9LXON4GvBzMzEZBZFojoro5PKICi3/Pdzvav43cF4ddIfs2YiL+hxxoB4WaWH/E4ohmNF0Q/I4scTWawv4IONKKiZB7/ZHcowTWsu7CHvZkzSdAweEBkS/NxloLEde6Un1VczIn8u1bS5xte4uAv/bVZk6cN+aEhVQ8nV2nI57SdIcjb51dANk/kW2KOqn+UZcUbyMWSG0jjCKOaM/Ph0WCBV3aSNF/nfhKG8n8C7wbov4o4wjzD21k6/dEJNzS7ucAL9LxokQBz6OmEDybenQJrU0YUZObaZZ2TCgIrR9pma6v+JszavLCjRXGJ/r0qeoP/Fa7HpwLQZUAAAAASUVORK5CYII=",
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABQCAMAAADY1yDdAAAAkFBMVEUAAADkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZDkxZAYsVNZAAAAL3RSTlMA81dAkSR21PmOzxC9pLLI7t8qHhjk2amVYUkwCgS4roRuwpyLNnM86maCfmxRexSYOM4AAAObSURBVFjD7ZnZsppAEEAHV0AQUHFHUNTrcvX8/98FDMYkZnCESSqpynmwqkvgQDfd4Che0U5WB8NL5+LGaB8HRtdtRLcomk26RhCve6IWUUqBvcjCq1FEwSWLGmERGZ06jlEXGPcnHhlN0QfClbvJVR2RAIbjOgdgUuM6xuDdEjWYgrHJFLMod58BJzfliVp+Zhq3smQKsSiYkTG+Z/+DDGNxv+AA5lWTBcEjSoBHhee3/N0Z5ltWI/nx/M7b76P9dvZd1MqVlXAIhSJtOFeT2KyEIkuD6V8s2TAWigwhqSaxYCHU2Fe+hwfgKXatwUFUJFZNggOzqpKeAWlbvOLDg42ozMIE+tvTTsi4nFobwI5EdYYbck5ChkdOKupxiUNYCxkTGE8/RG0G5ZKx0AI0hIwUW4diOINWU4ZD2FzWl3R4xa6+ZP0nJJ/QachJYaFFUtruuiTztpyrJkk5WiRnXqGh4Rct6Hdk2PidkahPVN7x3ezzH5ld/yVv0S6TxJoK36Pk7dDGE1qwsRVOoCYppqzfGnkPaaEJe8lXK8yl0INBIH3P7gtN7GVvXh7shC4Ov57na4iFNppgDH9VdaMn9HEF/0P8yPH2KNGJBVyj72vuAg2hl6sJ4f6es4GVhf5c6GZFTndyviargJy90M6Eg80Dz+RTv8SlK+afqQ9msD0Ohqb2igyb6wDsuNMTw/ZIDLZ5xpzZTtcdHLUbU8+kwBzeGuSO0d82R3UNH/tV+O14rutwe3wAsetuzMI7do+D6jmyxoXATovMuLAYHeGYB6PmehLwFW9faRovtyYZhzhpDH/ochN4nPlgZq1uG4afFRIVAHayWz41fs6PbTiaT/OtnXerM8sVl+dJmSQ+3VPyNC2jvQ/+4k2HdJVsLHmq92IwB+/kqmT4jXHly4m+euNEhtzR9HFLRrWjLElluRodPcoWazbq07/Nr1+0dqlJ7pBP+J6Jr77mvHvef22TcbBKa3uCi1pFzOcLabo+GU5j+aKDTcWVr8vTMtzMIyPc7lQeCKaSZAs/ta5JPtcjpTNUlEyeFra72Kq9vFCUOHhPEveNBWLFXwrOk6QvxHzTEa/pKUq6v5Y48Pslu/j42yU5/7Jk6faPhWTgNmSN1T/Xk8CkkKyku/t060l8poXkYp/kf+bUlbQkNakr6X+filN2lPKO94gfgbIktO5MTeyt5RNYVkuCZR0eX1tTxdkVUg8liWfUIhRPfAEK+q0adp9dtwAAAABJRU5ErkJggg==",
+          "data:image/png;base64,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",
+        ],
+        E = K.sem;
+      const IC = {
+        "map-pin":
+          '<path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+        clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+        phone:
+          '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
+        mail: '<rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/>',
+        user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+        calendar:
+          '<rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+        "chevron-left": '<path d="M15 6l-6 6 6 6"/>',
+        "chevron-right": '<path d="M9 6l6 6-6 6"/>',
+        "chevron-up": '<path d="M6 15l6-6 6 6"/>',
+        "chevron-down": '<path d="M6 9l6 6 6-6"/>',
+        close: '<path d="M6 6l12 12M18 6L6 18"/>',
+        menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+        "arrow-right": '<path d="M5 12h14M13 6l6 6-6 6"/>',
+        check: '<path d="M5 12l4.5 4.5L19 7"/>',
+        alert: '<path d="M12 4l9 16H3zM12 10v4M12 17v.5"/>',
+        error: '<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>',
+        info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5"/>',
+        salad:
+          '<path d="M3 12a9 9 0 0 0 18 0zM8 12c0-3 2-5 4-6 0 3-1 5-4 6zM13 12c0-2.5 1.5-4.5 4-5.5 0 2.5-1 4.5-4 5.5z"/>',
+        table: '<path d="M3 9h18M6 9v11M18 9v11M8 9V6h8v3"/>',
+        "chef-hat":
+          '<path d="M17 21a1 1 0 0 0 1-1v-5.4c0-.5.3-.8.7-1a4 4 0 0 0-2.1-7.6 5 5 0 0 0-9.2 0 4 4 0 0 0-2.1 7.6c.4.2.7.5.7 1V20a1 1 0 0 0 1 1zM6 17h12"/>',
+        party: '<path d="M4 20l5-12 7 7zM14 4v2M19 9h2M17 5l1.5-1.5"/>',
+        coffee:
+          '<path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4zM16 11h2a2 2 0 0 1 0 4h-2M8 3v3M12 3v3"/>',
+        cloche: '<path d="M3 18h18M5 18a7 7 0 0 1 14 0M12 8V6"/>',
+        utensils: '<path d="M7 3v7a2 2 0 0 1-4 0V3M5 10v11M17 3c-2 1.5-3 4-3 7 0 1.5 1 2 3 2v9"/>',
+        wine: '<path d="M8 3h8l-.5 6a3.5 3.5 0 0 1-7 0zM12 12.5V20M8.5 20h7"/>',
+      };
+      const svg = (n, s = 24, w = 1.5, c = "currentColor", x = "") =>
+        `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;${x}">${IC[n]}</svg>`;
+      const cell = (n, u) =>
+        `<div class="card" style="text-align:center;padding:12px 6px"><div style="color:var(--ac);display:flex;justify-content:center">${svg(n, 28, 1.5)}</div><code style="display:block;margin-top:6px">${n}</code><div style="font-size:11px;color:var(--mu)">${u}</div></div>`;
+      A.push(
+        `<p class="k">Brand kit · 04 Iconography</p><h1>Grilli iconography system</h1><p class="lead">Audited from your real code, researched, then specified. Your site has 11 interface icons (from the Ionicons set) and 4 gold category icons that are flat images. The main finding is that stroke thickness varies by almost two times from icon to icon, so the first job is consistency. Every drawing on this page is a draft made to the spec, to show it working; final artwork or library equivalents come after you pick a strategy.</p>`,
+      );
+      A.push(
+        `<h2>01 · Icon philosophy and style rules</h2><div class="g c2"><div class="card"><b>Philosophy</b><ul class="l"><li>Icons support words; they do not replace them. Nothing important is communicated by an icon alone.</li><li>One voice: thin outline, gold on dark, matching the fine-line feel of the typography.</li><li>Quiet by default: icons use existing text and gold colours, never their own.</li></ul></div><div class="card"><b>Style rules</b><ul class="l"><li>Outline only (no filled or duotone mix).</li><li>1.5px stroke at 16–24px, 2px from 32px up.</li><li>Round caps and joins; corners follow the brand: sharp for geometry, 1px softening only where a shape needs it.</li><li>One library, one style (research: mixing libraries is the most common reason icon sets look unplanned).</li></ul></div></div>`,
+      );
+      A.push(
+        `<h2>02 · Construction grid, stroke spec and size scale</h2><div class="g c2"><div class="card"><b>24px grid</b><svg viewBox="0 0 24 24" width="100%" style="max-width:300px;display:block;margin:8px auto;background:var(--bg);border:1px solid var(--ln)"><rect x="2" y="2" width="20" height="20" fill="none" stroke="var(--pk)" stroke-width=".15" stroke-dasharray=".6 .4"/>${[...Array(25).keys()].map((i) => `<path d="M${i} 0V24M0 ${i}H24" stroke="var(--ln)" stroke-width=".04"/>`).join("")}<circle cx="12" cy="12" r="10" fill="none" stroke="var(--pk)" stroke-width=".15"/><rect x="3" y="3" width="18" height="18" fill="none" stroke="var(--pk)" stroke-width=".15"/><rect x="4" y="2" width="16" height="20" fill="none" stroke="var(--pk)" stroke-width=".15"/><rect x="2" y="4" width="20" height="16" fill="none" stroke="var(--pk)" stroke-width=".15"/><g fill="none" stroke="var(--ac)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${IC["map-pin"]}</g></svg><p class="lead" style="font-size:13px">24 × 24 canvas, 2px padding (20px live area). Keyline shapes: circle 20, square 18, portrait 16 × 20, landscape 20 × 16, so different shapes look the same size.</p></div><div class="card"><b>Size scale</b>${[
+          [16, "inline with text, form fields, top bar", 1.5],
+          [20, "drawer close, field chevrons", 1.5],
+          [24, "default; arrows, buttons", 1.5],
+          [32, "feature and category, small", 2],
+          [48, "category icons", 2],
+          [64, "category icons, large", 2],
+        ]
+          .map(
+            (r) =>
+              `<div style="display:grid;grid-template-columns:70px 48px 1fr;gap:8px;align-items:center;padding:4px 0;border-bottom:1px dashed var(--ln)"><code>icon-${r[0]}</code><span style="color:var(--ac)">${svg("chef-hat", r[0], r[2])}</span><span style="font-size:12px;color:var(--mu)">${r[1]} · ${r[2]}px stroke</span></div>`,
+          )
+          .join("")}</div></div><h3>Stroke today (measured from the code)</h3>` +
+          tb(
+            ["Where", "Icon size", "Stroke setting", "Rendered stroke"],
+            [
+              ["Top bar (4 icons)", "16px", "60 of 512", "1.88px"],
+              ["Form field icons (4)", "14px", "50 of 512", "1.37px"],
+              ["Form chevrons (3)", "14px", "48 (fixed)", "1.31px"],
+              ["Drawer close button", "16px", "40 of 512", "1.25px"],
+              ["Back-to-top", "22px", "48 (fixed)", "2.06px"],
+              ["Hero arrows", "24px", "48 (fixed)", "2.25px"],
+            ],
+          ) +
+          `<p class="lead" style="margin-top:6px">Rendered strokes run from 1.25px to 2.25px, a 1.8× spread. The proposed spec fixes every icon at 1.5px (2px from 32px up).</p>`,
+      );
+      const cs = [
+        ["Top bar, drawer close", IV, S0, "text-body", "hover: gold-400"],
+        ["Form field icons", MU, S2, "text-muted", "focus: gold-400"],
+        ["Hero arrows, links", GO, S1, "gold-400", "hover: fill gold, icon ink"],
+        ["Back-to-top (on gold button)", S0, GO, "ink on gold-400", ""],
+        ["Category icons", GO, S1, "gold-400", ""],
+        ["Status: success", E.success.solid, E.success.tint, "status solid on tint", ""],
+        ["Status: warning", E.warning.solid, E.warning.tint, "status solid on tint", ""],
+        ["Status: error", E.error.solid, E.error.tint, "status solid on tint", ""],
+        ["Status: info", E.info.solid, E.info.tint, "status solid on tint", ""],
+      ];
+      A.push(
+        `<h2>03 · Colour usage and mapping</h2><p class="lead">Reuses existing tokens and introduces none. Icons need at least 3:1 against their background (non-text contrast).</p>` +
+          tb(
+            ["Context", "Token", "Icon colour", "Background", "Contrast", "Result"],
+            cs.map((r) => {
+              const c = +cr(r[1], r[2]);
+              return [
+                r[0],
+                r[3] +
+                  (r[4]
+                    ? '<br><span style="font-size:11.5px;color:var(--mu)">' + r[4] + "</span>"
+                    : ""),
+                `<span style="color:${r[1]};background:${r[2]};padding:3px 6px;border-radius:4px;display:inline-flex">${svg("check", 18, 1.5, r[1])}</span> <code>${r[1]}</code>`,
+                `<code>${r[2]}</code>`,
+                c + ":1",
+                `<span class="pill ${c >= 3 ? "ok" : "no"}">${c >= 3 ? "pass" : "below 3:1"}</span>`,
+              ];
+            }),
+          ),
+      );
+      A.push(
+        `<h2>04 · Icon library and sourcing strategy</h2><p class="lead">Research: pick one library and stay in it; prefer an outline set with adjustable stroke; check food and drink coverage before committing. Counts are approximate, from comparison articles.</p>` +
+          tb(
+            ["Library", "Size", "Style", "Notes"],
+            [
+              [
+                "Ionicons (today, via react-icons)",
+                "about 1,300",
+                "Outline, filled, sharp",
+                "Works now. Stroke is set per icon, causing the spread above. Few food icons.",
+              ],
+              [
+                "Lucide",
+                "about 1,500",
+                "Outline, 24px grid, stroke adjustable",
+                "Consistent geometry, tree-shakeable React package, includes food and drink icons (verify exact names in its search).",
+              ],
+              [
+                "Phosphor",
+                "about 9,000",
+                "Six weights, thin to bold, plus duotone",
+                "Light weight suits a fine-line brand; larger, more bundle choices to manage.",
+              ],
+              [
+                "Tabler",
+                "about 5,000",
+                "Outline, 2px stroke",
+                "Very large set, slightly sharper drawing.",
+              ],
+            ],
+          ) +
+          `<div class="g c2" style="margin-top:10px"><div class="card"><b>Recommendation</b><p class="lead" style="margin:4px 0 0">Move to <b>Lucide</b> at 1.5px stroke: one set for interface and food icons, consistent by construction. The change is small (11 tiny icons), and the 4 category images become recolourable, sharp SVGs. Runner-up: Phosphor Light. Alternative with zero visual change: keep Ionicons and only normalise the stroke.</p></div><div class="card"><b>Sourcing rules</b><ul class="l"><li>Import icons one by one (tree-shaken), never the whole set.</li><li>Check the licence (these sets are MIT or ISC).</li><li>If a needed icon does not exist, draw it to this spec rather than borrowing from another set.</li><li>Brand marks (logo, badges) are artwork, not icons.</li></ul></div></div>`,
+      );
+      const core = [
+        ["map-pin", "address"],
+        ["clock", "hours"],
+        ["phone", "call"],
+        ["mail", "email"],
+        ["user", "guests"],
+        ["calendar", "date"],
+        ["chevron-left", "previous"],
+        ["chevron-right", "next"],
+        ["chevron-up", "back to top"],
+        ["chevron-down", "select"],
+        ["close", "close menu"],
+        ["menu", "open menu"],
+        ["arrow-right", "link, button"],
+        ["check", "success"],
+        ["alert", "warning"],
+        ["error", "error"],
+        ["info", "information"],
+      ];
+      A.push(
+        `<h2>05 · Core and functional UI icon set</h2><p class="lead">The 11 icons you use today, plus the ones the new sections (chefs, gallery, FAQ, map) will need.</p><div class="g c4">${core.map((c) => cell(c[0], c[1])).join("")}</div>` +
+          tb(
+            ["Today (Ionicons)", "Proposed", "Where"],
+            [
+              ["location-outline", "map-pin", "Top bar, drawer, footer"],
+              ["time-outline", "clock", "Top bar, time field"],
+              ["call-outline", "phone", "Top bar"],
+              ["mail-outline", "mail", "Top bar, newsletter"],
+              ["person-outline", "user", "Guests field"],
+              ["calendar-clear-outline", "calendar", "Date field"],
+              ["chevron-back / forward", "chevron-left / right", "Hero arrows"],
+              ["chevron-up", "chevron-up", "Back to top"],
+              ["chevron-down", "chevron-down", "Select fields"],
+              ["close-outline", "close", "Drawer"],
+            ],
+          ),
+      );
+      A.push(
+        `<h2>06 · Category icon set</h2><p class="lead">Today the four feature icons are gold line-art images (100 × 80 px): they cannot be recoloured, scaled sharply or described to a screen reader beyond alt text. Drafts below are SVG, sized 48px. In the project they are Lucide's salad, armchair, chef-hat and party-popper.</p><div class="g c4">${[
+          ["Hygienic food", 0, "salad"],
+          ["Fresh environment", 1, "table"],
+          ["Skilled chefs", 2, "chef-hat"],
+          ["Event and party", 3, "party"],
+        ]
+          .map(
+            (r) =>
+              `<div class="card" style="text-align:center"><div class="dk" style="display:flex;justify-content:space-around;align-items:center;padding:12px"><img src="${IMG[r[1]]}" alt="" width="60" style="height:auto"><span style="color:#E4C590">${svg(r[2], 48, 2)}</span></div><b style="font-size:13px">${r[0]}</b><div style="font-size:11px;color:var(--mu)">today · draft SVG</div></div>`,
+          )
+          .join(
+            "",
+          )}</div><h3>Menu categories (for the services and menu sections)</h3><div class="g c4">${[
+          ["Breakfast", "coffee"],
+          ["Appetizers", "utensils"],
+          ["Drinks", "wine"],
+          ["Mains", "chef-hat"],
+        ]
+          .map((r) => cell(r[1], r[0]))
+          .join("")}</div>`,
+      );
+      A.push(
+        `<h2>07 · Icon and touch-target spacing</h2>` +
+          tb(
+            ["Control", "Icon", "Target", "Padding", "Note"],
+            [
+              ["Drawer close", "20px", "44 × 44", "12px", "Today 16px icon in a 26px box"],
+              ["Hamburger", "24px (lines)", "44 × 48", "10–12px", "Today 42 wide"],
+              ["Hero arrows", "24px", "44 × 44", "10px", "Already fine"],
+              ["Back-to-top", "24px", "48 × 48", "12px", "Today 22px"],
+              [
+                "Field icons",
+                "16px",
+                "inside 56px field",
+                "left 16px, text starts 44px",
+                "Decorative, not tappable",
+              ],
+              [
+                "Icon + label (top bar)",
+                "16px",
+                "link height 48px (the whole bar)",
+                "gap 8px",
+                "Gap is space-inline-sm",
+              ],
+            ],
+          ) +
+          `<div class="dk" style="margin-top:10px;display:flex;gap:18px;align-items:center;flex-wrap:wrap"><span style="width:44px;height:44px;border:1px dashed #E58AA0;display:inline-flex;align-items:center;justify-content:center;color:#F3EFEB">${svg("close", 20)}</span><span class="m" style="font-size:12px">20px icon, 12px padding, 44px target</span><span style="display:inline-flex;gap:8px;align-items:center;color:#F3EFEB">${svg("phone", 16)} +1 123 456 7890</span><span class="m" style="font-size:12px">16px icon, 8px gap</span></div>`,
+      );
+      A.push(
+        `<h2>08 · Usage rules</h2><div class="two"><div class="card"><b class="ok">Do</b><ul class="l"><li>One library, one 1.5px outline style.</li><li>Pair an icon with a visible word, or give it an accessible name.</li><li>Use <code>currentColor</code> so icons follow text colour and state.</li><li>Keep 44px targets for tappable icons.</li><li>Draw missing icons to the grid.</li></ul></div><div class="card"><b class="no">Don't</b><ul class="l"><li>No mixing filled and outline icons.</li><li>No coloured icons outside the token list.</li><li>No icon-only controls without an accessible name.</li><li>No scaling a 24px icon to 40px: pick the 32 or 48 size.</li><li>No rasters for icons.</li></ul></div></div>`,
+      );
+      A.push(
+        `<h2>09 · Live preview: icons in context</h2><div class="g c2"><div class="dk"><div style="display:flex;gap:16px;flex-wrap:wrap;font-size:14px">${[
+          ["map-pin", "Restaurant St, London"],
+          ["clock", "Daily 8 am to 10 pm"],
+          ["phone", "+1 123 456 7890"],
+        ]
+          .map(
+            (r) =>
+              `<span style="display:inline-flex;gap:8px;align-items:center">${svg(r[0], 16)}${r[1]}</span>`,
+          )
+          .join(
+            "",
+          )}</div><div style="margin-top:14px;display:flex;gap:10px;align-items:center;background:#24211D;border:1px solid #706D68;padding:0 14px;height:56px;color:#BBB7B2">${svg("user", 16)}<span style="flex:1;color:#F3EFEB">2 Guests</span>${svg("chevron-down", 16)}</div><div style="margin-top:14px;display:flex;gap:12px"><span style="display:inline-flex;gap:8px;align-items:center;background:#E4C590;color:#0F0D0B;padding:16px 28px;font:600 13px/1.3 system-ui;letter-spacing:.14em;text-transform:uppercase">View menu ${svg("arrow-right", 16, 1.5)}</span></div></div><div class="dk" style="display:grid;gap:10px"><div style="display:flex;gap:10px;align-items:flex-start;background:${E.success.tint};border:1px solid ${E.success.border};color:${E.success.text};padding:10px 12px"><span style="color:${E.success.solid}">${svg("check", 20, 2)}</span><span style="font-size:14px">Table booked for Friday, 7 pm.</span></div><div style="display:flex;gap:10px;align-items:flex-start;background:${E.error.tint};border:1px solid ${E.error.border};color:${E.error.text};padding:10px 12px"><span style="color:${E.error.solid}">${svg("error", 20, 2)}</span><span style="font-size:14px">Enter a valid phone number.</span></div><div style="display:flex;gap:18px;color:#E4C590;justify-content:space-around;padding-top:6px">${["salad", "chef-hat", "wine", "party"].map((n) => svg(n, 40, 2)).join("")}</div></div></div>`,
+      );
+      const TPm = [
+        [
+          "Top bar",
+          "location-outline, time-outline, call-outline, mail-outline",
+          "16",
+          "1.88",
+          "labelled by text",
+          "map-pin, clock, phone, mail · 16 · 1.5",
+        ],
+        ["Drawer", "close-outline", "16", "1.25", "button, aria-label", "close · 20 in 44 target"],
+        [
+          "Hero",
+          "chevron-back, chevron-forward",
+          "24",
+          "2.25",
+          "buttons, aria-label",
+          "chevron-left/right · 24 · 1.5",
+        ],
+        ["Hero badge", "hero-icon.png (raster)", "48", "n/a", "alt text", "keep artwork"],
+        [
+          "Reservation form",
+          "person, calendar-clear, time (left) · chevron-down (right) x3",
+          "14",
+          "1.37 / 1.31",
+          "decorative",
+          "user, calendar, clock · chevron-down · 16 · 1.5",
+        ],
+        ["Newsletter", "mail-outline", "14", "1.37", "decorative", "mail · 16 · 1.5"],
+        [
+          "Features",
+          "4 gold PNG icons (100 × 80)",
+          "raster",
+          "n/a",
+          "alt text (empty)",
+          "category icons · 48 · 2",
+        ],
+        ["Back-to-top", "chevron-up", "22", "2.06", "link, aria-label", "chevron-up · 24 · 1.5"],
+        ["Separators", "CSS diamonds 8 × 8", "8", "1px border", "decorative", "keep (not icons)"],
+        ["Hamburger", "3 CSS lines 30 × 2", "n/a", "2px", "button, aria-label", "keep"],
+      ];
+      A.push(
+        `<h2>10 · Full iconography touchpoint map</h2><p class="lead">Every icon in the code: where it lives, how it renders today, and what the system proposes.</p>` +
+          tb(["Location", "Icons today", "Size", "Stroke px", "Accessibility", "Proposed"], TPm),
+      );
+      A.push(
+        `<h2>11 · Accessibility rules</h2><ul class="l"><li>Decorative icons next to text get <code>aria-hidden="true"</code> (already done in your icon component).</li><li>An icon-only button needs an accessible name (<code>aria-label</code>); this is already true for close, open menu, arrows and back-to-top.</li><li>Icons that carry meaning need 3:1 contrast against their background (section 03).</li><li>Status icons never work alone: always icon plus word, because colour alone fails some viewers.</li><li>Tappable icons reach 44px where space allows and never fall under 24px (WCAG 2.2 AA).</li><li>Don't rely on a shape that varies by library to say something different (an arrow is always "go", a check is always "success").</li></ul>`,
+      );
+      A.push(
+        `<h2>12 · Research notes and decisions</h2><ul class="l"><li>Common spec: 24px canvas, 2px padding, 1.5 to 2px stroke, sizes 16/20/24 and larger for illustration; keyline shapes for optical balance.</li><li>Library counts and licences come from comparison articles; verify before adoption. I drew every icon here myself as a draft, so exact shapes will differ from the final set.</li><li>I have not measured rendered strokes in a browser: they are computed from each icon's size and stroke setting.</li></ul><h3>Decisions</h3><ol class="l"><li>Library: Lucide at 1.5px (recommended), Phosphor Light, or keep Ionicons and normalise?</li><li>Replace the four gold category images with SVG icons?</li><li>Raise the close button and hamburger to 44px targets?</li></ol>`,
+      );
+      document.getElementById("app").innerHTML = A.join("");
+    </script>
+  </body>
+</html>

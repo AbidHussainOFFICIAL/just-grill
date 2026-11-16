@@ -1,3 +1,5 @@
+import type { IconName } from "@/components/ui/Icon";
+
 export interface NavLink {
   label: string;
   href: string;
@@ -42,7 +44,7 @@ export interface FeatureItem {
   id: number;
   title: string;
   text: string;
-  icon: string;
+  icon: IconName;
 }
 
 export interface SelectOption {

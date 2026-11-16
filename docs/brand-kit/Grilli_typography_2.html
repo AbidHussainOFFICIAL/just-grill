@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>Grilli typography 2</title>
+    <style>
+      :root {
+        --bg: #f4efe7;
+        --card: #fbf8f3;
+        --tx: #1a1511;
+        --mu: #5e564d;
+        --ln: #d9d0c3;
+        --ac: #795f2e;
+        --fd: Forum;
+        --fb: "DM Sans";
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #191614;
+          --card: #24211d;
+          --tx: #f3efeb;
+          --mu: #bbb7b2;
+          --ln: #423e3b;
+          --ac: #e4c590;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #191614;
+        --card: #24211d;
+        --tx: #f3efeb;
+        --mu: #bbb7b2;
+        --ln: #423e3b;
+        --ac: #e4c590;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--tx);
+        font:
+          15px/1.6 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      }
+      main {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 28px 18px 70px;
+      }
+      h1,
+      h2,
+      .fd {
+        font-family: var(--fd), Georgia, serif;
+        font-weight: 400;
+      }
+      .fb {
+        font-family: var(--fb), system-ui, sans-serif;
+      }
+      h1 {
+        font-size: clamp(28px, 5vw, 42px);
+        line-height: 1.15;
+      }
+      h2 {
+        font-size: 25px;
+        margin: 44px 0 4px;
+        padding-top: 18px;
+        border-top: 1px solid var(--ln);
+      }
+      h3 {
+        font-size: 14px;
+        margin: 18px 0 8px;
+      }
+      .lead {
+        color: var(--mu);
+        max-width: 72ch;
+        margin: 4px 0 12px;
+      }
+      .k {
+        color: var(--ac);
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .g {
+        display: grid;
+        gap: 10px;
+      }
+      .c2 {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .c3 {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--ln);
+        border-radius: 10px;
+        padding: 14px;
+      }
+      .sc {
+        overflow-x: auto;
+      }
+      .tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .tbl th,
+      .tbl td {
+        padding: 7px 8px;
+        border-bottom: 1px solid var(--ln);
+        text-align: left;
+        vertical-align: top;
+      }
+      .tbl th {
+        color: var(--mu);
+        font-weight: 500;
+        font-size: 12px;
+      }
+      code {
+        font:
+          12px ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+      }
+      .pill {
+        display: inline-block;
+        font-size: 11px;
+        padding: 1px 7px;
+        border-radius: 99px;
+        border: 1px solid currentColor;
+      }
+      .ok {
+        color: #4e7d43;
+      }
+      .no {
+        color: #b2433b;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .ok {
+          color: #91c985;
+        }
+        :root:not([data-theme="light"]) .no {
+          color: #f69c90;
+        }
+      }
+      .dk {
+        background: #191614;
+        color: #f3efeb;
+        border-radius: 10px;
+        padding: 18px;
+      }
+      .dk .m {
+        color: #bbb7b2;
+      }
+      .dk .gd {
+        color: #e4c590;
+      }
+      .bt {
+        display: inline-block;
+        padding: 10px 18px;
+        border-radius: 2px;
+        font-family: var(--fb);
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        background: #e4c590;
+        color: #0f0d0b;
+      }
+      .pk {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 8px 0;
+      }
+      .pk label {
+        border: 1px solid var(--ln);
+        border-radius: 99px;
+        padding: 5px 12px;
+        cursor: pointer;
+        font-size: 13px;
+        background: var(--card);
+      }
+      .pk input {
+        margin-right: 6px;
+      }
+      ul.l {
+        padding-left: 18px;
+      }
+      ul.l li {
+        margin: 3px 0;
+      }
+      .two {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="app"></main>
+    <script>
+      const FONTS = [
+        "Forum",
+        "DM+Sans:opsz,wght@9..40,400..600",
+        "Noto+Nastaliq+Urdu:wght@400;700",
+      ];
+      FONTS.forEach((f) => {
+        const l = document.createElement("link");
+        l.rel = "stylesheet";
+        l.href = "https://fonts.googleapis.com/css2?family=" + f + "&display=swap";
+        document.head.appendChild(l);
+      });
+      const h2r = (h) => [1, 3, 5].map((i) => parseInt(h.substr(i, 2), 16)),
+        lin = (c) => {
+          c /= 255;
+          return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+        },
+        Lm = (h) => {
+          const [r, g, b] = h2r(h).map(lin);
+          return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        },
+        cr = (a, b) => {
+          const x = Lm(a),
+            y = Lm(b);
+          return ((Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05)).toFixed(1);
+        };
+      const K = {
+        paper: "#F4EFE7",
+        inkL: "#1A1511",
+        gold: [
+          "#FCF6EC",
+          "#F9EDD8",
+          "#F3DEBB",
+          "#EBD1A4",
+          "#E4C590",
+          "#D4B275",
+          "#BC9959",
+          "#9B7B40",
+          "#795F2E",
+          "#58441F",
+          "#392B11",
+        ],
+        claret: [
+          "#FCF5F4",
+          "#F8E6E4",
+          "#F1CECA",
+          "#E8ADA7",
+          "#D6857F",
+          "#B75B55",
+          "#963D3A",
+          "#762C29",
+          "#561D1C",
+          "#3B1211",
+          "#220807",
+        ],
+        sem: {
+          success: { tint: "#121E10", border: "#4E7D43", solid: "#518B44", text: "#91C985" },
+          warning: { tint: "#25170A", border: "#98602A", solid: "#DA924F", text: "#F1AD71" },
+          error: { tint: "#281512", border: "#A1564D", solid: "#BD6157", text: "#F69C90" },
+          info: { tint: "#0A1D27", border: "#4B758D", solid: "#5F8DA8", text: "#92BED9" },
+        },
+      };
+      const f = (n) => +n.toFixed(2);
+      // id, role, family, px@375, px@1440, line-height, tracking(em), weight, today
+      const T = [
+        [
+          "display",
+          "Hero headline",
+          "d",
+          38,
+          112,
+          1.0,
+          -0.01,
+          400,
+          "display-1: 13px + 6.7vw, no cap, lh 1em",
+        ],
+        ["h1", "Section titles", "d", 30, 56, 1.15, 0, 400, "headline-1: 20px + 2.5vw"],
+        [
+          "h2",
+          "Testimonial, large lead-ins",
+          "d",
+          22,
+          46,
+          1.35,
+          0,
+          400,
+          "headline-2: 13px + 2.4vw",
+        ],
+        [
+          "h3",
+          "Service titles, newsletter title",
+          "d",
+          21,
+          33,
+          1.2,
+          0,
+          400,
+          "title-1 and title-4 (identical formula)",
+        ],
+        [
+          "title",
+          "Menu names, prices, feature titles",
+          "d",
+          21,
+          25,
+          1.25,
+          0,
+          400,
+          "title-2 (22→25) and title-3 (21)",
+        ],
+        [
+          "figure",
+          "Phone numbers, special price",
+          "b",
+          24,
+          30,
+          1.35,
+          0,
+          500,
+          "body-1: 24px, 30px from 575",
+        ],
+        ["lead", "Hero sub-line", "b", 16, 20, 1.6, 0, 400, "body-2: 16px, 20px from 575"],
+        [
+          "body",
+          "Paragraphs, inputs",
+          "b",
+          16,
+          16,
+          1.65,
+          0.01,
+          400,
+          "body-4: 16px, line-height 1.85",
+        ],
+        ["small", "Card text, top bar, form help", "b", 14, 14, 1.5, 0.01, 400, "label-1: 14px"],
+        [
+          "label",
+          "Nav, buttons, tags, dates",
+          "b",
+          13,
+          13,
+          1.3,
+          0.14,
+          600,
+          "label-2: 12px bold, 3px / .15em / .2em / .3em",
+        ],
+        [
+          "overline",
+          "Section subtitles",
+          "b",
+          13,
+          13,
+          1.3,
+          0.24,
+          600,
+          "section-subtitle: 12px bold, .4em",
+        ],
+      ];
+      const clamp = (a, b) => {
+        if (a === b) return a / 10 + "rem";
+        const s = ((b - a) / (1440 - 375)) * 100,
+          i = a - (s / 100) * 375;
+        return `clamp(${a / 10}rem, ${f(i / 10)}rem + ${f(s)}vw, ${b / 10}rem)`;
+      };
+      const cur = [
+        ["display", (w) => 13 + 0.067 * w],
+        ["h1", (w) => 20 + 0.025 * w],
+        ["h2", (w) => 13 + 0.024 * w],
+        ["h3", (w) => 16 + 0.012 * w],
+      ];
+
+      const TOK = {
+        display: "6xl",
+        h1: "5xl",
+        h2: "4xl",
+        h3: "3xl",
+        title: "xl",
+        figure: "2xl",
+        lead: "lg",
+        body: "base",
+        small: "sm",
+        label: "xs",
+        overline: "xs",
+      };
+      const G = K.gold,
+        E = K.sem,
+        S0 = "#0F0D0B",
+        S1 = "#191614",
+        S2 = "#24211D",
+        IV = "#F3EFEB",
+        ST = "#FCFAF7",
+        MU = "#BBB7B2",
+        FA = "#95918D",
+        GO = "#E4C590",
+        G3 = "#EBD1A4",
+        PA = K.paper,
+        IK = K.inkL;
+      const badge = (r) => (r >= 7 ? "AAA" : r >= 4.5 ? "AA" : r >= 3 ? "large only" : "fail");
+      const A = [];
+      A.push(
+        `<p class="k">Brand kit · 02 Typography · version 2</p><h1>Grilli typography 2</h1><p class="lead">Your choices are locked in: keep Forum and DM Sans, moderate tracking, 13px labels, 1.65 body line height, and a 62.5% root. Version 2 adds what a full system needs: family cards with loading rules, ten named size tokens, a spec for every text role, every role verified on your dark surfaces, a confinement rule for Forum, and annotated pairings. Contrast is calculated live from the colour kit's hex values.</p>`,
+      );
+      A.push(
+        `<h2>01 · The families</h2><p class="lead">One serif for voice, one sans for information. Nothing else loads except an optional script fallback.</p><div class="g c3"><div class="card"><span class="k">Display · Forum</span><div class="fd" style="font-size:44px;line-height:1.1;margin:8px 0">Aa Gg 123</div><p class="fd" style="font-size:15px;color:var(--mu)">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</p><p style="margin:8px 0"><span class="pill">400 Regular</span></p><p class="lead" style="font-size:13px">Google Fonts, one weight only. Headlines, section titles, menu names, quote. Loads with <code>display: swap</code>: it is the hero voice, so it must not be skipped on a slow connection.</p></div><div class="card"><span class="k">Primary · DM Sans</span><div class="fb" style="font-size:44px;line-height:1.1;margin:8px 0;font-weight:500">Aa Gg 123</div><p class="fb" style="font-size:15px;color:var(--mu)">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</p><p style="margin:8px 0"><span class="pill">400 Regular</span> <span class="pill">500 Medium</span> <span class="pill">600 SemiBold</span></p><p class="lead" style="font-size:13px">Variable font (weight 100–1000, optical size 9–40), low-contrast geometric, designed for small sizes. Everything you read or tap. <code>display: swap</code>; load 400, 500, 600 only (700 dropped).</p></div><div class="card" dir="rtl"><span class="k" dir="ltr">Script fallback · Noto Nastaliq Urdu</span><div style="font-family:'Noto Nastaliq Urdu',serif;font-size:26px;line-height:2.2;margin:6px 0">مزیدار کھانے</div><p dir="ltr" style="margin:8px 0"><span class="pill">400</span> <span class="pill">700</span></p><p dir="ltr" class="lead" style="font-size:13px">Not loaded today. Added only if Urdu is ever offered, with its own line height (1.8+) and right-to-left layout. Forum is assumed to lack Arabic-script glyphs; verify before relying on it.</p></div></div><div class="card" style="margin-top:10px;border-left:3px solid var(--ac)"><b>Why this pairing</b><p class="lead" style="margin:4px 0 0">Forum is a classical serif with one weight, so it can only ever be a voice, never UI chrome. DM Sans is a clean, low-contrast sans built for small sizes (x-height about 0.50, cap height 0.70), so descriptions, prices and labels stay crisp on dark. They differ in structure but share open, geometric proportions. Lists of overused "AI default" fonts often include DM Sans and rarely Forum, so the distinctive half of the pairing is the one that carries the brand.</p></div>`,
+      );
+      const rows = T.map(
+        (t) =>
+          `<div style="display:grid;grid-template-columns:78px 1fr 140px;gap:10px;align-items:baseline;border-bottom:1px dashed var(--ln);padding:7px 0"><code style="color:var(--mu)">--text-${TOK[t[0]]}</code><span style="font-family:var(${t[2] === "d" ? "--fd" : "--fb"}),serif;font-size:${Math.min(t[4], 64)}px;line-height:1.1;font-weight:${t[7]};${t[0] === "label" || t[0] === "overline" ? "text-transform:uppercase;letter-spacing:.14em;" : ""}white-space:nowrap;overflow:hidden">${t[0] === "label" || t[0] === "overline" ? "Book a table" : t[0] === "body" || t[0] === "lead" || t[0] === "small" ? "The quick brown fox" : "The quick brown"}</span><code style="color:var(--mu);text-align:right">${t[3] === t[4] ? t[3] + "px" : t[3] + "→" + t[4] + "px"}</code></div>`,
+      ).join("");
+      const ord = [...T].sort((a, b) => a[4] - b[4] || a[3] - b[3]);
+      A.push(
+        `<h2>02 · Type scale: <code>--text-xs → --text-6xl</code></h2><p class="lead">Ten size tokens, fluid between a 375px phone and a 1440px desktop (rem plus a viewport part, so zoom still works). The values come from today's page, so the look is unchanged up to 1440px; the new caps only stop runaway sizes on very wide screens.</p><div class="card">${ord
+          .filter((t, i, a) => a.findIndex((u) => TOK[u[0]] === TOK[t[0]]) === i)
+          .map((t) => rows.split("</div><div style")[0] && "")
+          .join("")}${ord
+          .filter((t) => t[0] !== "overline")
+          .map(
+            (t) =>
+              `<div style="display:grid;grid-template-columns:78px 1fr 150px;gap:10px;align-items:baseline;border-bottom:1px dashed var(--ln);padding:7px 0"><code style="color:var(--mu)">--text-${TOK[t[0]]}</code><span style="font-family:var(${t[2] === "d" ? "--fd" : "--fb"}),serif;font-size:${Math.min(t[4], 64)}px;line-height:1.1;font-weight:${t[7]};${t[0] === "label" ? "text-transform:uppercase;letter-spacing:.14em;" : ""}white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t[0] === "label" ? "Book a table" : t[0] === "body" || t[0] === "lead" || t[0] === "small" ? "The quick brown fox jumps" : "The quick brown"}</span><code style="color:var(--mu);text-align:right">${t[3] === t[4] ? t[3] + "px" : t[3] + "→" + t[4] + "px"}</code></div>`,
+          )
+          .join(
+            "",
+          )}</div><div class="sc"><table class="tbl" style="margin-top:8px"><tr><th>Token</th><th>Fluid value (1rem = 10px at default)</th><th>Role(s)</th></tr>${ord
+          .filter((t) => t[0] !== "overline")
+          .map(
+            (t) =>
+              `<tr><td><code>--text-${TOK[t[0]]}</code></td><td><code>${clamp(t[3], t[4])}</code></td><td>${t[0] === "label" ? "label, overline, button" : t[0]}</td></tr>`,
+          )
+          .join(
+            "",
+          )}</table></div><p class="lead" style="margin-top:6px">At 375px the figure (24px) is larger than the h2 (22px): that matches today's page and keeps phone numbers prominent on phones.</p>`,
+      );
+      const spec = T.map(
+        (t) =>
+          `<div class="card"><code style="color:var(--ac)">.t-${t[0] === "h1" ? "heading" : t[0] === "h2" ? "subheading" : t[0] === "h3" ? "card-title" : t[0] === "title" ? "item-title" : t[0]}</code><div style="font-family:var(${t[2] === "d" ? "--fd" : "--fb"}),serif;font-size:${Math.min(t[4], 34)}px;line-height:${t[5]};letter-spacing:${t[6]}em;font-weight:${t[7]};margin:6px 0;${t[0] === "label" || t[0] === "overline" ? "text-transform:uppercase;" : ""}">${t[0] === "label" || t[0] === "overline" ? "Our story" : t[0] === "body" || t[0] === "lead" ? "Come with family and feel the joy" : "Flavors inspired by the seasons"}</div><div style="font-size:11.5px;color:var(--mu);line-height:1.5">${t[2] === "d" ? "Forum" : "DM Sans"} ${t[7]} · --text-${TOK[t[0]]} · lh ${t[5]} · tracking ${t[6] >= 0 ? "+" : ""}${t[6]}em${t[0] === "label" || t[0] === "overline" ? " · uppercase" : ""}<br>${t[1]}</div></div>`,
+      ).join("");
+      A.push(
+        `<h2>03 · Semantic roles</h2><p class="lead">Eleven roles; components apply a role, never a raw size. Each card shows the exact spec.</p><div class="g c3">${spec}</div><div class="card" style="margin-top:10px;border-left:3px solid var(--ac)"><b>Confinement rule for Forum</b><p class="lead" style="margin:4px 0 0">Forum appears only in display, heading, subheading, card-title and item-title, never below about 18px, and never in navigation, buttons, labels, badges, tags, form fields or helper text. Those are the sans. This keeps the serif a voice and stops it leaking into UI "for warmth". One change follows: the menu badges move from uppercase Forum at 14px to DM Sans 600.</p></div>`,
+      );
+      const roles = [
+        ["Display, headings", "t-display to t-item-title", ST, "#FCFAF7"],
+        ["Body, lead", "t-body, t-lead", IV],
+        ["Small, helper", "t-small", MU],
+        ["Label, nav", "t-label", IV],
+        ["Overline, figure, links", "t-overline, t-figure", GO],
+        ["Link hover", "hover", G3],
+        ["Placeholder, old price", "faint", FA],
+        ["Success text", "status", E.success.text],
+        ["Warning text", "status", E.warning.text],
+        ["Error text", "status", E.error.text],
+        ["Info text", "status", E.info.text],
+      ];
+      A.push(
+        `<h2>03C · On-dark context (verified)</h2><p class="lead">Every role checked against Grilli's real surfaces. Light-on-dark text looks heavier, which is why body gets +0.01em tracking and line height 1.65.</p><div class="sc"><table class="tbl"><tr><th>Role</th><th>Classes</th><th>Colour</th><th>On ink</th><th>On charcoal</th><th>On raised</th><th>Verdict</th></tr>${roles.map(([n, c, h]) => `<tr><td>${n}</td><td><code>${c}</code></td><td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${h};border:1px solid var(--ln);vertical-align:-1px"></span> <code>${h}</code></td><td>${cr(h, S0)}</td><td>${cr(h, S1)}</td><td>${cr(h, S2)}</td><td>${badge(+cr(h, S2))}</td></tr>`).join("")}</table></div><h3>Light colourway (menus, receipts, profile)</h3><div class="sc"><table class="tbl"><tr><th>Role</th><th>Colour</th><th>On paper</th></tr>${[
+          ["Headings, body", IK],
+          ["Overline, links", G[8]],
+          ["Claret label", K.claret[6]],
+        ]
+          .map(
+            ([n, h]) =>
+              `<tr><td>${n}</td><td><code>${h}</code></td><td>${cr(h, PA)} · ${badge(+cr(h, PA))}</td></tr>`,
+          )
+          .join("")}</table></div>`,
+      );
+      A.push(
+        `<h2>04 · Weight ladder</h2><div class="card">${[
+          [400, "Regular", ".t-body · .t-lead · .t-small · every Forum role"],
+          [500, "Medium", ".t-figure · links · special-dish price"],
+          [600, "SemiBold", ".t-label · .t-overline · buttons"],
+          [700, "Bold", "not used; dropped from loading"],
+        ]
+          .map(
+            ([w, n, u]) =>
+              `<div style="display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--ln);padding:8px 0"><span><code style="color:var(--mu)">${w}</code> <span class="fb" style="font-weight:${w};font-size:18px;margin-left:10px;${w === 700 ? "opacity:.45" : ""}">${n}</span></span><code style="color:var(--mu);text-align:right">${u}</code></div>`,
+          )
+          .join(
+            "",
+          )}<div style="display:flex;justify-content:space-between;gap:10px;padding:8px 0"><span><code style="color:var(--mu)">400</code> <span class="fd" style="font-size:20px;margin-left:10px">Forum Regular</span></span><code style="color:var(--mu)">only weight; font-synthesis off</code></div></div><p class="lead" style="margin-top:6px">Today every emphasis is 700. Medium and semibold make labels calmer and more premium, and dropping 700 keeps the font payload small.</p>`,
+      );
+      A.push(
+        `<h2>05 · Tracking and line-height curve</h2><div class="g c2"><div class="card"><svg viewBox="0 0 300 140" width="100%" role="img" aria-label="Line height falls from 1.65 for body text to 1.0 for the display size"><g fill="none" stroke="var(--ln)"><path d="M30 10V120H290"/></g><polyline fill="none" stroke="var(--ac)" stroke-width="2" points="${T.map((t, i) => `${30 + i * 26},${120 - (t[5] - 0.9) * 140}`).join(" ")}"/>${T.map((t, i) => `<circle cx="${30 + i * 26}" cy="${120 - (t[5] - 0.9) * 140}" r="3" fill="var(--ac)"/><text x="${30 + i * 26}" y="134" font-size="7" text-anchor="middle" fill="var(--mu)">${t[0].slice(0, 4)}</text>`).join("")}<text x="4" y="14" font-size="8" fill="var(--mu)">1.65</text><text x="4" y="118" font-size="8" fill="var(--mu)">1.0</text></svg></div><div class="sc"><table class="tbl"><tr><th>Element</th><th>Today</th><th>Locked</th></tr>${[
+          ["Section subtitle", "12px · .4em", "13px · .24em"],
+          ["Buttons", "12px · 3px", "13px · .14em"],
+          ["Nav links", "12px · .15em", "13px · .14em"],
+          ['"View menu" links', "12px · .2em", "13px · .16em"],
+          ["Footer links", "12px · .3em", "13px · .16em"],
+          ["Body copy", "16px · lh 1.85", "16px · lh 1.65 · +.01em"],
+        ]
+          .map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td><td><b>${r[2]}</b></td></tr>`)
+          .join(
+            "",
+          )}</table></div></div><p class="lead" style="margin-top:6px">Research puts uppercase at about 5–12% extra space; these values sit just above that range on purpose, to keep your airy, premium feel.</p>`,
+      );
+      const fc = (c, s) =>
+        `<span style="color:${c.t};background:${c.b};padding:7px 10px;border-radius:6px;font-size:13px;font-weight:600;display:inline-flex;gap:6px;align-items:center;border:1px solid ${c.d}">${s}</span>`;
+      A.push(
+        `<h2>06 · Semantic text and links</h2><p class="lead">Status text uses the colour kit's tokens, always with an icon and a word. Links inside paragraphs keep an underline, because colour alone is not enough (WCAG 1.4.1).</p><div class="dk"><div style="display:flex;gap:8px;flex-wrap:wrap" class="fb">${["success", "warning", "error", "info"].map((n) => fc({ t: E[n].text, b: E[n].tint, d: E[n].border }, { success: "✓ Table booked.", warning: "! Only 2 tables left.", error: "✕ Enter a valid phone number.", info: "i Kitchen closes at 10." }[n])).join("")}</div><p class="fb" style="font-size:16px;line-height:1.65;letter-spacing:.01em;margin-top:14px">Our menu changes with the <a href="#" style="color:${GO};text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;font-weight:500;outline:2px solid ${G3};outline-offset:2px;border-radius:2px">seasons</a>; ask about allergens. <span class="m">(focus ring shown: 2px gold-300, 2px offset, ${cr(G3, S1)}:1)</span></p><p class="fd" style="font-size:25px;margin-top:10px">Greek Salad <span class="gd" style="font-variant-numeric:tabular-nums">$25.50</span> <s class="fb" style="font-size:16px;color:${FA}">$40.00</s></p></div><ul class="l" style="margin-top:8px"><li>Old price: faint text with strikethrough (${cr(FA, S0)}:1; it was 2.7:1 and lost its strikethrough).</li><li>Prices use tabular figures wherever the font supports them.</li></ul>`,
+      );
+      const tag = (t) =>
+        `<div style="font-size:11px;color:#95918D;margin-top:6px"><code>${t}</code></div>`;
+      A.push(
+        `<h2>07 · Pairings in context</h2><p class="lead">Five patterns from your real page, each annotated with the roles it uses.</p><div class="g c2"><div class="dk" style="text-align:center"><p class="fb gd" style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;font-weight:600">Traditional and hygienic</p><p class="fd" style="font-size:clamp(34px,7vw,60px);line-height:1;letter-spacing:-.01em;margin:10px 0">For the love of<br>delicious food</p><p class="fb m" style="font-size:18px;line-height:1.6;margin-bottom:14px">Come with family and feel the joy of mouthwatering food</p><span class="bt">View our menu</span>${tag("hero: overline · display · lead · label (button)")}</div><div class="dk"><div style="display:flex;gap:14px;align-items:flex-start"><div style="width:68px;height:68px;border-radius:18px;background:#E4C590;flex:none"></div><div><div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap"><span class="fd" style="font-size:22px">Tokusen Wagyu</span><span class="fb" style="background:#E4C590;color:#0F0D0B;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:1px 8px">New</span><span class="fd gd" style="font-size:22px;font-variant-numeric:tabular-nums">$39.00</span></div><p class="fb m" style="font-size:14px;line-height:1.5;margin-top:4px">Vegetables, cheeses, ground meats, tomato sauce, seasonings and spices.</p></div></div>${tag("menu card: item-title (Forum) · label (badge, sans) · figure · small")}</div><div class="dk"><p class="fb gd" style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;font-weight:600">Food, flavour</p><p class="fd" style="font-size:24px;line-height:1.25;margin:6px 0">Flavour so good you will try to eat with your eyes.</p><p class="fb" style="font-size:13px;letter-spacing:.14em;color:${GO};font-weight:600">15/09/2022</p>${tag("event card: overline · title (Forum) · label")}</div><div class="dk"><div class="fb" style="display:flex;gap:18px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600"><span class="gd" style="border-bottom:1px solid #E4C590;padding-bottom:3px">Home</span><span>Menus</span><span>About us</span><span>Contact</span></div>${tag("navigation: label · active item in gold with underline (never Forum)")}<div style="margin-top:16px"><div class="fb" style="font-size:13px;color:${MU}">Phone number</div><div class="fb" style="background:${S2};border:1px solid #706D68;padding:11px 14px;margin-top:4px;color:${FA}">+1 123 456 7890</div>${tag("form: small (label) · body (field) · placeholder faint")}</div></div></div>`,
+      );
+      A.push(
+        `<h2>08 · Component cross-reference</h2><div class="sc"><table class="tbl"><tr><th>Component</th><th>Text</th><th>Today</th><th>Role</th></tr>${[
+          ["Top bar", "address, hours, phone, email", "label-1 14px", "small"],
+          ["Header and nav", "links", "12px, bold on desktop", "label"],
+          ["Button", "labels", "12px bold, 3px", "label"],
+          [
+            "Hero",
+            "subtitle · headline · sub-line",
+            "12px/.4em · display-1 · body-2",
+            "overline · display · lead",
+          ],
+          ["Services", 'card title · "View menu"', "title-4 · 12px .2em", "card-title · label"],
+          ["About", "paragraph · phone", "16px/1.85 · body-1", "body · figure"],
+          [
+            "Special dish",
+            "title · price · old price",
+            "headline-1 · body-1 · body-3",
+            "heading · figure · body",
+          ],
+          [
+            "Menu",
+            "name · badge · price · text",
+            "title-3 · Forum 14px caps · title-2 · 14px",
+            "item-title · label (sans) · item-title · small",
+          ],
+          ["Testimonial", "quote · name", "headline-2 · 12px .2em", "subheading · label"],
+          [
+            "Reservation",
+            "headings · labels · fields",
+            "headline-1 · bold · 16px",
+            "heading · label · body",
+          ],
+          ["Features", "title · text", "title-2 · 14px", "item-title · small"],
+          [
+            "Events",
+            "date · category · title",
+            "12px · 12px .4em · title-2",
+            "label · overline · item-title",
+          ],
+          [
+            "Footer",
+            "newsletter · links · copyright",
+            "title-1 · 12px .3em · 16px",
+            "card-title · label · body",
+          ],
+        ]
+          .map(
+            (r) =>
+              `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td style="color:var(--mu)">${r[2]}</td><td>${r[3]}</td></tr>`,
+          )
+          .join("")}</table></div>`,
+      );
+      A.push(
+        `<h2>09 · Do and don't</h2><div class="two"><div class="card"><b class="ok">Do</b><ul class="l"><li>Apply a role, never a raw size.</li><li>Keep Forum for headlines, items and quote only.</li><li>Uppercase only for short labels, 14–24% tracking.</li><li>Body 1.65 line height, 45–75 characters per line.</li><li>Keep underlines on links in paragraphs.</li><li>Test at 200% zoom and with a larger browser text size.</li></ul></div><div class="card"><b class="no">Don't</b><ul class="l"><li>No Forum below ~18px; no faux bold or italic.</li><li>No gradient text, glow or text shadows.</li><li>No 40% tracking; no all-caps paragraphs.</li><li>No pixel root size; no sizes made only of vw.</li><li>No third family for decoration.</li><li>No light weights on dark.</li></ul></div></div>`,
+      );
+      A.push(
+        `<h2>10 · Loading, accessibility and extras</h2><div class="g c2"><div class="card"><b>Loading</b><ul class="l"><li>Self-hosted through next/font with metric-matched fallbacks, so swapping causes little or no layout shift.</li><li>Both fonts use swap. Optional is for purely decorative fonts; Forum is the hero voice.</li><li>Preload only the fonts used above the fold; subset Latin (add Latin-extended only if names need it).</li><li>I have not measured payload; run Lighthouse before and after.</li></ul></div><div class="card"><b>Accessibility</b><ul class="l"><li>Root 62.5% so the visitor's text setting applies, with no visible change at default.</li><li>Check 200% zoom; capped fluid sizes can break the resize rule.</li><li>Survive text spacing overrides: 1.5 line height, .12em letters, .16em words.</li><li>Balance headline lines; avoid one-word last lines in paragraphs.</li></ul></div></div>`,
+      );
+      A.push(
+        `<h2>11 · Research notes</h2><ul class="l"><li>Restaurant sources agree on two families, serif plus sans, tested at the smallest real size; most are content blogs, so only agreed points are used.</li><li>Font-display: swap with matched fallbacks is the usual choice for text fonts; optional suits decorative ones.</li><li>DM Sans: variable weight 100–1000 and optical size 9–40, Latin and Latin-extended, designed for smaller sizes.</li><li>Dark-mode weight advice conflicts; spacing advice agrees. Uppercase tracking guidance is about 5–12%.</li></ul><h2>Locked, and next</h2><p class="lead">Forum + DM Sans · moderate tracking · labels 13px · body line height 1.65 · root 62.5%. Next step: Spacing and Radius.</p>`,
+      );
+      document.getElementById("app").innerHTML = A.join("");
+    </script>
+  </body>
+</html>

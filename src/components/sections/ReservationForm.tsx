@@ -58,21 +58,21 @@ export function ReservationForm() {
 
   return (
     <form
-      className="px-20 pt-40 pb-30 xl:px-60 xl:pt-75 xl:pb-75"
+      className="px-5 pt-10 pb-8 xl:px-16 xl:pt-18 xl:pb-18"
       onSubmit={handleSubmit(onValid, onInvalid)}
       noValidate
     >
-      <h2 className="text-center font-forum text-headline-1">Online Reservation</h2>
+      <h2 className="text-center t-heading">Online Reservation</h2>
 
-      <p className="mb-40 text-center">
+      <p className="mb-10 text-center">
         Booking request{" "}
-        <a href={booking.href} className="inline text-gold">
+        <a href={booking.href} className="link-inline">
           {booking.label}
         </a>{" "}
         or fill out the order form
       </p>
 
-      <div className="md:grid md:grid-cols-[1fr_1fr] md:gap-x-20">
+      <div className="md:grid md:grid-cols-[1fr_1fr] md:gap-x-5">
         <input
           type="text"
           placeholder="Your Name"
@@ -94,9 +94,9 @@ export function ReservationForm() {
         />
       </div>
 
-      <div className="md:grid md:grid-cols-[repeat(3,1fr)] md:gap-x-20">
+      <div className="md:grid md:grid-cols-[repeat(3,1fr)] md:gap-x-5">
         <div className="icon-wrapper">
-          <Icon name="person-outline" />
+          <Icon name="user" size={16} />
 
           <select
             aria-label="Number of people"
@@ -111,25 +111,25 @@ export function ReservationForm() {
             ))}
           </select>
 
-          <Icon name="chevron-down" />
+          <Icon name="chevron-down" size={16} />
         </div>
 
         <div className="icon-wrapper">
-          <Icon name="calendar-clear-outline" />
+          <Icon name="calendar" size={16} />
 
           <input
             type="date"
             aria-label="Reservation date"
             aria-invalid={invalid("date")}
-            className="input-field pr-10 uppercase [&::-webkit-calendar-picker-indicator]:opacity-0"
+            className="input-field uppercase [&::-webkit-calendar-picker-indicator]:opacity-0"
             {...register("date")}
           />
 
-          <Icon name="chevron-down" />
+          <Icon name="chevron-down" size={16} />
         </div>
 
         <div className="icon-wrapper">
-          <Icon name="time-outline" />
+          <Icon name="clock" size={16} />
 
           <select
             aria-label="Reservation time"
@@ -144,7 +144,7 @@ export function ReservationForm() {
             ))}
           </select>
 
-          <Icon name="chevron-down" />
+          <Icon name="chevron-down" size={16} />
         </div>
       </div>
 
@@ -153,11 +153,11 @@ export function ReservationForm() {
         aria-label="Message"
         aria-invalid={invalid("message")}
         autoComplete="off"
-        className="input-field h-140 resize-none py-20 leading-[1em]"
+        className="input-field h-36 resize-none py-5"
         {...register("message")}
       />
 
-      <FormStatus state={status} className="mb-20 text-center" />
+      <FormStatus state={status} className="mb-5" />
 
       <Button
         type="submit"

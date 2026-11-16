@@ -45,7 +45,7 @@ export function NewsletterForm() {
     <>
       <form className="sm:relative" onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
         <div className="icon-wrapper">
-          <Icon name="mail-outline" />
+          <Icon name="mail" size={16} />
 
           <input
             type="email"
@@ -53,7 +53,8 @@ export function NewsletterForm() {
             aria-label="Your email"
             aria-invalid={errors.email ? true : undefined}
             autoComplete="off"
-            className="input-field cursor-text sm:pr-205"
+            // pr-52 (208px) must stay wider than the Subscribe button that sits inside the field
+            className="input-field cursor-text sm:pr-52"
             {...register("email")}
           />
         </div>
@@ -68,7 +69,7 @@ export function NewsletterForm() {
         </Button>
       </form>
 
-      <FormStatus state={status} className="mt-12" />
+      <FormStatus state={status} className="mt-3" />
     </>
   );
 }

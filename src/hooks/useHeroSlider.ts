@@ -6,7 +6,10 @@ import { useCallback, useEffect, useState } from "react";
  * Hero slider state: wrap-around next/prev, auto-advance every `intervalMs`,
  * and a pause/resume pair (used while the arrow buttons are hovered).
  */
-export function useHeroSlider(slideCount: number, intervalMs = 7000) {
+/** Time each hero slide stays up (the "hero slide 7s" motion token). */
+export const HERO_INTERVAL_MS = 7000;
+
+export function useHeroSlider(slideCount: number, intervalMs = HERO_INTERVAL_MS) {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 

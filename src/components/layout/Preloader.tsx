@@ -30,11 +30,11 @@ export function Preloader() {
     <div
       aria-hidden="true"
       className={clsx(
-        "fixed inset-0 z-10 grid place-content-center justify-items-center bg-gold trans-base *:trans-fast",
+        "fixed inset-0 z-preloader grid place-content-center justify-items-center bg-gold-400 trans-base *:trans-fast print:hidden",
         isLoaded && "translate-y-full delay-250 *:opacity-0",
       )}
     >
-      <div className="mb-45 size-112 animate-spin-1 rounded-circle border-[3px] border-white border-t-smoky-black-3" />
+      <div className="mb-12 size-28 animate-spin-1 rounded-circle border-spinner border-fg-strong border-t-surface-0" />
       <p className="loading-text">Grilli</p>
     </div>
   );

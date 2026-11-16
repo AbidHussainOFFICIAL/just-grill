@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>Grilli spacing, radius and system tokens</title>
+    <style>
+      :root {
+        --bg: #f4efe7;
+        --card: #fbf8f3;
+        --tx: #1a1511;
+        --mu: #5e564d;
+        --ln: #d9d0c3;
+        --ac: #795f2e;
+        --pk: #d9667e;
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #191614;
+          --card: #24211d;
+          --tx: #f3efeb;
+          --mu: #bbb7b2;
+          --ln: #423e3b;
+          --ac: #e4c590;
+          --pk: #e58aa0;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #191614;
+        --card: #24211d;
+        --tx: #f3efeb;
+        --mu: #bbb7b2;
+        --ln: #423e3b;
+        --ac: #e4c590;
+        --pk: #e58aa0;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--tx);
+        font:
+          15px/1.6 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      }
+      main {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 28px 18px 70px;
+      }
+      h1,
+      h2 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+      }
+      h1 {
+        font-size: clamp(28px, 5vw, 42px);
+        line-height: 1.15;
+      }
+      h2 {
+        font-size: 25px;
+        margin: 44px 0 4px;
+        padding-top: 18px;
+        border-top: 1px solid var(--ln);
+      }
+      h3 {
+        font-size: 14px;
+        margin: 18px 0 8px;
+      }
+      .lead {
+        color: var(--mu);
+        max-width: 74ch;
+        margin: 4px 0 12px;
+      }
+      .k {
+        color: var(--ac);
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .g {
+        display: grid;
+        gap: 10px;
+      }
+      .c2 {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .c3 {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      .c4 {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--ln);
+        border-radius: 10px;
+        padding: 14px;
+      }
+      .sc {
+        overflow-x: auto;
+      }
+      .tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .tbl th,
+      .tbl td {
+        padding: 7px 8px;
+        border-bottom: 1px solid var(--ln);
+        text-align: left;
+        vertical-align: top;
+      }
+      .tbl th {
+        color: var(--mu);
+        font-weight: 500;
+        font-size: 12px;
+      }
+      code {
+        font:
+          12px ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+      }
+      .pill {
+        display: inline-block;
+        font-size: 11px;
+        padding: 1px 7px;
+        border-radius: 99px;
+        border: 1px solid currentColor;
+        white-space: nowrap;
+      }
+      .ok {
+        color: #4e7d43;
+      }
+      .no {
+        color: #b2433b;
+      }
+      .wn {
+        color: #9a6a1c;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .ok {
+          color: #91c985;
+        }
+        :root:not([data-theme="light"]) .no {
+          color: #f69c90;
+        }
+        :root:not([data-theme="light"]) .wn {
+          color: #f4a34b;
+        }
+      }
+      .dk {
+        background: #191614;
+        color: #f3efeb;
+        border-radius: 10px;
+        padding: 18px;
+      }
+      .dk .m {
+        color: #bbb7b2;
+      }
+      .dk .gd {
+        color: #e4c590;
+      }
+      ul.l {
+        padding-left: 18px;
+      }
+      ul.l li {
+        margin: 3px 0;
+      }
+      .two {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 12px;
+      }
+      .bar {
+        display: inline-block;
+        height: 12px;
+        background: var(--ac);
+        border-radius: 2px;
+        vertical-align: middle;
+      }
+      .stat {
+        font-family: Georgia, serif;
+        font-size: 30px;
+        line-height: 1.1;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="app"></main>
+    <script>
+      const h2r = (h) => [1, 3, 5].map((i) => parseInt(h.substr(i, 2), 16)),
+        lin = (c) => {
+          c /= 255;
+          return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+        },
+        Lm = (h) => {
+          const [r, g, b] = h2r(h).map(lin);
+          return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        },
+        cr = (a, b) =>
+          ((Math.max(Lm(a), Lm(b)) + 0.05) / (Math.min(Lm(a), Lm(b)) + 0.05)).toFixed(1);
+      const f1 = (n) => (+n).toFixed(1),
+        tb = (h, rows) =>
+          `<div class="sc"><table class="tbl"><tr>${h.map((x) => `<th>${x}</th>`).join("")}</tr>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</table></div>`;
+      const A = [],
+        S0 = "#0F0D0B",
+        S1 = "#191614",
+        S2 = "#24211D",
+        GO = "#E4C590",
+        IV = "#F3EFEB",
+        MU = "#BBB7B2";
+
+      const D = {
+          spacing: [
+            [2.0, 2, ["Footer", "Testimonial"], 4, 2.0],
+            [4.0, 5, ["Header", "Navbar", "Service"], 4, 0.0],
+            [5.0, 3, ["Events", "Reservation"], 4, -1.0],
+            [6.0, 3, ["Footer", "Hero", "Topbar"], 4, -2.0],
+            [8.0, 1, ["Header"], 8, 0.0],
+            [10.0, 10, ["Events", "Hero", "Menu", "Navbar", "ReservationForm", "Topbar"], 8, -2.0],
+            [12.0, 5, ["Header", "Hero", "NewsletterForm", "Service", "SpecialDish"], 12, 0.0],
+            [14.0, 1, ["Hero"], 12, -2.0],
+            [15.0, 5, ["About", "Menu", "Navbar", "Testimonial"], 16, 1.0],
+            [16.0, 2, ["Service", "SpecialDish"], 16, 0.0],
+            [
+              20.0,
+              18,
+              [
+                "Features",
+                "Footer",
+                "Header",
+                "Hero",
+                "Menu",
+                "Navbar",
+                "Reservation",
+                "ReservationForm",
+                "SpecialDish",
+              ],
+              20,
+              0.0,
+            ],
+            [25.0, 5, ["Events", "Footer", "Reservation", "SpecialDish"], 24, -1.0],
+            [26.0, 3, ["About", "Menu", "Service"], 24, -2.0],
+            [
+              30.0,
+              13,
+              [
+                "About",
+                "Features",
+                "Footer",
+                "Navbar",
+                "Reservation",
+                "ReservationForm",
+                "Service",
+                "Topbar",
+              ],
+              32,
+              2.0,
+            ],
+            [35.0, 2, ["Events"], 32, -3.0],
+            [
+              40.0,
+              23,
+              [
+                "Events",
+                "Features",
+                "Footer",
+                "Header",
+                "Hero",
+                "Menu",
+                "Reservation",
+                "ReservationForm",
+                "Service",
+                "SpecialDish",
+                "Testimonial",
+              ],
+              40,
+              0.0,
+            ],
+            [45.0, 1, ["Preloader"], 48, 3.0],
+            [
+              50.0,
+              7,
+              ["AboutBanner", "Footer", "Menu", "Navbar", "SpecialDish", "Testimonial"],
+              48,
+              -2.0,
+            ],
+            [55.0, 2, ["Menu"], 48, -7.0],
+            [60.0, 3, ["Navbar", "Reservation", "ReservationForm"], 64, 4.0],
+            [70.0, 2, ["Footer", "SpecialDish"], 64, -6.0],
+            [75.0, 5, ["Reservation", "ReservationForm", "Service"], 80, 5.0],
+            [80.0, 1, ["About"], 80, 0.0],
+            [90.0, 3, ["About", "AboutBanner", "Menu"], 96, 6.0],
+            [100.0, 4, ["About", "Footer", "Hero", "Navbar"], 96, -4.0],
+            [120.0, 4, ["About", "AboutBanner", "Hero", "SpecialDish"], 120, 0.0],
+            [150.0, 1, ["Service"], 160, 10.0],
+            [170.0, 1, ["About"], 160, -10.0],
+            [200.0, 1, ["Menu"], 160, -40.0],
+            [205.0, 1, ["NewsletterForm"], 160, -45.0],
+            [225.0, 1, ["SpecialDish"], 160, -65.0],
+            [270.0, 1, ["Reservation"], 160, -110.0],
+            [340.0, 1, ["Testimonial"], 160, -180.0],
+          ],
+          offset: [
+            [5.0, 3, ["About", "Navbar", "Reservation"], 4, -1.0],
+            [10.0, 1, ["SpecialDish"], 8, -2.0],
+            [15.0, 2, ["Hero"], 16, 1.0],
+            [20.0, 5, ["BackToTop", "Navbar"], 20, 0.0],
+            [25.0, 1, ["Events"], 24, -1.0],
+            [30.0, 3, ["Events", "Hero"], 32, 2.0],
+            [40.0, 1, ["SpecialDish"], 40, 0.0],
+            [50.0, 2, ["Hero"], 48, -2.0],
+            [51.0, 1, ["Header"], 48, -3.0],
+            [65.0, 1, ["AboutBanner"], 64, -1.0],
+            [80.0, 1, ["Features"], 80, 0.0],
+            [120.0, 1, ["AboutBanner"], 120, 0.0],
+            [160.0, 1, ["Service"], 160, 0.0],
+            [360.0, 2, ["Navbar"], 160, -200.0],
+          ],
+          size: [
+            [2.0, 3, ["Header"], 4, 2.0],
+            [6.0, 1, ["Menu"], 4, -2.0],
+            [8.0, 2, ["Navbar", "Separator"], 8, 0.0],
+            [15.0, 2, ["Footer"], 16, 1.0],
+            [30.0, 3, ["Header"], 32, 2.0],
+            [45.0, 1, ["Hero"], 48, 3.0],
+            [50.0, 1, ["BackToTop"], 48, -2.0],
+            [110.0, 1, ["Hero"], 120, 10.0],
+            [112.0, 1, ["Preloader"], 120, 8.0],
+            [140.0, 3, ["AboutBanner", "ReservationForm", "Service"], 120, -20.0],
+            [150.0, 1, ["AboutBanner"], 160, 10.0],
+            [285.0, 1, ["AboutBanner"], 160, -125.0],
+            [360.0, 1, ["Navbar"], 160, -200.0],
+          ],
+        },
+        TP = {
+          About: [
+            "2xl:pr-90",
+            "gap-120",
+            "lg:gap-30",
+            "mb-30",
+            "mt-15",
+            "mt-26",
+            "sm:gap-80",
+            "xl:pb-100",
+            "xl:pt-170",
+          ],
+          AboutBanner: ["mb-120", "pl-50", "py-50", "sm:pl-90"],
+          Events: ["gap-40", "mb-40", "mb-5", "mt-40", "pb-25", "pt-35", "px-10", "px-35", "py-5"],
+          Features: ["gap-40", "mb-40", "my-20", "pb-40", "pt-30", "px-20"],
+          Footer: [
+            "gap-2",
+            "gap-20",
+            "gap-40",
+            "lg:py-100",
+            "mb-25",
+            "mb-30",
+            "mb-40",
+            "mb-70",
+            "mt-40",
+            "my-6",
+            "px-40",
+            "py-50",
+          ],
+          Header: ["gap-8", "my-4", "p-12", "px-20", "py-20", "py-40"],
+          Hero: [
+            "after:mb-20",
+            "after:mt-14",
+            "mb-40",
+            "mb-6",
+            "mt-10",
+            "p-12",
+            "pt-100",
+            "py-120",
+          ],
+          Menu: [
+            "gap-20",
+            "gap-40",
+            "lg:gap-x-90",
+            "mb-40",
+            "mb-50",
+            "mt-10",
+            "mt-26",
+            "my-10",
+            "px-10",
+            "sm:gap-15",
+            "xl:gap-x-200",
+            "xl:gap-y-55",
+            "xl:mb-55",
+          ],
+          Navbar: [
+            "mb-10",
+            "mb-100",
+            "mb-15",
+            "mb-20",
+            "mb-60",
+            "md:mx-30",
+            "mt-30",
+            "my-10",
+            "my-30",
+            "p-4",
+            "pb-50",
+            "px-30",
+            "py-10",
+            "xl:gap-30",
+            "xl:mr-20",
+          ],
+          NewsletterForm: ["mt-12", "sm:pr-205"],
+          Preloader: ["mb-45"],
+          Reservation: [
+            "-mt-270",
+            "mb-25",
+            "mb-40",
+            "mb-5",
+            "my-20",
+            "pb-30",
+            "pt-40",
+            "px-20",
+            "xl:pb-75",
+            "xl:pt-75",
+            "xl:px-60",
+          ],
+          ReservationForm: [
+            "mb-20",
+            "mb-40",
+            "md:gap-x-20",
+            "pb-30",
+            "pr-10",
+            "pt-40",
+            "px-20",
+            "py-20",
+            "xl:pb-75",
+            "xl:pt-75",
+            "xl:px-60",
+          ],
+          Service: [
+            "gap-40",
+            "mb-12",
+            "mb-16",
+            "mb-26",
+            "mb-40",
+            "pb-4",
+            "py-30",
+            "xl:gap-150",
+            "xl:mb-75",
+          ],
+          SpecialDish: [
+            "gap-20",
+            "lg:pl-50",
+            "lg:pr-25",
+            "mb-12",
+            "mb-40",
+            "mt-16",
+            "py-70",
+            "xl:pl-120",
+            "xl:py-225",
+          ],
+          Testimonial: ["gap-2", "mb-15", "mb-50", "mt-40", "pb-340"],
+          Topbar: ["gap-30", "gap-6", "py-10"],
+        };
+      const CORE = [4, 8, 12, 16, 20, 24, 32, 40, 48, 56, 64],
+        LAY = [72, 80, 96, 120, 160, 200],
+        SC = [...CORE, ...LAY];
+      const OVR = { 14: 12, 205: 208 },
+        nn0 = (v) =>
+          SC.reduce(
+            (b, x) =>
+              Math.abs(x - v) < Math.abs(b - v) || (Math.abs(x - v) === Math.abs(b - v) && x > b)
+                ? x
+                : b,
+            SC[0],
+          ),
+        nn = (v) => OVR[v] || nn0(v);
+      const NOTE = {
+        205: "right padding of the Subscribe field: 208 (step 52), must stay wider than the button; a named exception",
+        225: "vertical centring: use flex centring instead of a number",
+        270: "form/testimonial overlap: named --spacing-overlap (272)",
+        340: "overlap + section space: calc(), never typed",
+        285: "natural width of the about photo (an asset size)",
+        200: "menu column gap: a layout step",
+        170: "about top offset: layout step 160",
+        150: "service grid gap: layout step 160",
+        110: "hero badge size",
+        51: "topbar height: fixed at 48 (h-12), header offset sm:top-12",
+        65: "offset: 64",
+        55: "menu row gap: 56",
+      };
+      const kind = (v) => {
+        const t = nn(v),
+          d = Math.abs(t - v);
+        return v % 4 === 0 && SC.includes(v)
+          ? ["grid", "ok"]
+          : v % 4 === 0
+            ? ["4px, off scale", "wn"]
+            : d <= 3
+              ? ["snap", "ok"]
+              : d <= 10
+                ? ["review", "wn"]
+                : ["derived", "no"];
+      };
+      const all = ["spacing", "offset", "size"].flatMap((f) =>
+        D[f].map((r) => ({ f, v: r[0], u: r[1], w: r[2], t: nn(r[0]), d: nn(r[0]) - r[0] })),
+      );
+      const tot = (f) => D[f].reduce((a, r) => a + r[1], 0),
+        offg = (f) => D[f].filter((r) => r[0] % 4).reduce((a, r) => a + r[1], 0);
+      A.push(
+        `<p class="k">Brand kit · 03 Spacing, radius and system tokens</p><h1>Grilli spacing, radius and system tokens</h1><p class="lead">Measured from your real code (the Next.js and Tailwind project), then researched and proposed. The page keeps your look: wherever a value moves, the change is shown in pixels so you can judge it. Typography changes ripple into spacing (body line height 1.85 to 1.65, button label lh 1.3), so those effects are included.</p><div class="g c4"><div class="card"><div class="stat">${tot("spacing")}</div>spacing utilities, ${D.spacing.length} different values</div><div class="card"><div class="stat">${Math.round((100 * offg("spacing")) / tot("spacing"))}%</div>of spacing uses are off a 4px grid</div><div class="card"><div class="stat">6</div>different z-index values, none named</div><div class="card"><div class="stat">3</div>radii in use: square, 24px, circle</div></div>`,
+      );
+      A.push(
+        `<h2>01 · Base unit and spacing scale</h2><p class="lead">Research: a 4px base gives finer control than 8px and is what most systems use internally; numbers in the scale should mean multipliers, not pixels; and values should be derived from a scale, never typed freely. Your Tailwind setup currently makes one unit equal one pixel (<code>p-20</code> is 20px), the opposite of the Tailwind convention (<code>p-5</code> is 20px). Switching to 4px per unit makes names match multipliers.</p><div class="g c2"><div class="card"><b>Core scale (11 steps to 64px)</b>${CORE.map((v, i) => `<div style="display:grid;grid-template-columns:54px 56px 1fr;gap:8px;align-items:center;padding:3px 0"><code>space-${v / 4}</code><code>${v}px</code><span class="bar" style="width:${v * 2.6}px"></span></div>`).join("")}</div><div class="card"><b>Layout scale (sections and big offsets)</b>${LAY.map((v) => `<div style="display:grid;grid-template-columns:54px 56px 1fr;gap:8px;align-items:center;padding:3px 0"><code>space-${v / 4}</code><code>${v}px</code><span class="bar" style="width:${v * 1.2}px;opacity:.7"></span></div>`).join("")}<p class="lead" style="margin-top:8px">Half-step: <code>space-0.5</code> = 2px, only for hairline gaps (the dots between separators).</p></div></div><p class="lead" style="margin-top:8px">Why 56: your menu rows use 55px; 56 is the closest on-grid value, so that step is only 1px different instead of 7. Why 72: it replaces 70 and 75.</p>`,
+      );
+      const SEM = [
+        ["space-gutter", "16 (20 in header)", "Page side padding on phones"],
+        ["space-inline-xs", "4", "Icon and underline offsets"],
+        ["space-inline-sm", "8", "Gap between icon and label; between inline items"],
+        ["space-inline-md", "12–16", "Gap between badge, price, title"],
+        ["space-field", "20", "Gap between form fields"],
+        ["space-stack-sm", "8–12", "Title to description"],
+        ["space-stack-md", "16–24", "Paragraph to paragraph, label to field"],
+        ["space-stack-lg", "32–40", "Block to block inside a section"],
+        ["space-inset-sm", "12", "Compact padding: input vertical padding, tags"],
+        ["space-inset-md", "16–20", "Card side padding, button vertical padding (20)"],
+        ["space-inset-lg", "32–48", "Card and panel padding, button horizontal 48"],
+        ["space-section", "72 (96 from 992px)", "Top and bottom of every section"],
+        ["space-hero", "120", "Hero vertical padding"],
+        ["space-overlap", "272", "Reservation form lifted over the testimonial"],
+      ];
+      A.push(
+        `<h2>02 · Semantic spacing: where each step is used</h2><p class="lead">Seven roles are real tokens with one value each (gutter, inline-xs, inline-sm, field, section, hero, overlap). The rest are roles that map to scale steps, shown as ranges, so components use the numbered scale for them.</p>` +
+          tb(
+            ["Token", "Value", "Used for"],
+            SEM.map((r) => [`<code>${r[0]}</code>`, r[1], r[2]]),
+          ),
+      );
+      A.push(
+        `<h2>03 · Drift audit</h2><p class="lead">Every number-based spacing, offset and size class in your components, compared with the nearest step on the proposed scale. <b>${all.filter((r) => r.v % 4).length}</b> of ${all.length} distinct values are off the 4px grid. Rule used: 3px or less = snap, 4–10px = review, more than 10px = derived or structural (the number should not exist). Ties round up (6 to 8, 10 to 12); two exceptions: 14 to 12 (hero subtitle) and 205 to 208 (the Subscribe field).</p>` +
+          tb(
+            ["Family", "Value", "Uses", "Where", "Nearest step", "Change", "Verdict"],
+            all
+              .filter((r) => r.v % 4 || !SC.includes(r.v))
+              .map((r) => {
+                const k = kind(r.v);
+                return [
+                  r.f,
+                  `<code>${r.v}px</code>`,
+                  r.u,
+                  r.w.join(", "),
+                  `<code>${r.t}px</code>`,
+                  (r.d > 0 ? "+" : "") + r.d + "px",
+                  `<span class="pill ${k[1]}">${k[0]}</span>${NOTE[r.v] ? '<br><span style="font-size:11.5px;color:var(--mu)">' + NOTE[r.v] + "</span>" : ""}`,
+                ];
+              }),
+          ) +
+          `<p class="lead" style="margin-top:8px">Already on the grid: ${all
+            .filter((r) => r.v % 4 === 0 && SC.includes(r.v))
+            .map((r) => r.v)
+            .join(", ")}px.</p>`,
+      );
+      A.push(
+        `<h2>04 · Vertical rhythm: section spacing</h2><p class="lead">Every band keeps the same vertical padding; only the background changes. Today: 70px on phones, 100px from 992px, with a few one-off values.</p><div class="g c2"><div class="card"><b>Proposed</b><div style="margin-top:8px;background:${S1};color:${IV};padding:0;border-radius:6px;overflow:hidden">${["Hero · 120", "Services · 72 / 96", "About · 72 / 96 (top 160 desktop)", "Special dish · 72 / 96", "Menu · 72 / 96", "Testimonial · 72 + overlap", "Reservation · overlaps 272", "Features · 72 / 96", "Events · 72 / 96", "Footer · 72 / 96"].map((t, i) => `<div style="padding:7px 12px;border-bottom:1px solid #423E3B;background:${i % 2 ? S0 : S1};font-size:12px">${t}</div>`).join("")}</div></div><div class="card"><b>Rules</b><ul class="l"><li><code>space-section</code> is the only top and bottom padding of a band: 72px, 96px from 992px.</li><li>Overlaps are named: the testimonial bottom padding is <code>calc(space-overlap + space-section)</code>, so the two always agree (today 340 = 270 + 70, typed twice).</li><li>Special dish is centred with flex (no 225px); about uses the 160 layout step (no 170px).</li><li>Inside a band: stack-lg (40) between blocks, stack-md (24) between paragraphs.</li></ul></div></div>`,
+      );
+      const CM = [
+        [
+          "Button",
+          "padding 12 × 45, height 58 (label line height 29.6)",
+          "padding 20 × 48, height 61 (label 13px, lh 1.3)",
+        ],
+        [
+          "Input",
+          "height 56, padding 10 × 20, icon field left 40",
+          "height 56, padding 12 × 20, icon field left 44",
+        ],
+        ["Textarea", "height 140, padding-y 20", "height 144"],
+        ["Header", "padding-y 40, 20 when solid; gap 8; sides 20", "unchanged (all on grid)"],
+        ["Topbar", "padding-y 10, gap 30", "height 48 (links 48 tall), gap 32, icon to label 8"],
+        [
+          "Hero",
+          "padding-y 120; subtitle after 14 / 20; sub-line 10 / 40",
+          "120; subtitle 12 / 20; sub-line 12 / 40",
+        ],
+        ["Service card", "banner py 30, mb 26; grid gap 40, 150 xl", "py 32, mb 24; gap 40, 160"],
+        [
+          "About",
+          "gaps 120 / 80 / 30; text 15 / 30; xl top 170",
+          "120 / 80 / 32; text 16 / 32; top 160",
+        ],
+        [
+          "Special dish",
+          "py 70; xl py 225; pl 50, 25",
+          "py 72 (96 from 992px); flex centring; pl 48, 24",
+        ],
+        [
+          "Menu",
+          "item gap 20; title row 15; price my 10; grid 55 × 200",
+          "20; 16; 12 (stack); 56 × 200",
+        ],
+        ["Testimonial", "pb 340; dots mt 40 mb 50", "pb overlap + section; mt 40 mb 48"],
+        ["Reservation", "overlap 270; form px 20, 60; py 75 xl", "overlap 272; 20, 64; 72"],
+        ["Features card", "px 20, pt 30, pb 40", "px 20, pt 32, pb 40"],
+        ["Event card", "caption 35 / 35 / 25", "32 / 32 / 24"],
+        [
+          "Footer brand",
+          "px 40, py 50 (100 lg); dots mt 40 mb 25",
+          "px 40, py 48 (96 lg); mt 40 mb 24",
+        ],
+        ["Nav drawer", "width 360, px 30, pb 50, logo mb 60", "360, 32, 48, 64"],
+      ];
+      A.push(
+        `<h2>05 · Component spacing map</h2><p class="lead">What each component uses today and what the system proposes.</p>` +
+          tb(["Component", "Today", "Proposed"], CM),
+      );
+      A.push(
+        `<h2>06 · Layout grid and containers</h2><div class="g c2"><div>${tb(
+          ["Container", "Today", "Token"],
+          [
+            ["Page", "1200 max, 16 gutter (20 in header)", "container-page 1200"],
+            ["Tablet column (services, events)", "820 from 768px", "container-tablet 820"],
+            ["Phone column (services, events)", "420 from 575px", "container-phone 420"],
+            ["Paragraph measure", "420 (about, services)", "container-measure 420"],
+            ["Form and footer column", "460", "container-narrow 460"],
+            ["Quote", "910", "container-quote 910"],
+            ["Nav drawer", "360", "container-drawer 360"],
+          ],
+        )}<p class="lead" style="margin-top:6px">Widths are measures, not spacing, so they may stay off the 4px grid. They should still be named tokens.</p></div><div>${tb(
+          ["Breakpoint", "Today", "Layout change"],
+          [
+            ["sm", "575", "Buttons, topbar, paragraph width"],
+            ["md", "768", "2-column grids, slider arrows"],
+            ["lg", "992", "3-column grids, special dish split"],
+            ["xl", "1200", "Inline nav, 4-column features, staggered services"],
+            ["2xl", "1400", "Decorative shapes"],
+          ],
+        )}<p class="lead" style="margin-top:6px">Same as Bootstrap's set except 575 (Bootstrap uses 576). Kept as is. Grid gaps: 40 base, 90 / 200 menu columns, 150 service.</p></div></div>`,
+      );
+      A.push(
+        `<h2>07 · Radius scale</h2><p class="lead">Research: small radii read as professional and formal, large radii as friendly; mixing sharp and rounded siblings looks unplanned; nested corners should follow outer radius = inner radius + padding. Your brand is square by default, which suits a classical restaurant.</p><div class="g c4">${[
+          ["none", "0", "Buttons, fields, cards, photos (almost everything)", 0],
+          ["card", "24", "Dish thumbnails on the menu (the one rounded rectangle)", 24],
+          ["circle", "50%", "Circles: back-to-top, close button, avatar, spinner, button fill", 50],
+        ]
+          .map(
+            (r) =>
+              `<div class="card"><div style="width:84px;height:84px;background:var(--ac);border-radius:${r[3] === 50 ? "50%" : r[3] + "px"};margin-bottom:8px"></div><code>radius-${r[0]}</code> ${r[1]}<div style="font-size:12px;color:var(--mu)">${r[2]}</div></div>`,
+          )
+          .join(
+            "",
+          )}<div class="card"><b>Drift</b><div style="font-size:12.5px;margin-top:6px">Only the dish thumbnail is rounded; every other photo is square. Keep it as a single named exception, or square it for full consistency. Your call.</div></div></div>`,
+      );
+      A.push(
+        `<h2>08 · Border width scale</h2>` +
+          tb(
+            ["Token", "Value", "Used for"],
+            [
+              [
+                "--border-hairline (Tailwind border)",
+                "1px",
+                "Dividers, input borders, close button, underline hover",
+              ],
+              ["--border-strong (border-2)", "2px", "Button outline, focus ring"],
+              [
+                "--border-spinner (border-spinner)",
+                "3px",
+                "Preloader ring (named exception; 4px would be on grid)",
+              ],
+            ],
+          ),
+      );
+      A.push(
+        `<h2>09 · Z-index scale</h2><p class="lead">Today: -1, 1, 2, 4, 10 and 20 in classes plus 1 in CSS, none named. Proposed: seven named layers, stored as CSS variables (--z-behind to --z-skip) and used as utilities (z-behind, z-raised and so on). Numbers inside the header only need to order the nav overlay below the drawer.</p>` +
+          tb(
+            ["Layer", "Value", "Today", "Used for"],
+            [
+              ["z-behind", "-1", "-z-1", "Decorative shapes, patterns"],
+              ["z-raised", "1", "z-1", "Section content, buttons, slide items"],
+              ["z-sticky", "100", "z-4", "Header, topbar, back-to-top"],
+              ["z-overlay", "200", "z-1 (inside header)", "Nav scrim"],
+              ["z-drawer", "210", "z-2 (inside header)", "Mobile nav drawer"],
+              ["z-preloader", "900", "z-10", "Loading screen"],
+              ["z-skip", "1000", "20", "Skip link (always on top)"],
+            ],
+          ),
+      );
+      A.push(
+        `<h2>10 · System tokens, consolidated</h2><p class="lead">All token families in one structure: primitives (raw values), semantic (meaning) and component (one component's choices). Files can follow the W3C design-token format (<code>$value</code> and <code>$type</code>), as GitHub Primer's tokens do.</p>` +
+          tb(
+            ["Family", "Tokens", "Status"],
+            [
+              [
+                "Colour",
+                "5 surfaces, 2 lines, 4 text, 3 ramps, 4 status sets",
+                "Locked (colour kit)",
+              ],
+              [
+                "Type",
+                "10 sizes, 11 roles, 2 families, weights, tracking",
+                "Locked (typography kit)",
+              ],
+              ["Space", "11 core + 6 layout + 14 semantic", "This page"],
+              ["Radius", "3 (none, card, circle)", "This page"],
+              ["Border width", "3", "This page"],
+              ["Z-index", "7", "This page"],
+              ["Breakpoints", "5 (575, 768, 992, 1200, 1400)", "Keep"],
+              ["Containers", "7 named measures", "This page"],
+              [
+                "Motion",
+                "fast 250ms, base 500ms, slow 1000ms; easing ease; spinner 1s / 15s linear; hero slide 7s",
+                "Keep; named",
+              ],
+              [
+                "Overlay",
+                "scrims 0.4 / 0.6 / 0.8 (ink); disabled becomes a flat grey fill instead of 0.6 opacity",
+                "Colour kit",
+              ],
+              ["Shadow", "one soft shadow (25px, 25%), back-to-top only", "Keep"],
+              ["Focus", "2px gold-300, 2px offset", "Colour kit"],
+              ["Icon sizes", "16, 20, 24, 32, 48, 64", "Iconography page"],
+            ],
+          ) +
+          `<p class="lead" style="margin-top:8px">Example chain: <code>gold-400 #E4C590</code> (primitive) → <code>text-link</code> (semantic) → <code>nav-link-active</code> (component).</p>`,
+      );
+      const TT = [
+        ["Hamburger button", "42 × 54", "ok", "wn", "Widen to 44 wide"],
+        ["Close button (drawer)", "26 × 26", "ok", "no", "Make 44 × 44 with a 20px icon"],
+        ["Back-to-top", "50 × 50 (48 × 48 in code)", "ok", "ok", "none"],
+        ["Slider arrows", "45 × 45 (44 × 44 in code)", "ok", "ok", "none"],
+        [
+          "Primary button",
+          "58 tall now, 61 after type update",
+          "ok",
+          "ok",
+          "Padding 20 keeps it well above 44",
+        ],
+        [
+          "Desktop nav links",
+          "50 tall now, 37 after type update",
+          "ok",
+          "no",
+          "py-4 (16px) gives 49 tall",
+        ],
+        [
+          "Footer links",
+          "17 tall after type update, 20px apart",
+          "ok",
+          "no",
+          "Add py-2 (33 tall); the spacing exception already passes AA",
+        ],
+        ["Form fields", "56 tall", "ok", "ok", "none"],
+        ["Phone and email links", "about 33 tall", "ok", "no", "Optional: py-6"],
+        [
+          "Top bar links",
+          "21 tall inside a 48px bar",
+          "ok",
+          "no",
+          "Links fill the whole bar (h-12): 48 tall",
+        ],
+        ["Dots between items", "decorative", "ok", "ok", "n/a"],
+      ];
+      A.push(
+        `<h2>11 · Accessibility: touch targets and tap spacing</h2><p class="lead">WCAG 2.2 AA needs targets of at least 24 × 24 CSS px, or enough clear space around smaller ones; the stricter AAA and common mobile guidance use 44 (Apple 44pt, Material 48dp). Sizes below are measured from the code, not guessed.</p>` +
+          tb(
+            ["Control", "Size", "AA 24px", "Comfortable 44px", "Fix"],
+            TT.map((r) => [
+              r[0],
+              r[1],
+              `<span class="pill ${r[2]}">pass</span>`,
+              `<span class="pill ${r[3]}">${r[3] === "ok" ? "pass" : r[3] === "wn" ? "near" : "below"}</span>`,
+              r[4],
+            ]),
+          ),
+      );
+      A.push(
+        `<h2>12 · Live preview: annotated component</h2><div class="dk" style="max-width:520px"><div style="background:#24211D;border:1px solid #423E3B;padding:32px 20px 40px;position:relative"><span style="position:absolute;top:6px;left:8px;font-size:10px;color:#E58AA0">inset 32 / 20 / 40</span><div style="font-family:Georgia,serif;font-size:24px">Lobster tortellini</div><div style="height:8px;background:rgba(229,138,160,.35);margin:0;font-size:9px;color:#E58AA0;line-height:8px">8 · stack-sm</div><div class="m" style="font-size:14px">Fresh pasta, saffron cream, brown butter.</div><div style="height:24px;background:rgba(229,138,160,.35);font-size:9px;color:#E58AA0;line-height:24px">24 · stack-md</div><div style="display:flex;align-items:center;gap:16px"><span style="background:#E4C590;color:#0F0D0B;padding:20px 48px;font:600 13px/1.3 system-ui;letter-spacing:.14em;text-transform:uppercase">Book a table</span><span style="background:rgba(229,138,160,.35);color:#E58AA0;font-size:9px;padding:2px 4px">gap 16</span><span class="gd" style="font-size:20px">$20.00</span></div></div></div><p class="lead" style="margin-top:6px">Pink bands are the measured gaps, each one a token.</p>`,
+      );
+      A.push(
+        `<h2>13 · Usage rules</h2><div class="two"><div class="card"><b class="ok">Do</b><ul class="l"><li>Use only scale steps; name the meaning (gutter, stack, inset).</li><li>Use gap and stack spacing between siblings; padding inside a box.</li><li>Derive overlaps and widths from other tokens.</li><li>Keep touch targets at 44px where there is room.</li><li>Re-check spacing whenever type changes.</li></ul></div><div class="card"><b class="no">Don't</b><ul class="l"><li>No typed values such as 55, 225, 270 or 340.</li><li>No odd values (5, 6, 14, 15, 26) to nudge things.</li><li>No margin on the first or last child of a block.</li><li>No mixing rounded and square siblings.</li><li>No new z-index numbers: use a layer name.</li></ul></div></div>`,
+      );
+      A.push(
+        `<h2>14 · Full spacing touchpoint map</h2><p class="lead">Every number-based padding, margin and gap class per component, with the proposed value. Variant prefixes (sm, md, lg, xl, 2xl) are kept.</p>` +
+          tb(
+            ["Component", "Spacing classes today", "After snapping"],
+            Object.entries(TP).map(([n, ts]) => [
+              `<b>${n}</b>`,
+              `<code style="line-height:1.9">${ts.join("  ")}</code>`,
+              `<code style="line-height:1.9">${ts
+                .map((t) => {
+                  const m = t.match(/^(.*?)(-?)([a-z\-]+)-(\d+(?:\.\d+)?)$/);
+                  if (!m) return t;
+                  const v = +m[4];
+                  return v % 4 === 0 && SC.includes(v)
+                    ? t
+                    : `${m[1]}${m[2]}${m[3]}-${v === 2 ? 0.5 : nn(v) / 4}`;
+                })
+                .join("  ")}</code>`,
+            ]),
+          ) +
+          `<p class="lead" style="margin-top:6px">The right column uses the proposed 4px-per-unit names (for example <code>pt-8</code> = 32px). Values that are already on the scale are left as they are, but under the new naming every number also divides by 4 (<code>p-20</code> becomes <code>p-5</code>); the migration is mechanical.</p>`,
+      );
+      A.push(
+        `<h2>15 · Research notes and decisions</h2><ul class="l"><li>4px base grids are the common default; numeric names mean multipliers; ban free-typed spacing.</li><li>Touch targets: 24px AA minimum with a spacing exception; 44px (Apple) and 48dp (Material) are the comfortable sizes.</li><li>Radius: small radii feel formal and professional; keep one consistent personality; nested radius rule.</li><li>Z-index: named layers with gaps between them, no ad-hoc numbers.</li><li>Most sources are design-system blogs and docs; I did not measure the live page in a browser, only its code.</li></ul><h3>Decisions</h3><ol class="l"><li>Switch Tailwind to 4px per unit and snap values (mean change about ${(all.filter((r) => r.f === "spacing").reduce((a, r) => a + Math.abs(r.d) * r.u, 0) / tot("spacing")).toFixed(1)}px per use)?</li><li>Keep the rounded dish thumbnail as the single exception?</li><li>Raise the close button, hamburger and nav links to 44px targets?</li><li>Replace 225px, 170px, 270px and 340px with derived values?</li></ol>`,
+      );
+      document.getElementById("app").innerHTML = A.join("");
+    </script>
+  </body>
+</html>
