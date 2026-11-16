@@ -17,9 +17,7 @@ const MARKERS = /^group(\/[\w-]+)?$/;
 
 /** Strings that look like classes but are not (icon names, CSS variable names, meta values). */
 const iconNames = new Set(
-  [...readFileSync("src/components/ui/Icon.tsx", "utf8").matchAll(/"([a-z-]+)":/g)].map(
-    (m) => m[1],
-  ),
+  [...readFileSync("src/components/ui/Icon.tsx", "utf8").matchAll(/"([a-z-]+)":/g)].map((m) => m[1]),
 );
 const NOT_CLASSES = /^(--next-[\w-]+|device-width|about-label|dish-label|-)$/;
 
@@ -58,9 +56,7 @@ function classCandidates(source) {
 }
 
 const sourceFiles = walk("src").filter((file) => !file.endsWith("Icon.tsx"));
-const byFile = new Map(
-  sourceFiles.map((file) => [file, classCandidates(readFileSync(file, "utf8"))]),
-);
+const byFile = new Map(sourceFiles.map((file) => [file, classCandidates(readFileSync(file, "utf8"))]));
 
 if (listOnly) {
   for (const [file, tokens] of byFile) console.log(`${file}\n  ${[...tokens].join("\n  ")}`);
@@ -76,6 +72,13 @@ const css = readdirSync(CSS_DIR)
   .filter((name) => name.endsWith(".css"))
   .map((name) => readFileSync(join(CSS_DIR, name), "utf8"))
   .join("\n");
+
+if (!css.trim()) {
+  console.error(
+    "No production CSS found in .next/static/css. `npm run dev` replaces the production build, so run `npm run build` again and then `npm run check:classes`.",
+  );
+  process.exit(1);
+}
 
 const escapeRegExp = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
