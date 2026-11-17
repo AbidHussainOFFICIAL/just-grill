@@ -17,7 +17,9 @@ const MARKERS = /^group(\/[\w-]+)?$/;
 
 /** Strings that look like classes but are not (icon names, CSS variable names, meta values). */
 const iconNames = new Set(
-  [...readFileSync("src/components/ui/Icon.tsx", "utf8").matchAll(/"([a-z-]+)":/g)].map((m) => m[1]),
+  [...readFileSync("src/components/ui/Icon.tsx", "utf8").matchAll(/"([a-z-]+)":/g)].map(
+    (m) => m[1],
+  ),
 );
 const NOT_CLASSES = /^(--next-[\w-]+|device-width|about-label|dish-label|-)$/;
 
@@ -56,7 +58,9 @@ function classCandidates(source) {
 }
 
 const sourceFiles = walk("src").filter((file) => !file.endsWith("Icon.tsx"));
-const byFile = new Map(sourceFiles.map((file) => [file, classCandidates(readFileSync(file, "utf8"))]));
+const byFile = new Map(
+  sourceFiles.map((file) => [file, classCandidates(readFileSync(file, "utf8"))]),
+);
 
 if (listOnly) {
   for (const [file, tokens] of byFile) console.log(`${file}\n  ${[...tokens].join("\n  ")}`);

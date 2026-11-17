@@ -293,8 +293,9 @@
             "Primary gold": {
               fill: "#E4C590",
               label: "#0F0D0B",
-              hover: "#EBD1A4",
-              active: "#D4B275",
+              hover: "#0F0D0B",
+              hl: "#FCFAF7",
+              active: "#24211D",
             },
             Claret: { fill: "#963D3A", label: "#F3EFEB", hover: "#A44A46", active: "#762C29" },
             Danger: { fill: "#C8645A", label: "#0F0D0B", hover: "#D97369", active: "#C05C53" },
@@ -552,7 +553,7 @@
         ]
           .map(
             ([k]) =>
-              `<td><span class="bt" style="background:${s[k]};color:${s.label};min-width:96px;text-align:center">${s[k]}</span><br><code>${f1(cr(s.label, s[k]))}:1</code></td>`,
+              `<td><span class="bt" style="background:${s[k]};color:${k !== "fill" && s.hl ? s.hl : s.label};min-width:96px;text-align:center">${s[k]}</span><br><code>${f1(cr(k !== "fill" && s.hl ? s.hl : s.label, s[k]))}:1</code></td>`,
           )
           .join(
             "",

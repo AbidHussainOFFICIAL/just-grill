@@ -92,3 +92,10 @@ Gaps found and fixed:
 Documented, not applied:
 
 - The hero badge image is brand artwork and stays raster.
+
+## Fixes after the first look at the live site
+
+- Solid gold buttons (Find A Table, Subscribe, Book A Table) hover to the original ink fill with a gold outline and an
+  ivory label, instead of a lighter gold. The colour kit page was updated to match.
+- Text fields had two borders on focus (the field border plus the focus ring). Fields now show one border: it turns gold
+  and thickens to 2px. Other controls keep the keyboard focus ring.

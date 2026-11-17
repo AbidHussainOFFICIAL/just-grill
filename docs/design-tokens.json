@@ -604,7 +604,7 @@
   },
   "gradient": {
     "caption": {
-      "$value": "linear-gradient(\n      to top,\n      rgb(15 13 11 / 0.9),\n      rgb(15 13 11 / 0.7),\n      transparent\n    )",
+      "$value": "linear-gradient(to top, rgb(15 13 11 / 0.9), rgb(15 13 11 / 0.7), transparent)",
       "$type": "css"
     }
   }

@@ -55,7 +55,7 @@
 
   /* BUTTON
    * Outlined (default): a gold circle fills in on hover. Solid (.btn-secondary):
-   * a lighter gold sweeps in on hover and a deeper gold shows when pressed.
+   * an ink circle sweeps in on hover (gold outline stays, ivory label), like the original.
    * Disabled is a flat grey. The label slides up and is replaced by a copy. */
 
   .btn {
@@ -124,12 +124,16 @@
   }
 
   .btn-secondary::before {
-    background-color: var(--color-gold-300);
+    background-color: var(--color-surface-0);
+  }
+
+  .btn-secondary .btn-label-hover {
+    color: var(--color-fg-strong);
   }
 
   .btn-secondary:active,
   .btn-secondary:active::before {
-    background-color: var(--color-gold-500);
+    background-color: var(--color-surface-2);
   }
 
   /* Claret: the quiet secondary (default claret-600, hover claret-hover, pressed claret-700) */
@@ -248,7 +252,9 @@
     padding: 12px 20px;
     border: var(--border-hairline) solid var(--color-line-ui);
     margin-bottom: var(--spacing-field);
-    transition: border-color var(--motion-base) ease;
+    transition:
+      border-color var(--motion-base) ease,
+      box-shadow var(--motion-base) ease;
   }
 
   .input-field::placeholder {
@@ -259,12 +265,24 @@
     border-color: var(--color-gold-600);
   }
 
-  .input-field:focus {
+  /* One border only: on focus the border itself turns gold and thickens to 2px (inset shadow),
+   * and the global outline ring is switched off for fields so there is no second ring. */
+  .input-field:focus,
+  .input-field:focus-visible {
+    outline: none;
     border-color: var(--color-gold-400);
+    box-shadow: inset 0 0 0 1px var(--color-gold-400);
   }
 
-  .input-field[aria-invalid="true"] {
+  .input-field[aria-invalid="true"],
+  .input-field[aria-invalid="true"]:focus,
+  .input-field[aria-invalid="true"]:focus-visible {
     border-color: var(--color-error-solid);
+  }
+
+  .input-field[aria-invalid="true"]:focus,
+  .input-field[aria-invalid="true"]:focus-visible {
+    box-shadow: inset 0 0 0 1px var(--color-error-solid);
   }
 
   .icon-wrapper {

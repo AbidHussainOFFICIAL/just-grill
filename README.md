@@ -119,14 +119,15 @@ alone: status icons always come with words.
 
 ### Button states
 
-| Variant (`variant=`)     | Default                         | Hover                               | Pressed               | Disabled                     |
-| ------------------------ | ------------------------------- | ----------------------------------- | --------------------- | ---------------------------- |
-| outlined (default)       | gold-400 outline and label      | gold-400 circle fills in, ink label | gold-500 fill         | line-ui outline, faint label |
-| `secondary` (solid gold) | gold-400, ink label (11.7:1)    | gold-300 sweeps in (13.1:1)         | gold-500 (9.6:1)      | flat surface-3, faint label  |
-| `claret`                 | claret-600, ivory label (6.1:1) | claret-hover (5.0:1)                | claret-700 (8.5:1)    | flat surface-3               |
-| `danger`                 | error-solid, ink label (5.0:1)  | danger-hover (6.1:1)                | danger-active (4.5:1) | flat surface-3               |
+| Variant (`variant=`)     | Default                         | Hover                                                                     | Pressed               | Disabled                     |
+| ------------------------ | ------------------------------- | ------------------------------------------------------------------------- | --------------------- | ---------------------------- |
+| outlined (default)       | gold-400 outline and label      | gold-400 circle fills in, ink label                                       | gold-500 fill         | line-ui outline, faint label |
+| `secondary` (solid gold) | gold-400, ink label (11.7:1)    | ink circle sweeps in, gold outline stays, ivory label (the original look) | surface-2             | flat surface-3, faint label  |
+| `claret`                 | claret-600, ivory label (6.1:1) | claret-hover (5.0:1)                                                      | claret-700 (8.5:1)    | flat surface-3               |
+| `danger`                 | error-solid, ink label (5.0:1)  | danger-hover (6.1:1)                                                      | danger-active (4.5:1) | flat surface-3               |
 
-Focus ring on every control: 2px gold-300, 2px offset. Status messages (`FormStatus`) come in four tones
+Focus ring on every control: 2px gold-300, 2px offset. Text fields are the exception: the border itself turns gold and
+thickens to 2px (no second ring). Status messages (`FormStatus`) come in four tones
 (success, warning, error, info), each with tint, border, text and icon from the status tokens, always icon plus words.
 
 ### Light colourway
