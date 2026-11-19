@@ -30,12 +30,12 @@ src/
                     (.btn, .section-subtitle, .hover-underline, .hover-shine, .input-field, ...)
   components/
     ui/             Button, Icon, Separator, FormStatus
-    layout/         Preloader, Topbar, Header, Navbar, Footer, NewsletterForm, BackToTop
-    sections/       Hero, Service, About(+Banner), SpecialDish, Menu, Testimonial,
+    layout/         Preloader, Topbar, OpenStatus, Header, Navbar, Footer, NewsletterForm, BackToTop
+    sections/       Hero, Service, About(+Banner), SpecialDish, Menu, Chefs, Testimonial,
                     Reservation(+Form), Features, Events
   data/             all site content (contact details, menu, events, nav, ...)
-  hooks/            header scroll, hero slider, parallax, scroll position, active nav section
-  lib/              form validation, date helper, demo request helper
+  hooks/            header scroll, hero slider, parallax, scroll position, active nav section, open status
+  lib/              form validation, date helper, opening-hours logic, demo request helper
 docs/brand-kit/     the four brand kit pages (colour, typography, spacing and radius, iconography)
 docs/design-tokens.json   every token in one file (generated, do not edit)
 docs/kit-audit.md   what was checked against each kit and what was fixed
@@ -138,6 +138,24 @@ the page chrome. Menus, receipts and the Google profile should use the same thre
 ### No gradient text
 
 The preloader word pulses softly in ink instead of shimmering through a gradient (the kit forbids gradient text).
+
+## Header and navigation
+
+Decisions and research are in `docs/header-nav.md`. In short:
+
+- **Nav:** Home, Menus, About Us, Our Chefs, Reservations. Every link goes to a real section (`#chefs` is new).
+  The active link follows the scroll position.
+- **Top bar (from 575px):** address and hours (from 992px), an "Open now · until 10:00 pm" or "Closed · opens 8:00 am"
+  status, and the phone number. The status is worked out from `siteConfig.openingHours`, in the restaurant's own time zone,
+  and refreshes every minute. Change the hours in `src/data/site.ts` and the text lines next to them.
+- **Phones:** a compact Reserve button sits next to the menu button. The menu drawer starts with Reserve and Call buttons.
+- **Header on scroll:** it slides away when scrolling down and back when scrolling up. It stays visible while the menu is open
+  and while a keyboard user has focus inside it, so focus is never hidden. Anchor jumps land 96px below the top
+  (`--header-offset`), clear of the header.
+- **Menu drawer:** `aria-controls`, a labelled `nav`, Tab stays inside while it is open, Esc closes it, focus returns to the
+  menu button, and it closes if the window is widened past 1200px.
+- **Menu button:** the three lines animate on hover and focus only (no endless loop).
+- **Our Chefs:** `src/data/chefs.ts`. Add `image: "/images/chef-1.jpg"` (3:4) to a chef to replace the gold placeholder.
 
 ## Forms (demo)
 

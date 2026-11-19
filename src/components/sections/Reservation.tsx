@@ -9,7 +9,7 @@ export function Reservation() {
   const { address, phones, hours } = siteConfig;
 
   return (
-    <section id="reservation" className="scroll-mt-24">
+    <section id="reservation">
       <div className="container-x">
         {/* The form is lifted over the testimonial by --spacing-overlap (also added to its bottom padding). */}
         <div className="-mt-overlap bg-surface-0 lg:grid lg:grid-cols-[1fr_0.5fr]">

@@ -12,6 +12,7 @@ interface LinkProps extends BaseProps {
   href: string;
   target?: string;
   rel?: string;
+  onClick?: () => void;
 }
 
 interface ButtonProps extends BaseProps {
@@ -49,7 +50,13 @@ export function Button(props: Props) {
 
   if (props.href !== undefined) {
     return (
-      <a href={props.href} target={props.target} rel={props.rel} className={classes}>
+      <a
+        href={props.href}
+        target={props.target}
+        rel={props.rel}
+        onClick={props.onClick}
+        className={classes}
+      >
         {content}
       </a>
     );

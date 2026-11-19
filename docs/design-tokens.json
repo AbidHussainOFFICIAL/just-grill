@@ -544,6 +544,12 @@
       "$type": "css"
     }
   },
+  "header": {
+    "offset": {
+      "$value": "96px",
+      "$type": "dimension"
+    }
+  },
   "motion": {
     "fast": {
       "$value": "250ms",
@@ -603,6 +609,12 @@
     }
   },
   "gradient": {
+    "header": {
+      "scrim": {
+        "$value": "linear-gradient(to bottom, rgb(15 13 11 / 0.7), rgb(15 13 11 / 0))",
+        "$type": "css"
+      }
+    },
     "caption": {
       "$value": "linear-gradient(to top, rgb(15 13 11 / 0.9), rgb(15 13 11 / 0.7), transparent)",
       "$type": "css"

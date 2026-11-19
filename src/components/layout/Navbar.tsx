@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import Image from "next/image";
 import type { Ref } from "react";
+import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Separator } from "@/components/ui/Separator";
 import { navLinks } from "@/data/nav";
@@ -29,6 +30,8 @@ export function Navbar({ isOpen, onClose, onNavigate, closeButtonRef }: NavbarPr
 
   return (
     <nav
+      id="site-nav"
+      aria-label="Primary"
       className={clsx(
         // mobile drawer
         "fixed top-0 bottom-0 -left-[var(--container-drawer)] z-drawer w-full max-w-drawer overflow-y-auto bg-surface-0 px-8 pb-12 trans-base [&::-webkit-scrollbar-thumb]:bg-line-subtle",
@@ -41,16 +44,37 @@ export function Navbar({ isOpen, onClose, onNavigate, closeButtonRef }: NavbarPr
       <button
         ref={closeButtonRef}
         type="button"
-        className="mt-8 mb-5 ml-auto grid size-11 place-items-center rounded-circle border border-current text-fg-body hover:text-gold-400 focus-visible:text-gold-400 xl:hidden"
+        className="mt-4 mb-2 ml-auto grid size-11 place-items-center rounded-circle border border-current text-fg-body hover:text-gold-400 focus-visible:text-gold-400 xl:hidden"
         aria-label="close menu"
         onClick={onClose}
       >
         <Icon name="close" size={20} />
       </button>
 
-      <a href="#" className="mx-auto mb-16 max-w-max xl:hidden">
+      <a href="#" onClick={onNavigate} className="mx-auto mb-6 max-w-max xl:hidden">
         <Image src="/images/logo.svg" width={160} height={50} alt="Grilli - Home" />
       </a>
+
+      {/* The two things a hungry visitor wants first, one tap from the top of the menu. */}
+      <div className="mb-6 grid grid-cols-2 gap-3 xl:hidden">
+        <Button
+          href="#reservation"
+          variant="secondary"
+          className="btn-compact w-full max-w-full"
+          onClick={onNavigate}
+        >
+          Reserve
+        </Button>
+
+        <a
+          href={phones.booking.href}
+          onClick={onNavigate}
+          className="flex items-center justify-center gap-inline-sm border-2 border-line-ui px-4 py-3 t-label text-fg-body trans-fast hover:border-gold-400 hover:text-gold-400 focus-visible:border-gold-400 focus-visible:text-gold-400"
+        >
+          <Icon name="phone" size={16} />
+          Call
+        </a>
+      </div>
 
       <ul className="mb-24 border-b border-line-subtle md:mx-8 xl:mx-0 xl:mb-0 xl:flex xl:gap-8 xl:border-b-0">
         {navLinks.map((link) => {

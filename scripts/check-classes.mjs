@@ -17,11 +17,12 @@ const MARKERS = /^group(\/[\w-]+)?$/;
 
 /** Strings that look like classes but are not (icon names, CSS variable names, meta values). */
 const iconNames = new Set(
-  [...readFileSync("src/components/ui/Icon.tsx", "utf8").matchAll(/"([a-z-]+)":/g)].map(
-    (m) => m[1],
-  ),
+  [...readFileSync("src/components/ui/Icon.tsx", "utf8").matchAll(/"([a-z-]+)":/g)].map((m) => m[1]),
 );
-const NOT_CLASSES = /^(--next-[\w-]+|device-width|about-label|dish-label|-)$/;
+const NOT_CLASSES = /^(--next-[\w-]+|device-width|-)$/;
+
+/** CSS selectors used in code (":focus-visible", "a[href],", "button:not(...)") and times ("8:00"). */
+const SELECTOR_OR_TIME = /^(\d{1,2}:\d{2}|:[\w-]+|[a-z]+\[[^\]]*\],?|[\w-]+:not\(.*)$/;
 
 function walk(dir, files = []) {
   for (const name of readdirSync(dir)) {
@@ -30,6 +31,17 @@ function walk(dir, files = []) {
     else if (full.endsWith(".tsx")) files.push(full);
   }
   return files;
+}
+
+const sourceFiles = walk("src").filter((file) => !file.endsWith("Icon.tsx"));
+
+/** Element ids (id=, getElementById, aria-labelledby, aria-controls) are not classes. */
+const ids = new Set();
+for (const file of sourceFiles) {
+  const text = readFileSync(file, "utf8");
+  for (const match of text.matchAll(/(?:\bid=|getElementById\(|aria-(?:labelledby|controls|describedby)=)\{?\s*["']([\w-]+)["']/g)) {
+    ids.add(match[1]);
+  }
 }
 
 function classCandidates(source) {
@@ -50,6 +62,7 @@ function classCandidates(source) {
       if (!/[-:[]/.test(token)) continue; // plain words (flex, grid...) are not checked
       if (token.includes("/") && !/(\d\/\d|^group|[:[])/.test(token)) continue; // mime types, paths
       if (MARKERS.test(token) || NOT_CLASSES.test(token) || iconNames.has(token)) continue;
+      if (SELECTOR_OR_TIME.test(token) || ids.has(token)) continue;
       found.add(token);
     }
   }
@@ -57,10 +70,8 @@ function classCandidates(source) {
   return found;
 }
 
-const sourceFiles = walk("src").filter((file) => !file.endsWith("Icon.tsx"));
-const byFile = new Map(
-  sourceFiles.map((file) => [file, classCandidates(readFileSync(file, "utf8"))]),
-);
+
+const byFile = new Map(sourceFiles.map((file) => [file, classCandidates(readFileSync(file, "utf8"))]));
 
 if (listOnly) {
   for (const [file, tokens] of byFile) console.log(`${file}\n  ${[...tokens].join("\n  ")}`);

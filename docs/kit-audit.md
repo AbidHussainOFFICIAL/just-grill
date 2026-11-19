@@ -99,3 +99,11 @@ Documented, not applied:
   ivory label, instead of a lighter gold. The colour kit page was updated to match.
 - Text fields had two borders on focus (the field border plus the focus ring). Fields now show one border: it turns gold
   and thickens to 2px. Other controls keep the keyboard focus ring.
+
+## 5. Header and navigation (new work, after the four kits)
+
+Research and decisions are in `docs/header-nav.md`. Built: Our Chefs section, Reservations rename, compact phone Reserve
+button, drawer with Reserve and Call, open or closed status in the top bar, keyboard-safe hide on scroll, focus kept inside the
+open drawer, drawer closes when the window widens, calm menu button, a faint top scrim behind the transparent header, and
+page-level scroll padding for anchors. The iconography kit page was updated (the top bar no longer has an email icon).
+Opening-hours logic is checked for winter time, summer time and overnight hours.

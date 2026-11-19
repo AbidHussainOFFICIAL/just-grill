@@ -47,6 +47,17 @@ export interface FeatureItem {
   icon: IconName;
 }
 
+export interface ChefItem {
+  id: number;
+  name: string;
+  role: string;
+  bio: string;
+  /** The dish the chef is known for */
+  signature: string;
+  /** Portrait (3:4). Without one, a gold placeholder is shown. */
+  image?: string;
+}
+
 export interface SelectOption {
   value: string;
   label: string;

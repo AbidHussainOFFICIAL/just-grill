@@ -55,6 +55,7 @@ const groups = [
   ["border", "dimension", /^--border-/],
   ["z", "number", /^--z-/],
   ["section", "css", /^--section-/],
+  ["header", "dimension", /^--header-/],
   ["gradient", "css", /^--gradient-/],
 ];
 
@@ -74,8 +75,14 @@ for (const [name, value] of [...theme, ...base]) {
   let node = tokens;
   for (const key of keys.slice(0, -1)) node = node[key] ??= {};
 
-  // Prettier lowercases hex colours in CSS, so normalise them: the export must not depend on formatting.
-  const normalised = value.replace(/#[0-9a-fA-F]{3,8}\b/g, (hex) => hex.toUpperCase());
+  // Prettier lowercases hex colours and wraps long values over several lines, so normalise both:
+  // the export must not depend on formatting.
+  const normalised = value
+    .replace(/\s+/g, " ")
+    .replace(/\(\s+/g, "(")
+    .replace(/\s+\)/g, ")")
+    .replace(/\s*,\s*/g, ", ")
+    .replace(/#[0-9a-fA-F]{3,8}\b/g, (hex) => hex.toUpperCase());
   const looksLikeCss = /clamp\(|calc\(|var\(/.test(normalised) || /\s/.test(normalised);
   node[keys.at(-1)] = {
     $value: normalised,

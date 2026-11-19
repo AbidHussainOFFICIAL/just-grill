@@ -4,8 +4,8 @@ export const navLinks: NavLink[] = [
   { label: "Home", href: "#home" },
   { label: "Menus", href: "#menu" },
   { label: "About Us", href: "#about" },
-  { label: "Our Chefs", href: "#" },
-  { label: "Contact", href: "#reservation" },
+  { label: "Our Chefs", href: "#chefs" },
+  { label: "Reservations", href: "#reservation" },
 ];
 
 export const socialLinks: NavLink[] = [

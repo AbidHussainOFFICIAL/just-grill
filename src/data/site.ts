@@ -33,14 +33,20 @@ export const siteConfig = {
   },
 
   emails: {
-    topbar: { label: "booking@restaurant.com", href: "mailto:booking@restaurant.com" },
     booking: { label: "booking@grilli.com", href: "mailto:booking@grilli.com" },
   },
 
+  /**
+   * Opening hours as data: the "Open now" label in the top bar is worked out from these
+   * (in the restaurant's own time zone, not the visitor's). The text lines in `hours` below
+   * should say the same thing.
+   */
+  openingHours: { timeZone: "Europe/London", open: "08:00", close: "22:00" },
+
   hours: {
     topbar: "Daily : 8.00 am to 10.00 pm",
-    navbar: "Open: 9.30 am - 2.30pm",
-    footer: "Open : 09:00 am - 01:00 pm",
+    navbar: "Open daily : 8.00 am - 10.00 pm",
+    footer: "Open : 08:00 am - 10:00 pm",
     lunch: { days: "Monday to Sunday", time: "11.00 am - 2.30pm" },
     dinner: { days: "Monday to Sunday", time: "05.00 pm - 10.00pm" },
   },

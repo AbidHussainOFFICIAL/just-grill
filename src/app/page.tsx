@@ -1,4 +1,5 @@
 import { About } from "@/components/sections/About";
+import { Chefs } from "@/components/sections/Chefs";
 import { Events } from "@/components/sections/Events";
 import { Features } from "@/components/sections/Features";
 import { Hero } from "@/components/sections/Hero";
@@ -17,6 +18,7 @@ export default function HomePage() {
         <About />
         <SpecialDish />
         <Menu />
+        <Chefs />
         <Testimonial />
         <Reservation />
         <Features />

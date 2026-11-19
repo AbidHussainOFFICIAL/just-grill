@@ -382,6 +382,7 @@
 @layer base {
   :root {
     --section-space: 72px;
+    --header-offset: 96px;
     --motion-fast: 250ms;
     --motion-base: 500ms;
     --motion-slow: 1000ms;
@@ -395,6 +396,7 @@
     --z-drawer: 210;
     --z-preloader: 900;
     --z-skip: 1000;
+    --gradient-header-scrim: linear-gradient(to bottom, rgb(15 13 11 / 0.7), rgb(15 13 11 / 0));
     --gradient-caption: linear-gradient(
       to top,
       rgb(15 13 11 / 0.9),
@@ -413,6 +415,8 @@
   html {
     font-size: 62.5%;
     scroll-behavior: smooth;
+    /* anchor jumps and keyboard focus land below the fixed header, never under it */
+    scroll-padding-top: var(--header-offset);
   }
 
   /* overflow stays hidden until the preloader adds .loaded (see Preloader.tsx) */
