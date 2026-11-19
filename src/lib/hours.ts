@@ -8,6 +8,11 @@ export interface OpeningHours {
 
 export interface OpenStatusResult {
   isOpen: boolean;
+  /** "Open now" or "Closed" */
+  state: string;
+  /** "until 10:00 pm" or "opens 8:00 am" */
+  detail: string;
+  /** state and detail together, for plain-text uses */
   label: string;
 }
 
@@ -41,7 +46,8 @@ export function getOpenStatus(hours: OpeningHours, now: Date = new Date()): Open
   const isOpen =
     open <= close ? current >= open && current < close : current >= open || current < close;
 
-  return isOpen
-    ? { isOpen, label: `Open now · until ${formatTime(hours.close)}` }
-    : { isOpen, label: `Closed · opens ${formatTime(hours.open)}` };
+  const state = isOpen ? "Open now" : "Closed";
+  const detail = isOpen ? `until ${formatTime(hours.close)}` : `opens ${formatTime(hours.open)}`;
+
+  return { isOpen, state, detail, label: `${state} · ${detail}` };
 }

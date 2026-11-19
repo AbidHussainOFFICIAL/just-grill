@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/Separator";
 import { navLinks } from "@/data/nav";
 import { siteConfig } from "@/data/site";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { OpenStatus } from "./OpenStatus";
 
 interface NavbarProps {
   isOpen: boolean;
@@ -34,49 +35,30 @@ export function Navbar({ isOpen, onClose, onNavigate, closeButtonRef }: NavbarPr
       aria-label="Primary"
       className={clsx(
         // mobile drawer
-        "fixed top-0 bottom-0 -left-[var(--container-drawer)] z-drawer w-full max-w-drawer overflow-y-auto bg-surface-0 px-8 pb-12 trans-base [&::-webkit-scrollbar-thumb]:bg-line-subtle",
+        "fixed top-0 bottom-0 -left-[var(--container-drawer)] z-drawer flex w-full max-w-drawer flex-col overflow-y-auto bg-surface-0 px-8 trans-base [&::-webkit-scrollbar-thumb]:bg-line-subtle",
         isOpen ? "visible translate-x-[var(--container-drawer)]" : "invisible",
         // desktop: plain inline row (the drawer styles are switched off)
-        "xl:visible xl:static xl:z-auto xl:mr-5 xl:ml-auto xl:w-auto xl:max-w-none xl:translate-x-0 xl:overflow-visible xl:bg-transparent xl:p-0 xl:transition-none 2xl:mx-auto",
+        "xl:visible xl:static xl:z-auto xl:mr-5 xl:ml-auto xl:block xl:w-auto xl:max-w-none xl:translate-x-0 xl:overflow-visible xl:bg-transparent xl:p-0 xl:transition-none 2xl:mx-auto",
       )}
     >
-      {/* 44 x 44 touch target, 20px icon */}
+      {/* The visible circle is 36px with a 16px icon; the tappable area stays 44 x 44. */}
       <button
         ref={closeButtonRef}
         type="button"
-        className="mt-4 mb-2 ml-auto grid size-11 place-items-center rounded-circle border border-current text-fg-body hover:text-gold-400 focus-visible:text-gold-400 xl:hidden"
+        className="mt-4 mb-2 ml-auto grid size-11 shrink-0 place-items-center text-fg-body hover:text-gold-400 focus-visible:text-gold-400 xl:hidden"
         aria-label="close menu"
         onClick={onClose}
       >
-        <Icon name="close" size={20} />
+        <span className="grid size-9 place-items-center rounded-circle border border-current">
+          <Icon name="close" size={16} />
+        </span>
       </button>
 
       <a href="#" onClick={onNavigate} className="mx-auto mb-6 max-w-max xl:hidden">
         <Image src="/images/logo.svg" width={160} height={50} alt="Grilli - Home" />
       </a>
 
-      {/* The two things a hungry visitor wants first, one tap from the top of the menu. */}
-      <div className="mb-6 grid grid-cols-2 gap-3 xl:hidden">
-        <Button
-          href="#reservation"
-          variant="secondary"
-          className="btn-compact w-full max-w-full"
-          onClick={onNavigate}
-        >
-          Reserve
-        </Button>
-
-        <a
-          href={phones.booking.href}
-          onClick={onNavigate}
-          className="flex items-center justify-center gap-inline-sm border-2 border-line-ui px-4 py-3 t-label text-fg-body trans-fast hover:border-gold-400 hover:text-gold-400 focus-visible:border-gold-400 focus-visible:text-gold-400"
-        >
-          <Icon name="phone" size={16} />
-          Call
-        </a>
-      </div>
-
-      <ul className="mb-24 border-b border-line-subtle md:mx-8 xl:mx-0 xl:mb-0 xl:flex xl:gap-8 xl:border-b-0">
+      <ul className="mb-10 border-b border-line-subtle md:mx-8 xl:mx-0 xl:mb-0 xl:flex xl:gap-8 xl:border-b-0">
         {navLinks.map((link) => {
           const isActive = link.href === `#${activeId}`;
 
@@ -112,7 +94,7 @@ export function Navbar({ isOpen, onClose, onNavigate, closeButtonRef }: NavbarPr
         })}
       </ul>
 
-      <div className="text-center xl:hidden">
+      <div className="mb-8 text-center xl:hidden">
         <p className="mb-4 t-heading text-fg-strong">Visit Us</p>
 
         <address className="text-fg-muted">
@@ -120,7 +102,9 @@ export function Navbar({ isOpen, onClose, onNavigate, closeButtonRef }: NavbarPr
           {address.lines[1]}
         </address>
 
-        <p className="my-3 text-fg-muted">{hours.navbar}</p>
+        <p className="mt-3 text-fg-muted">{hours.navbar}</p>
+
+        <OpenStatus className="mt-1 mb-3 justify-center" alwaysShowDetail />
 
         <a
           href={emails.booking.href}
@@ -138,6 +122,27 @@ export function Navbar({ isOpen, onClose, onNavigate, closeButtonRef }: NavbarPr
           className="hover-underline mx-auto t-figure text-gold-400 after:-bottom-inline-xs"
         >
           {phones.booking.label}
+        </a>
+      </div>
+
+      {/* Pinned to the bottom of the menu, where a thumb reaches. */}
+      <div className="sticky bottom-0 mt-auto grid grid-cols-2 gap-3 border-t border-line-subtle bg-surface-0 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] xl:hidden">
+        <Button
+          href="#reservation"
+          variant="secondary"
+          className="btn-compact w-full max-w-full"
+          onClick={onNavigate}
+        >
+          Reserve
+        </Button>
+
+        <a
+          href={phones.booking.href}
+          onClick={onNavigate}
+          className="flex items-center justify-center gap-inline-sm border-2 border-line-ui px-4 py-3 t-label text-fg-body trans-fast hover:border-gold-400 hover:text-gold-400 focus-visible:border-gold-400 focus-visible:text-gold-400"
+        >
+          <Icon name="phone" size={16} />
+          Call
         </a>
       </div>
     </nav>

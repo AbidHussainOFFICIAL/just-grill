@@ -19,14 +19,14 @@
 
 ## Decisions (made with the owner)
 
-| Question       | Decision                                                                                                                 |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Our Chefs      | Build the section in the Grilli theme (ink band, gold labels, Forum names, gold placeholder until photos exist)          |
-| Contact        | Renamed Reservations                                                                                                     |
-| Phones         | Compact Reserve button beside the menu button; Call lives at the top of the drawer (a third item would not fit at 320px) |
-| Top bar        | Dropped the email (it is in the footer and drawer), added the open or closed status, kept address, hours and phone       |
-| Hide on scroll | Kept, made keyboard-safe                                                                                                 |
-| Menu button    | Lines animate on hover and focus only. A morph into an X was rejected because the drawer covers the button               |
+| Question       | Decision                                                                                                                                                                    |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Our Chefs      | Build the section in the Grilli theme (ink band, gold labels, Forum names, gold placeholder until photos exist)                                                             |
+| Contact        | Renamed Reservations                                                                                                                                                        |
+| Phones         | No button in the header bar (it looked crowded). Reserve and Call are pinned to the bottom of the menu drawer, where a thumb reaches; the hero keeps its Book A Table badge |
+| Top bar        | Dropped the email (it is in the footer and drawer), added the open or closed status. Address on the left; hours, status and phone together on the right                     |
+| Hide on scroll | Kept, made keyboard-safe                                                                                                                                                    |
+| Menu button    | The original looping animation is kept (the owner prefers it). Close button: 36px circle, 16px icon, 44px tappable area                                                     |
 
 ## Dummy hours made consistent
 
@@ -36,8 +36,8 @@ status uses. Lunch (11:00 to 2:30) and dinner (5:00 to 10:00) are meal services 
 ## To check by hand
 
 1. Top bar: the status reads "Open now" or "Closed" correctly for London time.
-2. Phone widths 320, 360 and 390: logo, Reserve and menu button fit on one row.
-3. Drawer: Reserve and Call at the top, Tab never leaves the drawer, Esc closes it, focus returns to the menu button.
+2. Phone widths 320, 360 and 390: the logo and menu button sit on one row.
+3. Drawer: Reserve and Call pinned at the bottom (also with the page zoomed or the phone in landscape), Tab never leaves the drawer, Esc closes it, focus returns to the menu button.
 4. Scroll down: the header hides. Press Tab: it slides back in and focus is visible.
 5. Click each nav link, from the top and from the bottom of the page: the section heading is never under the header.
 6. Our Chefs appears between the menu and the testimonial, and the nav highlights it while you are in it.

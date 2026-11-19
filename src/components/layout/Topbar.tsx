@@ -16,7 +16,7 @@ const linkClass =
 
 /**
  * Fixed 48px high: the header sits directly below it (sm:top-12 in Header.tsx).
- * Address and hours show from 992px; the open status and phone link from 575px.
+ * Left: the address (from 992px). Right: hours, open status and phone, together.
  */
 export function Topbar({ hidden }: TopbarProps) {
   const { address, hours, phones } = siteConfig;
@@ -28,25 +28,29 @@ export function Topbar({ hidden }: TopbarProps) {
         hidden && "invisible -translate-y-full",
       )}
     >
-      <div className="container-x flex w-full items-center justify-center gap-8 xl:max-w-none">
-        <address className="hidden items-center gap-inline-sm lg:flex">
+      <div className="container-x flex w-full items-center gap-8 xl:max-w-none">
+        <address className="mr-auto hidden items-center gap-inline-sm lg:flex">
           <Icon name="map-pin" size={16} />
           <span className="t-small">{address.inline}</span>
         </address>
 
-        <Separator className="hidden xl:block" />
+        <div className="ml-auto flex items-center gap-8 lg:ml-0">
+          <div className="flex items-center gap-4">
+            <div className="hidden items-center gap-inline-sm lg:flex">
+              <Icon name="clock" size={16} />
+              <span className="t-small">{hours.topbar}</span>
+            </div>
 
-        <div className="hidden items-center gap-inline-sm lg:flex">
-          <Icon name="clock" size={16} />
-          <span className="t-small">{hours.topbar}</span>
+            <OpenStatus />
+          </div>
+
+          <Separator className="hidden xl:block" />
+
+          <a href={phones.topbar.href} className={linkClass}>
+            <Icon name="phone" size={16} />
+            <span className="t-small">{phones.topbar.label}</span>
+          </a>
         </div>
-
-        <OpenStatus />
-
-        <a href={phones.topbar.href} className={linkClass}>
-          <Icon name="phone" size={16} />
-          <span className="t-small">{phones.topbar.label}</span>
-        </a>
       </div>
     </div>
   );

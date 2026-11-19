@@ -17,7 +17,9 @@ const MARKERS = /^group(\/[\w-]+)?$/;
 
 /** Strings that look like classes but are not (icon names, CSS variable names, meta values). */
 const iconNames = new Set(
-  [...readFileSync("src/components/ui/Icon.tsx", "utf8").matchAll(/"([a-z-]+)":/g)].map((m) => m[1]),
+  [...readFileSync("src/components/ui/Icon.tsx", "utf8").matchAll(/"([a-z-]+)":/g)].map(
+    (m) => m[1],
+  ),
 );
 const NOT_CLASSES = /^(--next-[\w-]+|device-width|-)$/;
 
@@ -39,7 +41,9 @@ const sourceFiles = walk("src").filter((file) => !file.endsWith("Icon.tsx"));
 const ids = new Set();
 for (const file of sourceFiles) {
   const text = readFileSync(file, "utf8");
-  for (const match of text.matchAll(/(?:\bid=|getElementById\(|aria-(?:labelledby|controls|describedby)=)\{?\s*["']([\w-]+)["']/g)) {
+  for (const match of text.matchAll(
+    /(?:\bid=|getElementById\(|aria-(?:labelledby|controls|describedby)=)\{?\s*["']([\w-]+)["']/g,
+  )) {
     ids.add(match[1]);
   }
 }
@@ -70,8 +74,9 @@ function classCandidates(source) {
   return found;
 }
 
-
-const byFile = new Map(sourceFiles.map((file) => [file, classCandidates(readFileSync(file, "utf8"))]));
+const byFile = new Map(
+  sourceFiles.map((file) => [file, classCandidates(readFileSync(file, "utf8"))]),
+);
 
 if (listOnly) {
   for (const [file, tokens] of byFile) console.log(`${file}\n  ${[...tokens].join("\n  ")}`);

@@ -107,3 +107,11 @@ button, drawer with Reserve and Call, open or closed status in the top bar, keyb
 open drawer, drawer closes when the window widens, calm menu button, a faint top scrim behind the transparent header, and
 page-level scroll padding for anchors. The iconography kit page was updated (the top bar no longer has an email icon).
 Opening-hours logic is checked for winter time, summer time and overnight hours.
+
+### Header and nav: round 2 (after the first look in a browser)
+
+- Phones: the Reserve button in the header bar was removed and the logo is back at its original size. Reserve and Call moved to
+  the bottom of the menu drawer, and the close button is smaller (36px circle, 44px tappable area).
+- The original looping menu-button animation was restored.
+- Desktop top bar: hours and the open status now sit next to the phone number; below 1200px the status shortens to
+  "Open now" so the bar never runs out of room. The drawer also shows the open status.

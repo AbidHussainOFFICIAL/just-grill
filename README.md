@@ -145,16 +145,19 @@ Decisions and research are in `docs/header-nav.md`. In short:
 
 - **Nav:** Home, Menus, About Us, Our Chefs, Reservations. Every link goes to a real section (`#chefs` is new).
   The active link follows the scroll position.
-- **Top bar (from 575px):** address and hours (from 992px), an "Open now · until 10:00 pm" or "Closed · opens 8:00 am"
-  status, and the phone number. The status is worked out from `siteConfig.openingHours`, in the restaurant's own time zone,
-  and refreshes every minute. Change the hours in `src/data/site.ts` and the text lines next to them.
-- **Phones:** a compact Reserve button sits next to the menu button. The menu drawer starts with Reserve and Call buttons.
+- **Top bar (from 575px):** the address on the left (from 992px). On the right, together: the hours (from 992px), an
+  "Open now · until 10:00 pm" or "Closed · opens 8:00 am" status, and the phone number. The status is worked out from
+  `siteConfig.openingHours`, in the restaurant's own time zone, and refreshes every minute (below 1200px it shows just
+  "Open now" or "Closed"). Change the hours in `src/data/site.ts` and the text lines next to them. The drawer shows the status too.
+- **Phones:** the header is the logo and the menu button. Reserve and Call are pinned to the bottom of the menu, within
+  thumb reach; the hero also has its Book A Table badge.
 - **Header on scroll:** it slides away when scrolling down and back when scrolling up. It stays visible while the menu is open
   and while a keyboard user has focus inside it, so focus is never hidden. Anchor jumps land 96px below the top
   (`--header-offset`), clear of the header.
 - **Menu drawer:** `aria-controls`, a labelled `nav`, Tab stays inside while it is open, Esc closes it, focus returns to the
   menu button, and it closes if the window is widened past 1200px.
-- **Menu button:** the three lines animate on hover and focus only (no endless loop).
+- **Menu button:** the original looping three-line animation. The close button's visible circle is 36px with a
+  16px icon; its tappable area stays 44px.
 - **Our Chefs:** `src/data/chefs.ts`. Add `image: "/images/chef-1.jpg"` (3:4) to a chef to replace the gold placeholder.
 
 ## Forms (demo)

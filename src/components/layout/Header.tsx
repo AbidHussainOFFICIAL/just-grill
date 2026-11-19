@@ -114,16 +114,9 @@ export function Header() {
           isCovered && "-translate-y-full delay-250",
         )}
       >
-        <div className="container-x flex items-center justify-between gap-2 px-4 sm:px-5 xl:max-w-none">
+        <div className="container-x flex items-center justify-between gap-2 px-5 xl:max-w-none">
           <a href="#">
-            <Image
-              src="/images/logo.svg"
-              width={160}
-              height={50}
-              alt="Grilli - Home"
-              className="h-auto w-32 sm:w-40"
-              priority
-            />
+            <Image src="/images/logo.svg" width={160} height={50} alt="Grilli - Home" priority />
           </a>
 
           <Navbar
@@ -133,29 +126,25 @@ export function Header() {
             closeButtonRef={closeButtonRef}
           />
 
-          {/* Primary action: always reachable. Phones get a compact "Reserve" next to the menu button. */}
+          {/* Find A Table from 575px; on phones Reserve and Call sit at the bottom of the menu. */}
           <div className="ml-auto flex items-center gap-2 xl:ml-0">
             <Button href="#reservation" variant="secondary" className="hidden sm:block">
               Find A Table
             </Button>
 
-            <Button href="#reservation" variant="secondary" className="btn-compact sm:hidden">
-              Reserve
-            </Button>
-
-            {/* 44 x 48 touch target. The lines only animate on hover and focus. */}
+            {/* 44 x 48 touch target. The three lines keep their original looping animation. */}
             <button
               ref={openButtonRef}
               type="button"
-              className="group/burger flex h-12 w-11 flex-col items-start justify-center pl-3 xl:hidden"
+              className="flex h-12 w-11 flex-col items-start justify-center pl-3 xl:hidden"
               aria-label="open menu"
               aria-expanded={isNavOpen}
               aria-controls="site-nav"
               onClick={toggleNav}
             >
-              <span className="my-1 h-0.5 w-8 origin-left bg-fg-strong group-hover/burger:animate-menu-btn-1 group-focus-visible/burger:animate-menu-btn-1" />
-              <span className="my-1 h-0.5 w-8 origin-left bg-fg-strong group-hover/burger:animate-menu-btn-2 group-focus-visible/burger:animate-menu-btn-2" />
-              <span className="my-1 h-0.5 w-8 origin-left bg-fg-strong group-hover/burger:animate-menu-btn-3 group-focus-visible/burger:animate-menu-btn-3" />
+              <span className="my-1 h-0.5 w-8 origin-left animate-menu-btn-1 bg-fg-strong" />
+              <span className="my-1 h-0.5 w-8 origin-left animate-menu-btn-2 bg-fg-strong" />
+              <span className="my-1 h-0.5 w-8 origin-left animate-menu-btn-3 bg-fg-strong" />
             </button>
           </div>
 
