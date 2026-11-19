@@ -114,9 +114,16 @@ export function Header() {
           isCovered && "-translate-y-full delay-250",
         )}
       >
-        <div className="container-x flex items-center justify-between gap-2 px-5 xl:max-w-none">
+        <div className="container-x flex items-center justify-between gap-2 px-4 sm:px-5 xl:max-w-none">
           <a href="#">
-            <Image src="/images/logo.svg" width={160} height={50} alt="Grilli - Home" priority />
+            <Image
+              src="/images/logo.svg"
+              width={160}
+              height={50}
+              alt="Grilli - Home"
+              className="h-auto w-32 sm:w-40"
+              priority
+            />
           </a>
 
           <Navbar

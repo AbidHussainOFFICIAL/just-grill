@@ -46,7 +46,6 @@ Documented, not applied:
 - DM Sans loads as static 400, 500 and 600 files; the optional optical-size axis is not used.
 - The Urdu fallback (Noto Nastaliq Urdu) is a plan only and is not loaded.
 - The date field shows its value in uppercase, as the original did (a value, not a paragraph).
-
 ## 3. Spacing, radius and system tokens: checked
 
 Verified by script: 120 of the 133 snapped classes in the kit's touchpoint map are in the code; the other 13 are
@@ -110,8 +109,8 @@ Opening-hours logic is checked for winter time, summer time and overnight hours.
 
 ### Header and nav: round 2 (after the first look in a browser)
 
-- Phones: the Reserve button in the header bar was removed and the logo is back at its original size. Reserve and Call moved to
-  the bottom of the menu drawer, and the close button is smaller (36px circle, 44px tappable area).
+- Phones: the Reserve button in the header bar was removed; the logo keeps the smaller phone size (128px, 160px from 575px up).
+  Reserve and Call moved to the bottom of the menu drawer, and the close button is smaller (36px circle, 44px tappable area).
 - The original looping menu-button animation was restored.
 - Desktop top bar: hours and the open status now sit next to the phone number; below 1200px the status shortens to
   "Open now" so the bar never runs out of room. The drawer also shows the open status.
