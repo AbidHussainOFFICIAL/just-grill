@@ -16,7 +16,9 @@ import {
   MapPin,
   Menu,
   PartyPopper,
+  Pause,
   Phone,
+  Play,
   Salad,
   TriangleAlert,
   User,
@@ -46,6 +48,8 @@ const icons = {
   "chevron-down": ChevronDown,
   close: X,
   menu: Menu,
+  pause: Pause,
+  play: Play,
   "arrow-right": ArrowRight,
   // status
   check: Check,

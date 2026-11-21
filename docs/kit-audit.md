@@ -46,6 +46,7 @@ Documented, not applied:
 - DM Sans loads as static 400, 500 and 600 files; the optional optical-size axis is not used.
 - The Urdu fallback (Noto Nastaliq Urdu) is a plan only and is not loaded.
 - The date field shows its value in uppercase, as the original did (a value, not a paragraph).
+
 ## 3. Spacing, radius and system tokens: checked
 
 Verified by script: 120 of the 133 snapped classes in the kit's touchpoint map are in the code; the other 13 are
@@ -114,3 +115,17 @@ Opening-hours logic is checked for winter time, summer time and overnight hours.
 - The original looping menu-button animation was restored.
 - Desktop top bar: hours and the open status now sit next to the phone number; below 1200px the status shortens to
   "Open now" so the bar never runs out of room. The drawer also shows the open status.
+
+## 6. Hero (new work)
+
+Research and decisions are in `docs/hero.md`. Built: slider controls (pause and play, progress lines, swipe, pause on hover and
+focus, reduced-motion handling, carousel semantics), phone info row, badge and Back to top overlap fixed, tighter reveal with a
+named easing token, hero height in `svh`, first photo only at high priority. The iconography kit page now lists the pause and
+play icons.
+
+### Hero: round 2 (after the first look in a browser)
+
+- Desktop: the hero was a fixed 880px and ran off the screen. It is now the screen height, and the headline shrinks with short screens.
+- Phones: the open status and address row was removed and the badge made quieter, so the hero is calm.
+- Bugs fixed: the open status broke onto two lines and the chef "Signature:" label sat on its own line (spans are blocks in the
+  base style); the class checker no longer reports custom property names (like `--hero-delay`) as classes.

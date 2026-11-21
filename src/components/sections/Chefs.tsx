@@ -56,7 +56,7 @@ export function Chefs() {
                 <p className="flex items-center justify-center gap-inline-sm t-small">
                   <Icon name="utensils" size={16} className="text-gold-400" />
                   <span>
-                    <span className="text-fg-muted">Signature:</span> {chef.signature}
+                    <span className="inline text-fg-muted">Signature:</span> {chef.signature}
                   </span>
                 </p>
               </article>

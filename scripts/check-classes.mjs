@@ -21,7 +21,7 @@ const iconNames = new Set(
     (m) => m[1],
   ),
 );
-const NOT_CLASSES = /^(--next-[\w-]+|device-width|-)$/;
+const NOT_CLASSES = /^(--[\w-]+|device-width|-)$/;
 
 /** CSS selectors used in code (":focus-visible", "a[href],", "button:not(...)") and times ("8:00"). */
 const SELECTOR_OR_TIME = /^(\d{1,2}:\d{2}|:[\w-]+|[a-z]+\[[^\]]*\],?|[\w-]+:not\(.*)$/;

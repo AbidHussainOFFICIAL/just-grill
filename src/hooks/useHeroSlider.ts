@@ -3,35 +3,79 @@
 import { useCallback, useEffect, useState } from "react";
 
 /**
- * Hero slider state: wrap-around next/prev, auto-advance every `intervalMs`,
- * and a pause/resume pair (used while the arrow buttons are hovered).
+ * Time each hero slide stays up (the "hero slide 7s" motion token). The progress line and the
+ * slow zoom use the same time, and the progress line is what moves the slider on, so the line
+ * and the slide can never disagree.
  */
-/** Time each hero slide stays up (the "hero slide 7s" motion token). */
 export const HERO_INTERVAL_MS = 7000;
 
-export function useHeroSlider(slideCount: number, intervalMs = HERO_INTERVAL_MS) {
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+/**
+ * Hero slider state.
+ *
+ * - Autoplay runs unless the visitor paused it, a pointer is over the controls, keyboard focus is
+ *   inside the hero, or the system asks for reduced motion (then slides only change on request).
+ * - `onProgressEnd` is called when the active progress line has finished filling.
+ */
+export function useHeroSlider(slideCount: number) {
   const [current, setCurrent] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-
-  const next = useCallback(
-    () => setCurrent((pos) => (pos >= slideCount - 1 ? 0 : pos + 1)),
-    [slideCount],
-  );
-
-  const prev = useCallback(
-    () => setCurrent((pos) => (pos <= 0 ? slideCount - 1 : pos - 1)),
-    [slideCount],
-  );
-
-  const pause = useCallback(() => setIsPaused(true), []);
-  const resume = useCallback(() => setIsPaused(false), []);
+  const [hasAdvanced, setHasAdvanced] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
+  const [hoverPaused, setHoverPaused] = useState(false);
+  const [focusPaused, setFocusPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    if (isPaused) return;
+    const query = window.matchMedia(REDUCED_MOTION);
+    setReducedMotion(query.matches);
 
-    const id = window.setInterval(next, intervalMs);
-    return () => window.clearInterval(id);
-  }, [isPaused, next, intervalMs]);
+    const onChange = (event: MediaQueryListEvent) => setReducedMotion(event.matches);
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
 
-  return { current, next, prev, pause, resume };
+  const goTo = useCallback(
+    (index: number) => {
+      setCurrent(((index % slideCount) + slideCount) % slideCount);
+      setHasAdvanced(true);
+    },
+    [slideCount],
+  );
+
+  const next = useCallback(() => {
+    setCurrent((pos) => (pos + 1) % slideCount);
+    setHasAdvanced(true);
+  }, [slideCount]);
+
+  const prev = useCallback(() => {
+    setCurrent((pos) => (pos - 1 + slideCount) % slideCount);
+    setHasAdvanced(true);
+  }, [slideCount]);
+
+  const toggleAutoplay = useCallback(() => setUserPaused((paused) => !paused), []);
+
+  const canAutoplay = !reducedMotion;
+  const isRunning = canAutoplay && !userPaused && !hoverPaused && !focusPaused;
+
+  const onProgressEnd = useCallback(() => {
+    // With reduced motion every animation ends instantly, so never let that move the slider.
+    if (window.matchMedia(REDUCED_MOTION).matches) return;
+    next();
+  }, [next]);
+
+  return {
+    current,
+    hasAdvanced,
+    canAutoplay,
+    isRunning,
+    userPaused,
+    next,
+    prev,
+    goTo,
+    toggleAutoplay,
+    setHoverPaused,
+    setFocusPaused,
+    onProgressEnd,
+  };
 }

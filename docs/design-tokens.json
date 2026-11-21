@@ -519,23 +519,35 @@
         "$type": "css"
       }
     },
+    "hero": {
+      "progress": {
+        "$value": "heroProgress 7s linear forwards",
+        "$type": "css"
+      }
+    },
     "reveal": {
       "1": {
-        "$value": "sliderReveal 1s ease 500ms forwards",
+        "$value": "sliderReveal 650ms var(--ease-reveal) calc(var(--hero-delay, 0ms) + 0ms) forwards",
         "$type": "css"
       },
       "2": {
-        "$value": "sliderReveal 1s ease 1000ms forwards",
+        "$value": "sliderReveal 650ms var(--ease-reveal) calc(var(--hero-delay, 0ms) + 120ms) forwards",
         "$type": "css"
       },
       "3": {
-        "$value": "sliderReveal 1s ease 1500ms forwards",
+        "$value": "sliderReveal 650ms var(--ease-reveal) calc(var(--hero-delay, 0ms) + 240ms) forwards",
         "$type": "css"
       },
       "4": {
-        "$value": "sliderReveal 1s ease 2000ms forwards",
+        "$value": "sliderReveal 650ms var(--ease-reveal) calc(var(--hero-delay, 0ms) + 360ms) forwards",
         "$type": "css"
       }
+    }
+  },
+  "ease": {
+    "reveal": {
+      "$value": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "$type": "css"
     }
   },
   "section": {

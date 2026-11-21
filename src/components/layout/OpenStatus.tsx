@@ -35,7 +35,7 @@ export function OpenStatus({ className, alwaysShowDetail = false }: OpenStatusPr
       />
       <span className="t-small whitespace-nowrap">
         {shown.state}
-        <span className={alwaysShowDetail ? "" : "hidden xl:inline"}> · {shown.detail}</span>
+        <span className={alwaysShowDetail ? "inline" : "hidden xl:inline"}> · {shown.detail}</span>
       </span>
     </div>
   );

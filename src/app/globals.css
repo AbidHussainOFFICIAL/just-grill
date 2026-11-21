@@ -174,10 +174,21 @@
   --animate-menu-btn-3: menuBtn 400ms ease-in-out 300ms alternate infinite;
   --animate-loading-text: loadingText 2s ease-in-out infinite;
   --animate-smooth-scale: smoothScale 7s linear forwards;
-  --animate-reveal-1: sliderReveal 1s ease 500ms forwards;
-  --animate-reveal-2: sliderReveal 1s ease 1000ms forwards;
-  --animate-reveal-3: sliderReveal 1s ease 1500ms forwards;
-  --animate-reveal-4: sliderReveal 1s ease 2000ms forwards;
+  --animate-hero-progress: heroProgress 7s linear forwards;
+
+  /* Hero reveal: 650ms, 120ms apart, so the button is up within about half a second.
+     --hero-delay (set by the hero) holds the first slide back until the preloader has lifted. */
+  --animate-reveal-1: sliderReveal 650ms var(--ease-reveal) calc(var(--hero-delay, 0ms) + 0ms)
+    forwards;
+  --animate-reveal-2: sliderReveal 650ms var(--ease-reveal) calc(var(--hero-delay, 0ms) + 120ms)
+    forwards;
+  --animate-reveal-3: sliderReveal 650ms var(--ease-reveal) calc(var(--hero-delay, 0ms) + 240ms)
+    forwards;
+  --animate-reveal-4: sliderReveal 650ms var(--ease-reveal) calc(var(--hero-delay, 0ms) + 360ms)
+    forwards;
+
+  /* EASING: strong ease-out for things that enter */
+  --ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes move {
@@ -226,13 +237,22 @@
     transform: scale(1);
   }
   100% {
-    transform: scale(1.15);
+    transform: scale(1.08);
+  }
+}
+
+@keyframes heroProgress {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
   }
 }
 
 @keyframes sliderReveal {
   0% {
-    transform: translateY(30px);
+    transform: translateY(20px);
     opacity: 0;
   }
 
@@ -299,7 +319,9 @@
 @utility t-display {
   font-family: var(--font-forum);
   font-weight: 400;
-  font-size: var(--text-6xl);
+  /* Fluid with the width, and never taller than 13% of the screen height, so on a short desktop
+     window the headline shrinks and the whole hero still fits. */
+  font-size: clamp(3.4rem, 13svh, var(--text-6xl));
   line-height: 1;
   letter-spacing: var(--tracking-tight);
 }

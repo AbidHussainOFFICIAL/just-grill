@@ -34,7 +34,7 @@ src/
     sections/       Hero, Service, About(+Banner), SpecialDish, Menu, Chefs, Testimonial,
                     Reservation(+Form), Features, Events
   data/             all site content (contact details, menu, events, nav, ...)
-  hooks/            header scroll, hero slider, parallax, scroll position, active nav section, open status
+  hooks/            header scroll, hero slider (autoplay, pause, reduced motion), parallax, scroll position, active nav section, open status
   lib/              form validation, date helper, opening-hours logic, demo request helper
 docs/brand-kit/     the four brand kit pages (colour, typography, spacing and radius, iconography)
 docs/design-tokens.json   every token in one file (generated, do not edit)
@@ -159,6 +159,26 @@ Decisions and research are in `docs/header-nav.md`. In short:
 - **Menu button:** the original looping three-line animation. The close button's visible circle is 36px with a
   16px icon; its tappable area stays 44px.
 - **Our Chefs:** `src/data/chefs.ts`. Add `image: "/images/chef-1.jpg"` (3:4) to a chef to replace the gold placeholder.
+
+## Hero
+
+Research and decisions are in `docs/hero.md`. In short:
+
+- **Slider:** three slides, 7 seconds each (`HERO_INTERVAL_MS`), one thin gold progress line per slide. Click a line to jump to
+  that slide. The progress line is what moves the slider on, so line and slide can never disagree.
+- **Controls:** a pause and play button, diamond arrows from 768px, swipe on phones. Autoplay pauses while a pointer is over the
+  controls and while keyboard focus is in the hero. With "reduce motion" switched on in the system, there is no autoplay and the
+  slides change only on request.
+- **Phones:** kept calm: the bottom of the hero is only the pause button, the progress lines and the Book A Table badge.
+  The open status and address are in the menu drawer and the footer.
+- **Book A Table badge:** an 80px square on phones, the full 112px badge with its turning outline from 575px. Back to top only
+  appears once the hero is almost scrolled past, so the two never overlap.
+- **Reveal:** each slide reveals in about 0.5 seconds (650ms, 120ms apart, strong ease-out); the first slide waits 700ms for
+  the preloader. The slow zoom is 8% and follows the slide time.
+- **Height:** exactly the height of the screen (small-viewport units, so phone toolbars do not make it jump), with a 560px
+  floor. The headline is never taller than 13% of the screen height, so on a short desktop window the whole hero still fits
+  without scrolling.
+- **Photos:** only the first is high priority. Add or change slides in `src/data/hero.ts`.
 
 ## Forms (demo)
 

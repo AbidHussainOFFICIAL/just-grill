@@ -51,6 +51,7 @@ const groups = [
   ["container", "dimension", /^--container-/],
   ["breakpoint", "dimension", /^--breakpoint-/],
   ["animate", "css", /^--animate-/],
+  ["ease", "css", /^--ease-/],
   ["motion", "duration", /^--motion-/],
   ["border", "dimension", /^--border-/],
   ["z", "number", /^--z-/],
